@@ -32,8 +32,7 @@ public class SplashScreen extends AppCompatActivity {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
-//        setContentView(android.R.layout.activity_splash_screen);
-        setContentView(R.layout.profil);
+        setContentView(R.layout.activity_splash_screen);
 
         this.activity = this;
         key = new GenKey();
@@ -93,15 +92,15 @@ public class SplashScreen extends AppCompatActivity {
 
                 @Override
                 public void run() {
-//                    Intent homeIntent;
-                    if (sp.getString(key.key(57), "").equals("") && sp.getString(key.key(58), "").equals("")) {
-//                        homeIntent = new Intent(activity, Login.class);
+                    Intent homeIntent;
+                    if (sp.getString(key.key(1), "").equals("") && sp.getString(key.key(2), "").equals("")) {
+                        homeIntent = new Intent(activity, Login.class);
                     } else {
 //                        homeIntent = new Intent(activity, MainActivity.class);
-//                        homeIntent = new Intent(activity, dummy .class);
+                        homeIntent = new Intent(activity, Login .class);
 //
                     }
-//                    startActivity(homeIntent);
+                    startActivity(homeIntent);
                     finish();
                 }
             }, 2000

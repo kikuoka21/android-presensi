@@ -5,6 +5,7 @@
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -27,6 +28,11 @@
             android:name=".siswa.MainActivity"
             android:label="@string/home"
             android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".Login"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateAlwaysHidden"
             android:theme="@style/AppTheme.NoActionBar" />
     </application>
 
