@@ -17,13 +17,13 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.TextView;
 
+import Tools.GenKey;
 import Tools.InetConnection;
-import Tools.appKey;
-import id.ac.budiluhur.sim.Login.Login;
 
 public class SplashScreen extends AppCompatActivity {
     private SharedPreferences sp;
     private SplashScreen activity;
+    private GenKey key;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,10 +32,11 @@ public class SplashScreen extends AppCompatActivity {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
-        setContentView(R.layout.activity_splash_screen);
+//        setContentView(android.R.layout.activity_splash_screen);
+        setContentView(R.layout.profil);
 
         this.activity = this;
-        key = new appKey();
+        key = new GenKey();
         sp = activity.getSharedPreferences(key.key(9145), 0x0000);
 
         PackageInfo pInfo;
@@ -92,15 +93,15 @@ public class SplashScreen extends AppCompatActivity {
 
                 @Override
                 public void run() {
-                    Intent homeIntent;
+//                    Intent homeIntent;
                     if (sp.getString(key.key(57), "").equals("") && sp.getString(key.key(58), "").equals("")) {
-                        homeIntent = new Intent(activity, Login.class);
+//                        homeIntent = new Intent(activity, Login.class);
                     } else {
-                        homeIntent = new Intent(activity, MainActivity.class);
-                        homeIntent = new Intent(activity, dummy .class);
+//                        homeIntent = new Intent(activity, MainActivity.class);
+//                        homeIntent = new Intent(activity, dummy .class);
 //
                     }
-                    startActivity(homeIntent);
+//                    startActivity(homeIntent);
                     finish();
                 }
             }, 2000

@@ -10,13 +10,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import Tools.GenKey;
 import Tools.Utilities;
-import Tools.appKey;
-import id.ac.budiluhur.sim.R;
+import tech.opsign.kkp.absensi.R;
 
 public class DashboardFragment extends Fragment {
 
-    private appKey key;
+    private GenKey key;
     private View v;
     private SharedPreferences sp;
     @Nullable
@@ -25,7 +25,7 @@ public class DashboardFragment extends Fragment {
             getActivity().setTitle(R.string.home);
             v =inflater.inflate(R.layout.halamanutama,container, false);
 
-           key = new appKey();
+           key = new GenKey();
            sp = v.getContext().getSharedPreferences(key.key(9145), 0x0000);
            getnama();
 
@@ -34,7 +34,7 @@ public class DashboardFragment extends Fragment {
 
     private void getnama() {
         try{
-//            JSONObject obj = new JSONObject(sp.getString(key.key(1102), ""));/**/
+//            JSONObject obj = new JSONObject(sp.getString(GenKey.GenKey(1102), ""));/**/
             ((TextView)v.findViewById(R.id.textView14)).setText(sp.getString(key.key(1102), ""));
         }catch (Exception e){
             ((TextView)v.findViewById(R.id.textView14)).setText("-");
