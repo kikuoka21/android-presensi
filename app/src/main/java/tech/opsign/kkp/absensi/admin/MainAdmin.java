@@ -1,26 +1,19 @@
-package tech.opsign.kkp.absensi.siswa;
+package tech.opsign.kkp.absensi.admin;
 
-import android.annotation.SuppressLint;
 import android.app.FragmentManager;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.PackageInfo;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.StrictMode;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -29,25 +22,12 @@ import android.view.WindowManager;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.gson.Gson;
-
-import org.apache.http.NameValuePair;
-import org.apache.http.message.BasicNameValuePair;
-import org.json.JSONObject;
-
-import java.util.ArrayList;
-import java.util.List;
-
 import Tools.GenKey;
-import Tools.JsonParser;
-import Tools.Message.GenerateMessage;
 import Tools.Utilities;
-
 import tech.opsign.kkp.absensi.R;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     private SharedPreferences sp;
-    private GenerateMessage pesan;
     private View navHeaderView;
     private MainActivity activity;
     private boolean doubleBackToExitPressedOnce = false;
@@ -66,7 +46,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         Toast.makeText(this, "Selamat Datang", Toast.LENGTH_SHORT).show();
         this.activity = this;
         key = new GenKey();
-        pesan = new GenerateMessage();
         sp = activity.getSharedPreferences(key.key(9145), 0x0000);
         dialog = new ProgressDialog(activity);
         halder = new Handler();
