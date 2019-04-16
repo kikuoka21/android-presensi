@@ -14,7 +14,7 @@ import Tools.GenKey;
 import Tools.Utilities;
 import tech.opsign.kkp.absensi.R;
 
-public class DashboardFragment extends Fragment {
+public class DashboardFragmentSiswa extends Fragment {
 
     private GenKey key;
     private View v;

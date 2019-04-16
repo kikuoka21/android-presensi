@@ -26,10 +26,10 @@ import Tools.GenKey;
 import Tools.Utilities;
 import tech.opsign.kkp.absensi.R;
 
-public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class MainAdmin extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     private SharedPreferences sp;
     private View navHeaderView;
-    private MainActivity activity;
+    private MainAdmin activity;
     private boolean doubleBackToExitPressedOnce = false;
     private ProgressDialog dialog;
     private Handler halder;
@@ -74,7 +74,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_containter,
-                    new DashboardFragment()).commit();
+                    new DashboardFragmentAdmin()).commit();
         }
         navHeaderView = navigationView.inflateHeaderView(R.layout.nav_header);
 
@@ -331,7 +331,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
 //        if (id == R.id.nav_dash) {
 //            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_containter
-//                    , new DashboardFragment()).commit();
+//                    , new DashboardFragmentSiswa()).commit();
 //        }
 
 //        if (id == R.id.nav_dos_penelitian) {

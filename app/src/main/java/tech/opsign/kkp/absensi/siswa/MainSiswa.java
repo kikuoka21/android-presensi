@@ -1,26 +1,19 @@
 package tech.opsign.kkp.absensi.siswa;
 
-import android.annotation.SuppressLint;
 import android.app.FragmentManager;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.PackageInfo;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.StrictMode;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -29,25 +22,15 @@ import android.view.WindowManager;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.gson.Gson;
-
-import org.apache.http.NameValuePair;
-import org.apache.http.message.BasicNameValuePair;
-import org.json.JSONObject;
-
-import java.util.ArrayList;
-import java.util.List;
-
 import Tools.GenKey;
-import Tools.JsonParser;
 import Tools.Utilities;
 
 import tech.opsign.kkp.absensi.R;
 
-public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class MainSiswa extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     private SharedPreferences sp;
     private View navHeaderView;
-    private MainActivity activity;
+    private MainSiswa activity;
     private boolean doubleBackToExitPressedOnce = false;
     private ProgressDialog dialog;
     private Handler halder;
@@ -92,7 +75,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_containter,
-                    new DashboardFragment()).commit();
+                    new DashboardFragmentSiswa()).commit();
         }
         navHeaderView = navigationView.inflateHeaderView(R.layout.nav_header);
 
@@ -349,7 +332,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
 //        if (id == R.id.nav_dash) {
 //            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_containter
-//                    , new DashboardFragment()).commit();
+//                    , new DashboardFragmentSiswa()).commit();
 //        }
 
 //        if (id == R.id.nav_dos_penelitian) {

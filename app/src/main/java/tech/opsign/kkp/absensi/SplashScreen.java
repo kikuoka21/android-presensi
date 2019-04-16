@@ -96,7 +96,7 @@ public class SplashScreen extends AppCompatActivity {
                     if (sp.getString(key.key(1), "").equals("") && sp.getString(key.key(2), "").equals("")) {
                         homeIntent = new Intent(activity, Login.class);
                     } else {
-//                        homeIntent = new Intent(activity, MainActivity.class);
+//                        homeIntent = new Intent(activity, MainAdmin.class);
                         homeIntent = new Intent(activity, Login .class);
 //
                     }

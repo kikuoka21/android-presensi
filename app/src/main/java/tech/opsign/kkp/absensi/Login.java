@@ -22,8 +22,15 @@ import android.widget.Button;
 import android.widget.EditText;
 
 
+import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import Tools.GenKey;
-import Tools.Message.GenerateMessage;
+import Tools.JsonParser;
 import Tools.Utilities;
 
 public class Login extends AppCompatActivity {
@@ -32,7 +39,6 @@ public class Login extends AppCompatActivity {
     private Login activity;
     private EditText jpassword;
     private GenKey key;
-    private GenerateMessage pesan;
     private ProgressDialog dialog;
     private Handler handler;
     private AsyncTask start;
@@ -40,127 +46,99 @@ public class Login extends AppCompatActivity {
 
 
 
+
+    @SuppressLint("StaticFieldLeak")
+    private class asyncUser extends AsyncTask<Void, Void, Void> {
+        private String Str_nip;
+        private String Str_pass;
+        private String code;
+        private boolean background;
+
+
+        private asyncUser(String str_nip, String str_pass) {
+            Str_nip = str_nip.trim();
+            Str_pass = str_pass.trim();
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            background = true;
+
+
+            if (Str_nip.equals("") || Str_pass.equals(""))
+                this.cancel(true);
+            dialog = new ProgressDialog(activity);
+
+            dialog.setMessage("Sedang memproses data. Harap tunggu sejenak.");
+            dialog.setCancelable(false);
+
+            dialog.show();
+
+        }
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            try {
+                StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+                StrictMode.setThreadPolicy(policy);
+
 //
-//    @SuppressLint("StaticFieldLeak")
-//    private class asyncUser extends AsyncTask<Void, Void, Void> {
-//        private String Str_nip;
-//        private String Str_pass;
-//        private String code;
-//        private boolean background;
-//
-//
-//        private asyncUser(String str_nip, String str_pass) {
-//            Str_nip = str_nip.trim();
-//            Str_pass = str_pass.trim();
-//        }
-//
-//        @Override
-//        protected void onPreExecute() {
-//            super.onPreExecute();
-//            background = true;
-//
-//
-//            if (Str_nip.equals("") || Str_pass.equals(""))
-//                this.cancel(true);
-//            dialog = new ProgressDialog(activity);
-//
-//            dialog.setMessage("Sedang memproses data. Harap tunggu sejenak.");
-//            dialog.setCancelable(false);
-//
-//            dialog.show();
-//
-//        }
-//
-//        @Override
-//        protected Void doInBackground(Void... voids) {
-//            try {
-//                StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-//                StrictMode.setThreadPolicy(policy);
-//
-//                Param param = new Param();
-//                param.xnip = Str_nip;
-//                param.xpassword = key.key2(Str_pass);
-//                param.xuser_key = Utilities.imei(activity);
-//                param.xuser_type = "13";
-//                Gson gson = new Gson();
-//                String xdata = gson.toJson(param);
-//                List<NameValuePair> p = new ArrayList<NameValuePair>();
-//                p.add(new BasicNameValuePair(key.key(145), key.encode(xdata)));
-//
-//                JsonParser jParser = new JsonParser();
-//                JSONObject json = jParser.GetJSONObjectEncrypted(key.url(1), p);
-////                Log.e("param login ", xdata);
-////                Log.e("isi json login", json.toString());
-//
-//
+                List<NameValuePair> p = new ArrayList<NameValuePair>();
+                p.add(new BasicNameValuePair(key.key(145),""));
+
+                JsonParser jParser = new JsonParser();
+//                JSONObject json = jParser.getJSONFromUrl(key.url(1), p);
+//                Log.e("param login ", xdata);
+//                Log.e("isi json login", json.toString());
+
+
 //                code = json.getString("code");
+                code = "ok";
 //                Log.e("token", json.toString(3));
-//
-//                if (code.equals(key.key(999))) {
-//                    Paramnama data = new Paramnama();
-//                    JSONObject token = json.getJSONObject("data");
-//
-//                    data.xtoken = token.getString(key.key(5192));
-//                    data.xuser_key = Utilities.imei(activity);
-//                    data.xuser_type = "13";
-//                    data.xnip = Str_nip;
-//                    xdata = gson.toJson(data);
-//                    List<NameValuePair> N = new ArrayList<NameValuePair>();
-//                    N.add(new BasicNameValuePair(key.key(145), key.encode(xdata)));
-//
-//                    JSONObject jsonnama = jParser.GetJSONObjectEncrypted(key.url(2), N);
-////                    JSONObject foto = jParser.GetJSONObjectEncrypted(key.url(92), N);
-////                    Log.e("ERfoto", foto.toString(3));
-//                    jsonnama = jsonnama.getJSONObject("data");
-//                    Log.e("ERprofil", jsonnama.toString(3));
-////                    Log.e("ERjson", data.xtoken);
-//
-//                    SharedPreferences sp = activity.getSharedPreferences(key.key(9145), 0x0000);
-//                    SharedPreferences.Editor editor = sp.edit();
-//                    editor.putString(key.key(1001), Str_nip);
-//                    editor.putString(key.key(1002), data.xtoken);
-//                    editor.putString(key.key(1102), jsonnama.getString("nama"));
-//                    editor.putString(key.key(1103), jsonnama.getString("jabatan"));
-//
-//                    editor.commit();
-//                }
-//            } catch (Exception e) {
-//                background = false;
-//            }
-//            return null;
-//        }
-//
-//        @Override
-//        protected void onPostExecute(Void result) {
-//            super.onPostExecute(result);
-//
-//            if (dialog.isShowing()) {
-//                dialog.dismiss();
-//            }
-//            handler.removeCallbacksAndMessages(null);
-//            AlertDialog.Builder ab = new AlertDialog.Builder(activity);
-//            if (background) {
-//                if (code.equals(key.key(999))) {
-//                    startActivity(new Intent(activity, MainActivity.class));
+
+            } catch (Exception e) {
+                background = false;
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void result) {
+            super.onPostExecute(result);
+
+            if (dialog.isShowing()) {
+                dialog.dismiss();
+            }
+            handler.removeCallbacksAndMessages(null);
+            AlertDialog.Builder ab = new AlertDialog.Builder(activity);
+            if (background) {
+                if (code.equals("ok")) {
+//                    startActivity(new Intent(activity, MainAdmin.class));
 //                    finish();
-//                    Log.d("yeyy", "berhasil");
-//                } else {
-//                    ab
-//                            .setCancelable(false).setTitle("Informasi")
-//                            .setMessage(pesan.getMessage(code))
-//                            .setPositiveButton("Tutup", new DialogInterface.OnClickListener() {
-//                                @Override
-//                                public void onClick(DialogInterface dialog, int which) {
-//                                    dialog.dismiss();
-//                                }
-//                            })
-//                            .show();
-//                }
-//            } else {
-//                Utilities.codeerror(activity, "ER0211");
-//            }
-//        }
-//    }
+                    if(jnip.getText().toString().trim().equals("1")){
+                        Log.d("yeyy", "1");
+                    }if (jnip.getText().toString().trim().equals("2")){
+                        Log.d("yeyy", "2");
+
+                    }
+                } else {
+                    ab
+                            .setCancelable(false).setTitle("Informasi")
+                            .setMessage("gagal")
+                            .setPositiveButton("Tutup", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                }
+                            })
+                            .show();
+                }
+            } else {
+                Utilities.codeerror(activity, "ER0211");
+            }
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -176,7 +154,6 @@ public class Login extends AppCompatActivity {
             window.setStatusBarColor(this.getResources().getColor(R.color.hitam));
         }
         key = new GenKey();
-        pesan = new GenerateMessage();
         dialog = new ProgressDialog(activity);
         handler = new Handler();
         jnip = findViewById(R.id.nip);
@@ -200,12 +177,7 @@ public class Login extends AppCompatActivity {
 
                 jnip.setError(null);
                 jpassword.setError(null);
-                if (!isEmailValid(str_nip)) {
-                    jnip.setError(getString(R.string.error_invalid_email));
-                    jnip.requestFocus();
-                } else {
                     mulai(str_nip, str_pass);
-                }
 
 
             }
@@ -239,8 +211,8 @@ public class Login extends AppCompatActivity {
 
 
     private void mulai(final String nip, final String pass) {
-//       Log.e("ER", "start");
-//        start = new asyncUser(nip, pass).execute();
+       Log.e("ER", "start");
+        start = new asyncUser(nip, pass).execute();
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -270,7 +242,8 @@ public class Login extends AppCompatActivity {
     }
 
     private boolean isEmailValid(String nip) {
-        return nip.length() == 6;
+//        return nip.length() == 6;
+        return true;
     }
 
 

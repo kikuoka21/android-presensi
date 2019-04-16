@@ -48,7 +48,7 @@ public class Utilities {
                 }).setOnDismissListener(new DialogInterface.OnDismissListener() {
             @Override
             public void onDismiss(DialogInterface dialog) {
-                ((Activity) context).finish();
+//                ((Activity) context).finish();
             }
         })
                 .show();

@@ -41,49 +41,6 @@ public class JsonParser {
     static JSONObject jObj = null;
     static String json = "";
 
-    public JSONObject getJSONListfromURL(String url, List<NameValuePair> params) {
-        //initialize
-        InputStream is = null;
-        String result = "";
-        JSONObject jArray = null;
-
-        //http post
-        try {
-            DefaultHttpClient httpclient = new DefaultHttpClient();
-            HttpPost httppost = new HttpPost(url);
-            httppost.setEntity(new UrlEncodedFormEntity(params));
-            HttpResponse response = httpclient.execute(httppost);
-            HttpEntity entity = response.getEntity();
-            is = entity.getContent();
-
-        } catch (Exception e) {
-            //Log.e("log_tag", "Error in http connection " + e.toString());
-        }
-
-        //convert response to string
-        try {
-            BufferedReader reader = new BufferedReader(new InputStreamReader(is, "iso-8859-1"), 8);
-            StringBuilder sb = new StringBuilder();
-            String line = null;
-            while ((line = reader.readLine()) != null) {
-                sb.append(line + "\n");
-            }
-            is.close();
-            result = sb.toString();
-        } catch (Exception e) {
-            //Log.e("log_tag", "Error converting result " + e.toString());
-        }
-
-        //try parse the string to a JSON object
-        try {
-            jArray = new JSONObject(result);
-        } catch (Exception e) {
-            //Log.e("log_tag", "Error parsing data " + e.toString());
-        }
-
-        return jArray;
-    }
-
     public JSONObject getJSONFromUrl(String url, List<NameValuePair> params) {
 
         // Making HTTP request
