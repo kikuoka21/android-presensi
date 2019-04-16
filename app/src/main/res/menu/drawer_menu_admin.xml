@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+    <group>
+        <item android:title="Personalia">
+            <menu>
+                <item
+                    android:id="@+id/nav_profile"
+                    android:title="Profile" />
+
+            </menu>
+        </item>
+    </group>
+
+
+    <group>
+        <item android:title="Informasi">
+            <menu>
+                <item
+                    android:id="@+id/absensi"
+                    android:title="Absensi" />
+            </menu>
+        </item>
+    </group>
+
+    <!--<group>-->
+    <!--<item android:title="Dosen"-->
+    <!--&gt;-->
+    <!--<menu>-->
+    <!--<item-->
+    <!--android:id="@+id/nav_jml_dos"-->
+    <!--android:title="Jumlah Dosen"/>-->
+    <!--<item-->
+    <!--android:id="@+id/nav_dos_alpha"-->
+    <!--android:title="@string/dosen_tidak_hadir"/>-->
+    <!--&lt;!&ndash;<item&ndash;&gt;-->
+    <!--&lt;!&ndash;android:id="@+id/nav_dos_penelitian"&ndash;&gt;-->
+    <!--&lt;!&ndash;android:title="@string/D_penelitian"/>&ndash;&gt;-->
+    <!--</menu>-->
+    <!--</item>-->
+    <!--</group>-->
+    <item android:title="System">
+        <menu>
+            <item
+                android:id="@+id/nav_out"
+                android:icon="@drawable/ic_logout"
+                android:title="Log Out" />
+        </menu>
+    </item>
+
+
+</menu>

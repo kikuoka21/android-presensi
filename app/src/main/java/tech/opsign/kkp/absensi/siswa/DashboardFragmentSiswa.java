@@ -23,7 +23,7 @@ public class DashboardFragmentSiswa extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
             getActivity().setTitle(R.string.home);
-            v =inflater.inflate(R.layout.halamanutama,container, false);
+            v =inflater.inflate(R.layout.fragmenadmin,container, false);
 
            key = new GenKey();
            sp = v.getContext().getSharedPreferences(key.key(9145), 0x0000);

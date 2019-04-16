@@ -25,13 +25,13 @@ import android.widget.Toast;
 import Tools.GenKey;
 import Tools.Utilities;
 import tech.opsign.kkp.absensi.R;
+import tech.opsign.kkp.absensi.admin.Fragment.DashboardFragmentAdmin;
 
 public class MainAdmin extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     private SharedPreferences sp;
     private View navHeaderView;
     private MainAdmin activity;
     private boolean doubleBackToExitPressedOnce = false;
-    private ProgressDialog dialog;
     private Handler halder;
     private AsyncTask start;
     private boolean flag = true;
@@ -47,7 +47,6 @@ public class MainAdmin extends AppCompatActivity implements NavigationView.OnNav
         this.activity = this;
         key = new GenKey();
         sp = activity.getSharedPreferences(key.key(9145), 0x0000);
-        dialog = new ProgressDialog(activity);
         halder = new Handler();
 
         if (Build.VERSION.SDK_INT >= 21) {
@@ -85,171 +84,42 @@ public class MainAdmin extends AppCompatActivity implements NavigationView.OnNav
 
     private void mulai() {
 //        start = new cektoken().execute();
-        halder.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                if (dialog.isShowing()) {
-                    dialog.dismiss();
-                    start.cancel(true);
-                    new android.app.AlertDialog.Builder(activity)
-                            .setTitle("Informasi")
-                            .setMessage("Telah Terjadi Kesalahan Pada Koneksi Anda.")
-                            .setCancelable(false)
-                            .setPositiveButton("Coba Lagi", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    dialog.dismiss();
-                                    mulai();
-                                }
-                            }).setNegativeButton("Kembali ke Menu Awal", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.dismiss();
-                            finish();
-                        }
-                    }).show();
-                }
-
-
-            }
-        }, Utilities.rto());
     }
 
-//    @SuppressLint("StaticFieldLeak")
-//    private class cektoken extends AsyncTask<Void, Void, Void> {
-//        private JSONObject json;
-//        private JSONObject jsontime;
-//        private boolean background;
+    private class cektoken extends AsyncTask<Void, Void, Void> {
+        private boolean background;
+
+
+        @Override
+        protected void onPreExecute() {
+
+        }
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            try {
+
+
+            } catch (Exception e) {
 //
-//
-//        @Override
-//        protected void onPreExecute() {
-//            dialog.setMessage("Loading");
-//            dialog.setCancelable(false);
-//            dialog.show();
-//            background = true;
-//        }
-//
-//        @Override
-//        protected Void doInBackground(Void... voids) {
-//            try {
-//                StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-//                StrictMode.setThreadPolicy(policy);
-//                Param param = new Param();
-//                param.xtoken = sp.getString(key.key(1002), "");
-//                param.xnip = sp.getString(key.key(1001), "");
-//                param.xuser_key = Utilities.imei(activity);
-//                param.xuser_type = "13";
-//                Gson gson = new Gson();
-//                String userJson = gson.toJson(param);
-//                List<NameValuePair> params = new ArrayList<NameValuePair>();
-//                params.add(new BasicNameValuePair(key.key(145), key.encode(userJson)));
-//                JsonParser jParser = new JsonParser();
-//                json = jParser.GetJSONObjectEncrypted(key.url(98), params);
-//                String pasti = json.getString("code");
-//                Log.e("ER", json.toString(3));
-//                if (pasti.equals(key.key(999))) {
-//                    List<NameValuePair> a = new ArrayList<NameValuePair>();
-//                    jsontime = jParser.GetJSONObjectEncrypted(key.url(99), a);
-//                }
-//
-//            } catch (Exception e) {
-////                Log.e("ER", String .valueOf(e));
-////                e.printStackTrace();
-//                //case ER00022
-//                background = false;
-//            }
-//            return null;
-//        }
-//
-//        @Override
-//        protected void onPostExecute(Void aVoid) {
-//            android.app.AlertDialog.Builder ab = new android.app.AlertDialog.Builder(activity);
-//            if (dialog.isShowing()) {
-//                dialog.dismiss();
-//            }
-//            halder.removeCallbacksAndMessages(null);
-//            try {
-//                if (background) {
-//
-//
-//                    String codee = json.getString("code");
-//                    if (codee.equals(key.key(999))) {
-//                        PackageInfo pInfo = activity.getPackageManager().getPackageInfo(getPackageName(), 0);
-//                        JSONObject data = json.getJSONObject("data");
-////                JSONObject data ;
-//
-//                        int versiapi = Integer.parseInt(data.getString("version"));
-//                        int version = pInfo.versionCode;
-//
-//                        if (versiapi <= version) {
-//
-//                            getprofil();
-//                            data = jsontime.getJSONObject("data");
-//                            Log.e("ER", data.toString(3));
-//                            SharedPreferences.Editor editor = sp.edit();
-//                            editor.putString("tanggalan", data.getString("tanggal"));
-////                            editor.putString(GenKey.GenKey(4919), data.getString("tahun_ajar"));
-////                            editor.putString(GenKey.GenKey(5784), data.getString("tanggal"));
-//                            editor.commit();
-//                        } else {
-//                            ab
-//                                    .setCancelable(false).setTitle("informasi")
-//                                    .setMessage("Maaf versi aplikasi yang anda gunakan tidak kami dukung. Silakan update aplikasi anda melalui Google Playstore.")
-//                                    .setPositiveButton("Tutup", new DialogInterface.OnClickListener() {
-//                                        @Override
-//                                        public void onClick(DialogInterface dialog, int which) {
-//                                            dialog.dismiss();
-//                                            Intent login = new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=id.ac.budiluhur.direktorat"));
-//                                            login.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-//                                            startActivity(login);
-//                                            finish();
-//                                        }
-//                                    })
-//                                    .show();
-//                        }
-//                    } else if (codee.equals(key.key(888)) || codee.equals(key.key(777)) || codee.equals(key.key(666))) {
-//                        ab
-//                                .setCancelable(false).setTitle("Silahkan Login Kembali")
-//                                .setMessage(pesan.getMessage(codee))
-//                                .setPositiveButton("Tutup", new DialogInterface.OnClickListener() {
-//                                    @Override
-//                                    public void onClick(DialogInterface dialog, int which) {
-//                                        dialog.dismiss();
-//                                        SharedPreferences.Editor editorr = sp.edit();
-//                                        editorr.putString(key.key(1001), "");
-//                                        editorr.putString(key.key(1002), "");
-//                                        editorr.commit();
-//                                        Intent login = new Intent(activity, Login.class);
-//                                        login.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-//                                        startActivity(login);
-//                                    }
-//                                })
-//                                .show();
-//                    } else {
-//                        ab
-//                                .setCancelable(false).setTitle("Informasi")
-//                                .setMessage(pesan.getMessage(codee))
-//                                .setPositiveButton("Tutup", new DialogInterface.OnClickListener() {
-//                                    @Override
-//                                    public void onClick(DialogInterface dialog, int which) {
-//                                        dialog.dismiss();
-//                                    }
-//                                })
-//                                .show();
-//                    }
-//
-//                } else {
-//                    codeeror("ER0022");
-//                }
-//
-//            } catch (Exception e) {
-//                Log.e("ER", String.valueOf(e));
-//                codeeror("ER0023");
-//            }
-//
-//        }
-//    }
+                background = false;
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            android.app.AlertDialog.Builder ab = new android.app.AlertDialog.Builder(activity);
+            halder.removeCallbacksAndMessages(null);
+            try {
+
+//                getprofil();
+            } catch (Exception e) {
+                codeeror("ER0023");
+            }
+
+        }
+    }
 
 
     private void getprofil() {
@@ -263,11 +133,11 @@ public class MainAdmin extends AppCompatActivity implements NavigationView.OnNav
 //            JSONObject foto = new JSONObject(sp.getString(GenKey.GenKey(8920), ""));
 //            JSONObject df = foto.getJSONObject("data");
 
-            ((TextView) navHeaderView.findViewById(R.id.nama_nav)).setText(sp.getString(key.key(1102), ""));
-            ((TextView) navHeaderView.findViewById(R.id.nip_nav)).setText(sp.getString(key.key(1001), ""));
-
-            NavigationView navigationView = findViewById(R.id.nav_view);
-            View hView = navigationView.getHeaderView(0);
+//            ((TextView) navHeaderView.findViewById(R.id.nama_nav)).setText(sp.getString(key.key(1102), ""));
+//            ((TextView) navHeaderView.findViewById(R.id.nip_nav)).setText(sp.getString(key.key(1001), ""));
+//
+//            NavigationView navigationView = findViewById(R.id.nav_view);
+//            View hView = navigationView.getHeaderView(0);
 
 //            InputStream is = new URL(df.getString("path")).openStream();
 //            try {

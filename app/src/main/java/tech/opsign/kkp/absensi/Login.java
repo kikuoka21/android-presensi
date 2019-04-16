@@ -32,6 +32,7 @@ import java.util.List;
 import Tools.GenKey;
 import Tools.JsonParser;
 import Tools.Utilities;
+import tech.opsign.kkp.absensi.admin.MainAdmin;
 
 public class Login extends AppCompatActivity {
 
@@ -114,10 +115,10 @@ public class Login extends AppCompatActivity {
             AlertDialog.Builder ab = new AlertDialog.Builder(activity);
             if (background) {
                 if (code.equals("ok")) {
-//                    startActivity(new Intent(activity, MainAdmin.class));
-//                    finish();
                     if(jnip.getText().toString().trim().equals("1")){
                         Log.d("yeyy", "1");
+                        startActivity(new Intent(activity, MainAdmin.class));
+                    finish();
                     }if (jnip.getText().toString().trim().equals("2")){
                         Log.d("yeyy", "2");
 
