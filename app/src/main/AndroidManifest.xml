@@ -30,6 +30,11 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
+            android:name=".admin.MainAdmin"
+            android:label="@string/home"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
             android:name=".Login"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateAlwaysHidden"
