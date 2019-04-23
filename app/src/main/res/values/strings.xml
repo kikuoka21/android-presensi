@@ -4,5 +4,6 @@
     <string name="navigation_drawer_open">Open navigation Drawer</string>
     <string name="navigation_drawer_close">Close navigation Drawer</string>
     <string name="error_invalid_email">NIP Anda Salah, Wajib berisi 6 Digit Angka</string>
+    <string name="texfragment">Daftar Siswa Yang Tidak Hadir \n Hari Ini: Senin, 22 April 2019</string>
 
 </resources>

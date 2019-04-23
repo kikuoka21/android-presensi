@@ -119,13 +119,11 @@ public class MainAdmin extends AppCompatActivity implements NavigationView.OnNav
             }
 
         }
-    }
 
-
-    private void getprofil() {
+        private void getprofil() {
 
 //        Bitmap logo = null;
-        try {
+            try {
 //            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
 //            StrictMode.setThreadPolicy(policy);
 //
@@ -147,10 +145,11 @@ public class MainAdmin extends AppCompatActivity implements NavigationView.OnNav
 //            } finally {
 //                is.close();
 //            }
-        } catch (Exception e) {
-            codeeror("ER0021");
+            } catch (Exception e) {
+                codeeror("ER0021");
 //            Log.e("ER", String.valueOf(e));
 
+            }
         }
     }
 

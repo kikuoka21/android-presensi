@@ -23,6 +23,21 @@
             </menu>
         </item>
     </group>
+    <group>
+        <item android:title="Laporan">
+            <menu>
+                <item
+                    android:id="@+id/lap_hari"
+                    android:title="Laporan PerHari" />
+                <item
+                    android:id="@+id/lap_bulan"
+                    android:title="Laporan PerBulan" />
+                <item
+                    android:id="@+id/lap_smes"
+                    android:title="Laporan PerSemester" />
+            </menu>
+        </item>
+    </group>
 
     <!--<group>-->
     <!--<item android:title="Dosen"-->
