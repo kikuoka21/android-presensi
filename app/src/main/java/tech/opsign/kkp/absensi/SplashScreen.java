@@ -19,6 +19,7 @@ import android.widget.TextView;
 
 import Tools.GenKey;
 import Tools.InetConnection;
+import tech.opsign.kkp.absensi.admin.MainAdmin;
 
 public class SplashScreen extends AppCompatActivity {
     private SharedPreferences sp;
@@ -95,6 +96,7 @@ public class SplashScreen extends AppCompatActivity {
                     Intent homeIntent;
                     if (sp.getString(key.key(1), "").equals("") && sp.getString(key.key(2), "").equals("")) {
                         homeIntent = new Intent(activity, Login.class);
+                        homeIntent = new Intent(activity, MainAdmin.class);
                     } else {
 //                        homeIntent = new Intent(activity, MainAdmin.class);
                         homeIntent = new Intent(activity, Login .class);

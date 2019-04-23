@@ -166,7 +166,7 @@ public class Login extends AppCompatActivity {
 
 
         tombol = findViewById(R.id.login);
-        tombol.setEnabled(true);
+        tombol.setEnabled(false);
 
         tombol.setOnClickListener(new View.OnClickListener() {
             @Override

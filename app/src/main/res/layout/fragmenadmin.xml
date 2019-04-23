@@ -3,45 +3,44 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@color/putih">
+    android:background="@color/abu">
 
-    <ScrollView
+    <LinearLayout
         android:layout_width="match_parent"
-        android:background="#999"
-        android:layout_height="match_parent">
-
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        <!--nama-->
         <LinearLayout
+            android:id="@+id/topPanel"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
-            <!--nama-->
-            <LinearLayout
+            android:background="#D2EFFF"
+            android:orientation="vertical"
+            android:padding="14dp">
+
+            <TextView
+                android:id="@+id/textView21"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="0.55"
-                android:background="#D2EFFF"
-                android:orientation="vertical"
-                android:padding="14dp">
+                android:layout_height="wrap_content"
+                android:text="Selamat Datang,"
+                android:textColor="@color/cardview_dark_background"
+                android:textSize="18sp" />
 
-                <TextView
-                    android:id="@+id/textView21"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Selamat Datang,"
-                    android:textColor="@color/cardview_dark_background"
-                    android:textSize="18sp" />
+            <TextView
+                android:id="@+id/textView14"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="(Nama)"
+                android:textColor="@color/cardview_dark_background"
+                android:textSize="24sp" />
+        </LinearLayout>
 
-                <TextView
-                    android:id="@+id/textView14"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="(Nama)"
-                    android:textColor="@color/cardview_dark_background"
-                    android:textSize="24sp" />
-            </LinearLayout>
-
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
             <android.support.v7.widget.CardView
                 android:layout_marginTop="10dp"
+                android:backgroundTint="#dfffd7"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:cardCornerRadius="10dp">
@@ -50,13 +49,11 @@
                     android:padding="10dp"
                     android:id="@+id/list_kehadiran_siswa"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="match_parent" />
             </android.support.v7.widget.CardView>
+        </RelativeLayout>
 
 
-        </LinearLayout>
-
-
-    </ScrollView>
+    </LinearLayout>
 
 </LinearLayout>
