@@ -10,6 +10,7 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.constraint.Group;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -33,8 +34,8 @@ import tech.opsign.kkp.absensi.admin.Fragment.DashboardFragmentAdmin;
 
 public class MainAdmin extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     private SharedPreferences sp;
-    private View navHeaderView;
     private MainAdmin activity;
+    private NavigationView navigationView;
     private boolean doubleBackToExitPressedOnce = false;
     private boolean flag = true;
 
@@ -62,7 +63,7 @@ public class MainAdmin extends AppCompatActivity implements NavigationView.OnNav
         setSupportActionBar(toolbar);
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
-        NavigationView navigationView = findViewById(R.id.nav_view);
+        navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar,
@@ -76,7 +77,7 @@ public class MainAdmin extends AppCompatActivity implements NavigationView.OnNav
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_containter,
                     new DashboardFragmentAdmin()).commit();
         }
-        navHeaderView = navigationView.inflateHeaderView(R.layout.nav_header);
+        View navHeaderView = navigationView.inflateHeaderView(R.layout.nav_header);
 
 
         new cektoken().execute();
@@ -96,6 +97,16 @@ public class MainAdmin extends AppCompatActivity implements NavigationView.OnNav
         @Override
         protected void onPostExecute(Void aVoid) {
             Log.e("ER", "asyntask");
+            try{
+
+                Menu nav_menu = navigationView.getMenu();
+
+                // false menghilangkan, true itu muncul
+                nav_menu.findItem(R.id.menu_admin).setVisible(true);
+                nav_menu.findItem(R.id.menu_guru).setVisible(false);
+            }catch (Exception e){
+                e.printStackTrace();
+            }
 
         }
     }

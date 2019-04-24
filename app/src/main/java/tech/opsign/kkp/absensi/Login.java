@@ -86,7 +86,7 @@ public class Login extends AppCompatActivity {
 
 //
                 List<NameValuePair> p = new ArrayList<NameValuePair>();
-                p.add(new BasicNameValuePair(key.key(145),""));
+                p.add(new BasicNameValuePair("id",""));
 
                 JsonParser jParser = new JsonParser();
 //                JSONObject json = jParser.getJSONFromUrl(key.url(1), p);

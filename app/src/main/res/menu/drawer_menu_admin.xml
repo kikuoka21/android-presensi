@@ -29,7 +29,8 @@
 
 
     <group>
-        <item android:title="Laporan">
+        <item
+            android:id="@+id/menu_admin" android:title="Laporan">
             <menu>
                 <item
                     android:id="@+id/lap_hari"
@@ -39,6 +40,21 @@
                     android:title="Laporan PerBulan" />
                 <item
                     android:id="@+id/lap_smes"
+                    android:title="Laporan PerSemester" />
+            </menu>
+        </item>
+        <item
+            android:id="@+id/menu_guru"
+            android:title="Laporan">
+            <menu>
+                <item
+                    android:id="@+id/lap_hari_kelas"
+                    android:title="Laporan PerHari" />
+                <item
+                    android:id="@+id/lap_bulan_kelas"
+                    android:title="Laporan PerBulan" />
+                <item
+                    android:id="@+id/lap_smes_kelas"
                     android:title="Laporan PerSemester" />
             </menu>
         </item>
