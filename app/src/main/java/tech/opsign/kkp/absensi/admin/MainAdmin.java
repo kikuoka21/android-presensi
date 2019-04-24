@@ -104,6 +104,8 @@ public class MainAdmin extends AppCompatActivity implements NavigationView.OnNav
                 // false menghilangkan, true itu muncul
                 nav_menu.findItem(R.id.menu_admin).setVisible(true);
                 nav_menu.findItem(R.id.menu_guru).setVisible(false);
+
+
             }catch (Exception e){
                 e.printStackTrace();
             }

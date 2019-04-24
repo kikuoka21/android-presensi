@@ -12,4 +12,10 @@
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
     </style>
+
+    <style name="toolbar">
+        <item name="colorControlNormal">?android:attr/textColorPrimary</item>
+        <item name="actionMenuTextColor">@color/hitam</item>
+        <item name="searchViewStyle">@style/Widget.AppCompat.SearchView.ActionBar</item>
+    </style>
 </resources>
