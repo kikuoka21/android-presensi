@@ -46,7 +46,7 @@ public class MainAdmin extends AppCompatActivity implements NavigationView.OnNav
         Toast.makeText(this, "Selamat Datang", Toast.LENGTH_SHORT).show();
         this.activity = this;
         key = new GenKey();
-        sp = activity.getSharedPreferences(key.key(9145), 0x0000);
+        sp = activity.getSharedPreferences(key.key(55), 0x0000);
         halder = new Handler();
 
         if (Build.VERSION.SDK_INT >= 21) {
@@ -83,73 +83,22 @@ public class MainAdmin extends AppCompatActivity implements NavigationView.OnNav
 
 
     private void mulai() {
-//        start = new cektoken().execute();
+
     }
 
     private class cektoken extends AsyncTask<Void, Void, Void> {
-        private boolean background;
-
-
-        @Override
-        protected void onPreExecute() {
-
-        }
-
+        private String background;
+        
         @Override
         protected Void doInBackground(Void... voids) {
-            try {
 
-
-            } catch (Exception e) {
-//
-                background = false;
-            }
             return null;
         }
 
         @Override
         protected void onPostExecute(Void aVoid) {
-            android.app.AlertDialog.Builder ab = new android.app.AlertDialog.Builder(activity);
-            halder.removeCallbacksAndMessages(null);
-            try {
 
-//                getprofil();
-            } catch (Exception e) {
-                codeeror("ER0023");
-            }
 
-        }
-
-        private void getprofil() {
-
-//        Bitmap logo = null;
-            try {
-//            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-//            StrictMode.setThreadPolicy(policy);
-//
-//            JSONObject nama = new JSONObject(sp.getString(GenKey.GenKey(1102), ""));
-//            JSONObject foto = new JSONObject(sp.getString(GenKey.GenKey(8920), ""));
-//            JSONObject df = foto.getJSONObject("data");
-
-//            ((TextView) navHeaderView.findViewById(R.id.nama_nav)).setText(sp.getString(key.key(1102), ""));
-//            ((TextView) navHeaderView.findViewById(R.id.nip_nav)).setText(sp.getString(key.key(1001), ""));
-//
-//            NavigationView navigationView = findViewById(R.id.nav_view);
-//            View hView = navigationView.getHeaderView(0);
-
-//            InputStream is = new URL(df.getString("path")).openStream();
-//            try {
-//                logo = BitmapFactory.decodeStream(is);
-//                if (logo != null)
-//                    ((ImageView) hView.findViewById(R.id.profile_image)).setImageBitmap(logo);
-//            } finally {
-//                is.close();
-//            }
-            } catch (Exception e) {
-                codeeror("ER0021");
-//            Log.e("ER", String.valueOf(e));
-
-            }
         }
     }
 

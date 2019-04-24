@@ -37,7 +37,7 @@ public class SplashScreen extends AppCompatActivity {
 
         this.activity = this;
         key = new GenKey();
-        sp = activity.getSharedPreferences(key.key(9145), 0x0000);
+        sp = activity.getSharedPreferences(key.key(55), 0x0000);
 
         PackageInfo pInfo;
         try {

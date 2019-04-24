@@ -44,7 +44,7 @@ public class DashboardFragmentAdmin extends Fragment {
         v = inflater.inflate(R.layout.fragmenadmin, container, false);
 
         key = new GenKey();
-        sp = v.getContext().getSharedPreferences(key.key(9145), 0x0000);
+        sp = v.getContext().getSharedPreferences(key.key(55), 0x0000);
 //        getnama();
         Log.e("ER", "kandnwkaksdad");
         adapter = new Adapter(modelList);

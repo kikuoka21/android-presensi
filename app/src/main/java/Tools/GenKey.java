@@ -5,15 +5,23 @@ public class GenKey {
     public String key(int str) {
 
         switch (str) {
-            case 2://id
+            case 55:
+                return "sharepref";
+
+
+
+            case 60:
                 return "id";
-            case 1://id
+            case 61:
                 return "token";
+            case 63:
+                return "status";
 
             default:
                 return "";
         }
     }
+
     public String url(int str) {
 
         switch (str) {
