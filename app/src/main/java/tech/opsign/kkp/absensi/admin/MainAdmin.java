@@ -1,8 +1,10 @@
 package tech.opsign.kkp.absensi.admin;
 
+import android.app.AlertDialog;
 import android.app.FragmentManager;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -14,6 +16,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -24,6 +27,7 @@ import android.widget.Toast;
 
 import Tools.GenKey;
 import Tools.Utilities;
+import tech.opsign.kkp.absensi.Login;
 import tech.opsign.kkp.absensi.R;
 import tech.opsign.kkp.absensi.admin.Fragment.DashboardFragmentAdmin;
 
@@ -32,8 +36,6 @@ public class MainAdmin extends AppCompatActivity implements NavigationView.OnNav
     private View navHeaderView;
     private MainAdmin activity;
     private boolean doubleBackToExitPressedOnce = false;
-    private Handler halder;
-    private AsyncTask start;
     private boolean flag = true;
 
     private GenKey key;
@@ -47,7 +49,6 @@ public class MainAdmin extends AppCompatActivity implements NavigationView.OnNav
         this.activity = this;
         key = new GenKey();
         sp = activity.getSharedPreferences(key.key(55), 0x0000);
-        halder = new Handler();
 
         if (Build.VERSION.SDK_INT >= 21) {
             Window window = this.getWindow();
@@ -77,18 +78,15 @@ public class MainAdmin extends AppCompatActivity implements NavigationView.OnNav
         }
         navHeaderView = navigationView.inflateHeaderView(R.layout.nav_header);
 
-        mulai();
 
+        new cektoken().execute();
     }
 
 
-    private void mulai() {
-
-    }
 
     private class cektoken extends AsyncTask<Void, Void, Void> {
         private String background;
-        
+
         @Override
         protected Void doInBackground(Void... voids) {
 
@@ -97,7 +95,7 @@ public class MainAdmin extends AppCompatActivity implements NavigationView.OnNav
 
         @Override
         protected void onPostExecute(Void aVoid) {
-
+            Log.e("ER", "asyntask");
 
         }
     }
@@ -163,32 +161,33 @@ public class MainAdmin extends AppCompatActivity implements NavigationView.OnNav
 //            }).show();*/
 //        }
 
-//
-//        if (id == R.id.nav_out) {
-//            new AlertDialog.Builder(activity)
-//                    .setCancelable(false).setTitle("Konfirmasi")
-//                    .setMessage("Apakah Anda yakin ingin keluar ?")
-//                    .setPositiveButton("Konfirmasi", new DialogInterface.OnClickListener() {
-//                        @Override
-//                        public void onClick(DialogInterface dialog, int which) {
-//
-//                            SharedPreferences.Editor editorr = sp.edit();
-//                            editorr.putString(key.key(1001), "");
-//                            editorr.putString(key.key(1002), "");
-//                            editorr.commit();
-//                            startActivity(new Intent(activity, Login.class));
-//                            overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
-//                            finish();
-//                        }
-//                    })
-//                    .setNegativeButton("Batal", new DialogInterface.OnClickListener() {
-//                        @Override
-//                        public void onClick(DialogInterface dialog, int which) {
-//                            dialog.dismiss();
-//                        }
-//                    }).show();
-//
-//        }
+
+        if (id == R.id.nav_out) {
+            new AlertDialog.Builder(activity)
+                    .setCancelable(false).setTitle("Konfirmasi")
+                    .setMessage("Apakah Anda yakin ingin keluar ?")
+                    .setPositiveButton("Konfirmasi", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+
+                            SharedPreferences.Editor editorr = sp.edit();
+                            editorr.putString(key.key(60), "");
+                            editorr.putString(key.key(61), "");
+                            editorr.commit();
+                            startActivity(new Intent(activity, Login.class));
+                            overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+                            finish();
+                            Log.e("ERE", "ADNKNWLAKDADAWDSdwadsdw");
+                        }
+                    })
+                    .setNegativeButton("Batal", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    }).show();
+
+        }
 
         drawer.closeDrawer(GravityCompat.START);
         return true;

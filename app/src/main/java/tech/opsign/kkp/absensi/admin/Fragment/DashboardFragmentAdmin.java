@@ -46,7 +46,6 @@ public class DashboardFragmentAdmin extends Fragment {
         key = new GenKey();
         sp = v.getContext().getSharedPreferences(key.key(55), 0x0000);
 //        getnama();
-        Log.e("ER", "kandnwkaksdad");
         adapter = new Adapter(modelList);
         recyclerView = (RecyclerView) v.findViewById(R.id.list_kehadiran_siswa);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(v.getContext());
