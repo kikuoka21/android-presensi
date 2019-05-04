@@ -3,6 +3,7 @@ package tech.opsign.kkp.absensi.admin;
 import android.app.AlertDialog;
 import android.app.FragmentManager;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -23,6 +24,7 @@ import android.widget.Toast;
 
 import Tools.GenKey;
 import Tools.Utilities;
+import tech.opsign.kkp.absensi.Login;
 import tech.opsign.kkp.absensi.R;
 import tech.opsign.kkp.absensi.admin.Fragment.DashboardFragmentAdmin;
 import tech.opsign.kkp.absensi.admin.Fragment.InputTanggal;
@@ -231,7 +233,7 @@ public class MainAdmin extends AppCompatActivity implements NavigationView.OnNav
 //                            editorr.putString(key.key(1001), "");
 //                            editorr.putString(key.key(1002), "");
 //                            editorr.commit();
-//                            startActivity(new Intent(activity, Login.class));
+                            startActivity(new Intent(activity, Login.class));
                             overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
                             finish();
                         }
