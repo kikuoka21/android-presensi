@@ -41,7 +41,7 @@ public class InputTanggal extends Fragment {
         key = new GenKey();
         sp = v.getContext().getSharedPreferences(key.key(9145), 0x0000);
 //        getnama();
-        Log.e("ER", "kandnwkaksdad");
+        Log.e("ER", "Input tanggal");
 
         getnama();
         return v;

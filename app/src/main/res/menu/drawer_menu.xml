@@ -6,34 +6,29 @@
         <item android:title="Personalia">
             <menu>
                 <item
-                    android:id="@+id/nav_profile"
-                    android:title="Profile" />
+                    android:id="@+id/homedashboard"
+                    android:title="Dashboard" />
                 <item
-                    android:id="@+id/riwayatpgw"
-                    android:title="Riwayat Pekerjaan Pegawai" />
-                <item
-                    android:id="@+id/absensi"
-                    android:title="Absensi" />
+                    android:id="@+id/input_tanggal"
+                    android:title="Input Tanggal" />
+                <!--<item-->
+                    <!--android:id="@+id/absensi"-->
+                    <!--android:title="Absensi" />-->
             </menu>
         </item>
     </group>
 
 
-    <group>
-        <item android:title="Surat Ijin">
-            <menu>
-                <item
-                    android:id="@+id/form_izin"
-                    android:title="Form Izin" />
-                <item
-                    android:id="@+id/history_ijin"
-                    android:title="HistoryIjin" />
-                <item
-                    android:id="@+id/mnggu_persetujuan"
-                    android:title="Menunggu Persetujuan" />
-            </menu>
-        </item>
-    </group>
+    <!--<group>-->
+        <!--<item android:title="Surat Ijin">-->
+            <!--<menu>-->
+                <!--<item-->
+                    <!--android:id="@+id/form_izin"-->
+                    <!--android:title="Form Izin" />-->
+
+            <!--</menu>-->
+        <!--</item>-->
+    <!--</group>-->
 
     <!--<group>-->
     <!--<item android:title="Dosen"-->

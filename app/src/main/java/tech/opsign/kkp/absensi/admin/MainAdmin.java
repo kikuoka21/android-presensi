@@ -1,8 +1,10 @@
 package tech.opsign.kkp.absensi.admin;
 
+import android.app.AlertDialog;
 import android.app.FragmentManager;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -26,6 +28,7 @@ import Tools.GenKey;
 import Tools.Utilities;
 import tech.opsign.kkp.absensi.R;
 import tech.opsign.kkp.absensi.admin.Fragment.DashboardFragmentAdmin;
+import tech.opsign.kkp.absensi.admin.Fragment.InputTanggal;
 
 public class MainAdmin extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     private SharedPreferences sp;
@@ -171,10 +174,10 @@ public class MainAdmin extends AppCompatActivity implements NavigationView.OnNav
 
         item.setChecked(false);
         int id = item.getItemId();
-//        FragmentManager fragmentManager = getFragmentManager();
+        FragmentManager fragmentManager = getFragmentManager();
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
 
-//        if (id == R.id.nav_profile) {
+//        if (id == R.id.home) {
 //            Intent intent = new Intent(activity, DataDiri.class);
 //            startActivity(intent);
 //        }
@@ -199,10 +202,14 @@ public class MainAdmin extends AppCompatActivity implements NavigationView.OnNav
 //            startActivity(intent);
 //        }
 
-//        if (id == R.id.nav_dash) {
-//            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_containter
-//                    , new DashboardFragmentSiswa()).commit();
-//        }
+        if (id == R.id.homedashboard) {
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_containter
+                    , new DashboardFragmentAdmin()).commit();
+        }
+        if (id == R.id.input_tanggal) {
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_containter
+                    , new InputTanggal()).commit();
+        }
 
 //        if (id == R.id.nav_dos_penelitian) {
 ////            Intent intent = new Intent(activity, DPenelitian.class);
@@ -216,31 +223,31 @@ public class MainAdmin extends AppCompatActivity implements NavigationView.OnNav
 //        }
 
 //
-//        if (id == R.id.nav_out) {
-//            new AlertDialog.Builder(activity)
-//                    .setCancelable(false).setTitle("Konfirmasi")
-//                    .setMessage("Apakah Anda yakin ingin keluar ?")
-//                    .setPositiveButton("Konfirmasi", new DialogInterface.OnClickListener() {
-//                        @Override
-//                        public void onClick(DialogInterface dialog, int which) {
-//
+        if (id == R.id.nav_out) {
+            new AlertDialog.Builder(activity)
+                    .setCancelable(false).setTitle("Konfirmasi")
+                    .setMessage("Apakah Anda yakin ingin keluar ?")
+                    .setPositiveButton("Konfirmasi", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+
 //                            SharedPreferences.Editor editorr = sp.edit();
 //                            editorr.putString(key.key(1001), "");
 //                            editorr.putString(key.key(1002), "");
 //                            editorr.commit();
 //                            startActivity(new Intent(activity, Login.class));
-//                            overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
-//                            finish();
-//                        }
-//                    })
-//                    .setNegativeButton("Batal", new DialogInterface.OnClickListener() {
-//                        @Override
-//                        public void onClick(DialogInterface dialog, int which) {
-//                            dialog.dismiss();
-//                        }
-//                    }).show();
-//
-//        }
+                            overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+                            finish();
+                        }
+                    })
+                    .setNegativeButton("Batal", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    }).show();
+
+        }
 
         drawer.closeDrawer(GravityCompat.START);
         return true;
@@ -272,10 +279,7 @@ public class MainAdmin extends AppCompatActivity implements NavigationView.OnNav
 
     }
 
-    public class Param {
-        String xnip, xtoken, xuser_key, xuser_type;
-    }
-
+  
     private void codeeror(String kode) {
         if (flag) {
             Utilities.codeerror(activity, kode);
