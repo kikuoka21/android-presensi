@@ -19,6 +19,8 @@ import android.widget.TextView;
 
 import Tools.GenKey;
 import Tools.InetConnection;
+import tech.opsign.kkp.absensi.admin.MainAdmin;
+import tech.opsign.kkp.absensi.siswa.MainSiswa;
 
 public class SplashScreen extends AppCompatActivity {
     private SharedPreferences sp;
@@ -42,7 +44,7 @@ public class SplashScreen extends AppCompatActivity {
         try {
             pInfo = activity.getPackageManager().getPackageInfo(getPackageName(), 0);
             String version = pInfo.versionName;
-            ((TextView)findViewById(R.id.version)).setText(version);
+            ((TextView) findViewById(R.id.version)).setText(version);
 //            Log.e("ER", version);
         } catch (Exception e) {
         }
@@ -65,7 +67,6 @@ public class SplashScreen extends AppCompatActivity {
     }
 
 
-
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         if (requestCode == 0) {
@@ -85,25 +86,27 @@ public class SplashScreen extends AppCompatActivity {
             }
         }
     }
-    private void inten(){
+
+    private void inten() {
         AlertDialog alert = new AlertDialog.Builder(this, R.style.Theme_AppCompat_Dialog_Alert).create();
         if ((new InetConnection()).isConnected(activity)) {
-            new Handler().postDelayed(new Runnable() {
-
-                @Override
-                public void run() {
-                    Intent homeIntent;
-                    if (sp.getString(key.key(1), "").equals("") && sp.getString(key.key(2), "").equals("")) {
-                        homeIntent = new Intent(activity, Login.class);
-                    } else {
-//                        homeIntent = new Intent(activity, MainAdmin.class);
-                        homeIntent = new Intent(activity, Login .class);
-//
-                    }
-                    startActivity(homeIntent);
-                    finish();
-                }
-            }, 2000
+            new Handler().postDelayed(
+                    new Runnable() {
+                        @Override
+                        public void run() {
+                            Intent homeIntent;
+//                            if (sp.getString(key.key(1), "").equals("") && sp.getString(key.key(2), "").equals("")) {
+//                                homeIntent = new Intent(activity, Login.class);
+//                            } else {
+//                                homeIntent = new Intent(activity, MainAdmin.class);
+//                                homeIntent = new Intent(activity, Login.class);
+//                                //
+//                            }
+                            homeIntent = new Intent(activity, MainSiswa.class);
+                            startActivity(homeIntent);
+                            finish();
+                        }
+                    }, 2000
             );
         } else {
             alert.setTitle("Koneksi Error");

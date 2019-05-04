@@ -33,6 +33,7 @@ import Tools.GenKey;
 import Tools.JsonParser;
 import Tools.Utilities;
 import tech.opsign.kkp.absensi.admin.MainAdmin;
+import tech.opsign.kkp.absensi.siswa.MainSiswa;
 
 public class Login extends AppCompatActivity {
 
@@ -44,8 +45,6 @@ public class Login extends AppCompatActivity {
     private Handler handler;
     private AsyncTask start;
     private Button tombol;
-
-
 
 
     @SuppressLint("StaticFieldLeak")
@@ -86,7 +85,7 @@ public class Login extends AppCompatActivity {
 
 //
                 List<NameValuePair> p = new ArrayList<NameValuePair>();
-                p.add(new BasicNameValuePair(key.key(145),""));
+                p.add(new BasicNameValuePair(key.key(145), ""));
 
                 JsonParser jParser = new JsonParser();
 //                JSONObject json = jParser.getJSONFromUrl(key.url(1), p);
@@ -115,12 +114,14 @@ public class Login extends AppCompatActivity {
             AlertDialog.Builder ab = new AlertDialog.Builder(activity);
             if (background) {
                 if (code.equals("ok")) {
-                    if(jnip.getText().toString().trim().equals("1")){
+                    if (jnip.getText().toString().trim().equals("1")) {
                         Log.d("yeyy", "1");
                         startActivity(new Intent(activity, MainAdmin.class));
-                    finish();
-                    }if (jnip.getText().toString().trim().equals("2")){
+                        finish();
+                    }else{
                         Log.d("yeyy", "2");
+                        startActivity(new Intent(activity, MainSiswa.class));
+                        finish();
 
                     }
                 } else {
@@ -178,7 +179,7 @@ public class Login extends AppCompatActivity {
 
                 jnip.setError(null);
                 jpassword.setError(null);
-                    mulai(str_nip, str_pass);
+                mulai(str_nip, str_pass);
 
 
             }
@@ -212,7 +213,7 @@ public class Login extends AppCompatActivity {
 
 
     private void mulai(final String nip, final String pass) {
-       Log.e("ER", "start");
+        Log.e("ER", "start");
         start = new asyncUser(nip, pass).execute();
         handler.postDelayed(new Runnable() {
             @Override

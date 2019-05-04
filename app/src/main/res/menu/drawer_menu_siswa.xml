@@ -10,7 +10,7 @@
                     android:title="Dashboard" />
                 <item
                     android:id="@+id/input_tanggal"
-                    android:title="Input Tanggal" />
+                    android:title="Lihat Presensi" />
                 <!--<item-->
                     <!--android:id="@+id/absensi"-->
                     <!--android:title="Absensi" />-->
