@@ -1,4 +1,4 @@
-package tech.opsign.kkp.absensi.admin.Fragment;
+package tech.opsign.kkp.absensi.admin.Fragment.ToolDashboard;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;

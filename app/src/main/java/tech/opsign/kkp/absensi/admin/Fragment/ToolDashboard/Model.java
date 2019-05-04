@@ -1,4 +1,4 @@
-package tech.opsign.kkp.absensi.admin.Fragment;
+package tech.opsign.kkp.absensi.admin.Fragment.ToolDashboard;
 
 public class Model {
         public String nis,nama, kelas, alasan;

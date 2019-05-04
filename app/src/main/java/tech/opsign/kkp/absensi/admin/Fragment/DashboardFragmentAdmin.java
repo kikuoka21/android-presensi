@@ -15,7 +15,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -24,6 +23,8 @@ import java.util.List;
 import Tools.GenKey;
 import Tools.Utilities;
 import tech.opsign.kkp.absensi.R;
+import tech.opsign.kkp.absensi.admin.Fragment.ToolDashboard.Adapter;
+import tech.opsign.kkp.absensi.admin.Fragment.ToolDashboard.Model;
 
 public class DashboardFragmentAdmin extends Fragment {
 
