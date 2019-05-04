@@ -40,7 +40,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.MyViewHolder> {
         MyViewHolder(View v) {
             super(v);
             nis = (TextView) v.findViewById(R.id.nis);
-            nama = (TextView) v.findViewById(R.id.nama);
+            nama = (TextView) v.findViewById(R.id.namarow);
             kelas = (TextView) v.findViewById(R.id.kelas);
             alasan = (TextView) v.findViewById(R.id.alasan);
 
