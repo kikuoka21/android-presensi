@@ -23,7 +23,7 @@ public class Dashboard extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         getActivity().setTitle("Input Tanggal");
-        v = inflater.inflate(R.layout.fragmen_inputtanggal, container, false);
+        v = inflater.inflate(R.layout.s_fragmen_dashboard, container, false);
 
         key = new GenKey();
         sp = v.getContext().getSharedPreferences(key.key(9145), 0x0000);

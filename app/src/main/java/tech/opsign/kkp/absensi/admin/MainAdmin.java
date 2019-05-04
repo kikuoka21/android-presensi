@@ -41,7 +41,7 @@ public class MainAdmin extends AppCompatActivity implements NavigationView.OnNav
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.mainactivity_admin);
+        setContentView(R.layout.a_mainactivity_admin);
 //        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
         Toast.makeText(this, "Selamat Datang", Toast.LENGTH_SHORT).show();
         this.activity = this;
@@ -159,11 +159,10 @@ public class MainAdmin extends AppCompatActivity implements NavigationView.OnNav
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         //menu pojok kanan atas titik 3 https://stackoverflow.com/questions/46967736/how-to-remove-settings-option-in-navigation-drawer-activity-in-android-studio
-        getMenuInflater().inflate(R.menu.menu_samping, menu);
+        getMenuInflater().inflate(R.menu.menu_scan_qr, menu);
 //       return true;
         return false;
     }
-
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
@@ -276,7 +275,7 @@ public class MainAdmin extends AppCompatActivity implements NavigationView.OnNav
 
     }
 
-  
+
     private void codeeror(String kode) {
         if (flag) {
             Utilities.codeerror(activity, kode);

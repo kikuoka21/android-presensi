@@ -42,7 +42,7 @@ public class DashboardFragmentAdmin extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         getActivity().setTitle(R.string.home);
-        v = inflater.inflate(R.layout.fragmen_admin, container, false);
+        v = inflater.inflate(R.layout.a_fragmen_admin, container, false);
 
         key = new GenKey();
         sp = v.getContext().getSharedPreferences(key.key(9145), 0x0000);
@@ -70,12 +70,15 @@ public class DashboardFragmentAdmin extends Fragment {
             JSONArray aray = jray.getJSONArray("data");
             if (aray != null && aray.length() > 0) {
                for(int i =0; i<aray.length();i++){
+//               for(int i =0; i<1;i++){
                    jray = aray.getJSONObject(i);
+                   // type true akan menghilangkan row kelas
                    row = new Model(
                            jray.getString("nis"),
                            jray.getString("nama"),
                            jray.getString("kelas"),
-                           jray.getString("alasan")
+                           jray.getString("alasan"),
+                           true
 
                    );
                    modelList.add(row);

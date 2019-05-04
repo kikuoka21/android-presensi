@@ -14,6 +14,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
@@ -23,7 +24,6 @@ import android.widget.Toast;
 import Tools.GenKey;
 import Tools.Utilities;
 import tech.opsign.kkp.absensi.R;
-import tech.opsign.kkp.absensi.admin.Fragment.DashboardFragmentAdmin;
 import tech.opsign.kkp.absensi.siswa.Fragmen.Dashboard;
 
 public class MainSiswa extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -40,7 +40,7 @@ public class MainSiswa extends AppCompatActivity implements NavigationView.OnNav
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.mainactivity_siswa);
+        setContentView(R.layout.s_mainactivity_siswa);
 //        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
         Toast.makeText(this, "Selamat Datang", Toast.LENGTH_SHORT).show();
         this.activity = this;
@@ -154,14 +154,26 @@ public class MainSiswa extends AppCompatActivity implements NavigationView.OnNav
     }
 
 
-//    @Override
-//    public boolean onCreateOptionsMenu(Menu menu) {
-//        // Inflate the menu; this adds items to the action bar if it is present.
-//        //menu pojok kanan atas titik 3 https://stackoverflow.com/questions/46967736/how-to-remove-settings-option-in-navigation-drawer-activity-in-android-studio
-//        getMenuInflater().inflate(R.menu.menu_samping, menu);
-////       return true;
-//        return false;
-//    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        //menu pojok kanan atas titik 3 https://stackoverflow.com/questions/46967736/how-to-remove-settings-option-in-navigation-drawer-activity-in-android-studio
+        getMenuInflater().inflate(R.menu.menu_scan_qr, menu);
+        // return true -> akan menampilkan menu ini
+        //return false -> menghilangkan menu ini
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        if (id == R.id.scanqr) {
+            Toast.makeText(activity, "Scan Now",Toast.LENGTH_LONG).show();
+        }
+        return super.onOptionsItemSelected(item);
+    }
 
 
     @SuppressWarnings("StatementWithEmptyBody")
@@ -200,7 +212,7 @@ public class MainSiswa extends AppCompatActivity implements NavigationView.OnNav
 
         if (id == R.id.homedashboard) {
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_containter
-                    , new DashboardFragmentAdmin()).commit();
+                    , new Dashboard()).commit();
         }
 //        if (id == R.id.input_tanggal) {
 //            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_containter
