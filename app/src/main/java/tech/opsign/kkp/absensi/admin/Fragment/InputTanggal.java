@@ -32,30 +32,16 @@ public class InputTanggal extends Fragment {
     private View v;
     private SharedPreferences sp;
 
-
-
-    private RecyclerView recyclerView;
-    private List<Model> modelList = new ArrayList<>();
-    private Adapter adapter;
-
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        getActivity().setTitle(R.string.home);
-        v = inflater.inflate(R.layout.fragmenadmin, container, false);
+        getActivity().setTitle("Input Tanggal");
+        v = inflater.inflate(R.layout.fragmen_inputtanggal, container, false);
 
         key = new GenKey();
         sp = v.getContext().getSharedPreferences(key.key(9145), 0x0000);
 //        getnama();
         Log.e("ER", "kandnwkaksdad");
-        adapter = new Adapter(modelList);
-        recyclerView = (RecyclerView) v.findViewById(R.id.list_kehadiran_siswa);
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(v.getContext());
-        recyclerView.setLayoutManager(layoutManager);
-        recyclerView.setNestedScrollingEnabled(false);
-
-        recyclerView.setItemAnimator(new DefaultItemAnimator());
-        recyclerView.setAdapter(adapter);
 
         getnama();
         return v;
