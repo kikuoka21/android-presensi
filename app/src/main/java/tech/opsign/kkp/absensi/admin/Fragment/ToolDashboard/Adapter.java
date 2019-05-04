@@ -35,7 +35,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.MyViewHolder> {
 
 
     class MyViewHolder extends RecyclerView.ViewHolder {
-        TextView nis, nama, kelas, alasan, mulai, selsai, lama_waktu;
+        TextView nis, nama, kelas, alasan;
 
         MyViewHolder(View v) {
             super(v);
