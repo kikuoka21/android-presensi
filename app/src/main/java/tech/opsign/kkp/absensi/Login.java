@@ -118,7 +118,7 @@ public class Login extends AppCompatActivity {
                         Log.d("yeyy", "1");
                         startActivity(new Intent(activity, MainAdmin.class));
                         finish();
-                    }else{
+                    } else {
                         Log.d("yeyy", "2");
                         startActivity(new Intent(activity, MainSiswa.class));
                         finish();
@@ -247,6 +247,96 @@ public class Login extends AppCompatActivity {
 //        return nip.length() == 6;
         return true;
     }
+
+
+//    private class asyncUser extends AsyncTask<Void, Void, Void> {
+//        String Str_nim;
+//        String Str_password;
+//        String Str_user_type;
+//        private String responseMessage;
+//
+//        @Override
+//        protected Void doInBackground(Void... voids) {
+//            try {
+//                StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+//                StrictMode.setThreadPolicy(policy);
+//                List<NameValuePair> p = new ArrayList<NameValuePair>();
+//                String user_type = key.key(88);
+//                imei1 = Utilities.imei(getApplicationContext());
+//
+//                Gson gson = new Gson();
+//                Seeder_Login sl = new Seeder_Login(str_nim, key.key2(str_password), imei1, user_type);
+//                p.add(new BasicNameValuePair(key.key(2003), key.encode(gson.toJson(sl))));
+//
+//
+//                JsonParser jParser = new JsonParser();
+//                json = jParser.GetJSONObjectEncrypted(key.url(1), p);
+//
+//                code = json.getString(key.key(44));
+//                json2 = json.getJSONObject(key.key(2004));
+//
+//                if (code.equals(key.key(999))) {
+//
+//                    // init shared preferences
+//                    SharedPreferences sp = getApplicationContext().getSharedPreferences(key.key(1000), 0x0000);
+//
+//                    // init editor buat edit data di sharedpreferences
+//                    SharedPreferences.Editor editor = sp.edit();
+//
+//                    // set value ([index], [valuenya]);
+//                    editor.putString(key.key(1001), str_nim);
+//                    editor.putString(key.key(1002), json2.getString(key.key(2001)));
+//                    editor.putString(key.key(1956), json2.getString(key.key(2044)));
+//                    editor.putString(key.key(1970), json2.getString(key.key(2058)));
+//                    editor.putString(key.key(1972), json2.getString(key.key(9002)));
+//                    // save data di sharedpreferences
+//                    editor.apply();
+//                    if (json2.getString(key.key(2058)).equals(key.key(88))) {
+//                        Log.e("hasil", "0");
+//                    } else {
+//                        Log.e("hasil", "Non 0");
+//                    }
+//
+//                }
+//
+//            } catch (Exception e) {
+//                Log.e("E_LOGIN_A02", e.getMessage(), e);
+//                code = key.key(9999);
+//            }
+//            return null;
+//        }
+//
+//        @Override
+//        protected void onPostExecute(Void result) {
+//            AlertDialog.Builder ab = new AlertDialog.Builder(HalamanLogin.this);
+//            try {
+//                code = json.getString(key.key(44));
+//
+//                if (code.equals(key.key(999))) {
+//                    Log.e("ERR_1", "masuk");
+//                    startActivity(new Intent(HalamanLogin.this, MainActivity.class));
+//                    finish();
+//                } else {
+//                    Log.e("ERR_1", "not");
+//                    ab
+//                            .setTitle("Informasi")
+//                            .setMessage(pesan.getMessage(code))
+//                            .setPositiveButton("Tutup", new DialogInterface.OnClickListener() {
+//                                @Override
+//                                public void onClick(DialogInterface dialog, int which) {
+//                                    dialog.dismiss();
+//                                }
+//                            })
+//                            .show();
+//                }
+//            } catch (JSONException e) {
+//                e.printStackTrace();
+//            }
+//            if (progressDialog.isShowing())
+//                progressDialog.dismiss();
+//
+//        }
+//    }
 
 
 }

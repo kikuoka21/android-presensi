@@ -15,10 +15,15 @@ public class GenKey {
         }
     }
     public String url(int str) {
+        String web, port;
+        web = "127.0.0.1";
+        port = ":8000";
 
         switch (str) {
-            case 99:
-                return "";
+            case 1:
+                return "http://"+web+port+"/api/auth/login";
+            case 2:
+                return "http://"+web+port+"/api/auth/check-token";
 
             default:
                 return "";
