@@ -61,7 +61,8 @@
                 android:paddingEnd="5dp"
                 android:textColor="#000"
                 android:textSize="18sp"
-                android:text="Hadir"
+                android:textStyle="bold"
+                android:text="Masuk"
                 android:layout_height="wrap_content"
                 android:layout_width="match_parent" />
         </LinearLayout>

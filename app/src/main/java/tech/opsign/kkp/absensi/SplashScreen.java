@@ -55,7 +55,7 @@ public class SplashScreen extends AppCompatActivity {
 
         this.activity = this;
         key = new GenKey();
-        sp = activity.getSharedPreferences(key.key(9145), 0x0000);
+        sp = activity.getSharedPreferences("shared", 0x0000);
         handler = new Handler();
         PackageInfo pInfo;
         try {
@@ -63,7 +63,7 @@ public class SplashScreen extends AppCompatActivity {
             String version = pInfo.versionName;
             ((TextView) findViewById(R.id.version)).setText(version);
 //            Log.e("ER", version);
-        } catch (Exception e) {
+        } catch (Exception ignored) {
 
         }
 
@@ -119,7 +119,7 @@ public class SplashScreen extends AppCompatActivity {
                                 finish();
                             }
                         }, 2000
-                );
+                ); n
             } else {
                 mulai();
             }
@@ -209,12 +209,13 @@ public class SplashScreen extends AppCompatActivity {
                 List<NameValuePair> p = new ArrayList<NameValuePair>();
                 p.add(new BasicNameValuePair("parsing", gson.toJson(param)));
                 JsonParser jParser = new JsonParser();
-Log.e("ER",  key.url(2));
-Log.e("ER",  String .valueOf(p));
-//                json = jParser.getJSONFromUrl(key.url(2), p);
+                Log.e("ER_", key.url(2));
+                Log.e("ER_", String.valueOf(p));
+                Log.e("ER_", "asdwad");
+                json = jParser.getJSONFromUrl(key.url(2), p);
+                Log.e("ER_", json.toString(3));
 //
 //                code = json.getString("code");
-                Log.e("token", jParser.balikan(key.url(2), p));
 
             } catch (Exception e) {
                 e.printStackTrace();
@@ -226,12 +227,12 @@ Log.e("ER",  String .valueOf(p));
         @Override
         protected void onPostExecute(Void result) {
             super.onPostExecute(result);
-           try{
-               runhttpget = false;
+            try {
+                runhttpget = false;
 //               Log.e("token", json.toString(3));
 
-               handler.removeCallbacksAndMessages(null);
-               if (background) {
+                handler.removeCallbacksAndMessages(null);
+                if (background) {
 //                if (code.equals("OK4")) {
 ////                    if () {
 ////                        Log.d("yeyy", "1");
@@ -257,12 +258,12 @@ Log.e("ER",  String .valueOf(p));
 //                            })
 //                            .show();
 //                }
-               } else {
-                   Utilities.codeerror(activity, "ER0211");
-               }
-           }catch (Exception e){
-               e.printStackTrace();
-           }
+                } else {
+                    Utilities.codeerror(activity, "ER0211");
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 }

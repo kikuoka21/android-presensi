@@ -33,7 +33,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:background="@drawable/loginstyle"
-                android:hint="NIS"
+                android:hint="Username"
                 android:inputType="textEmailAddress|number"
                 android:maxLength="6"
                 android:maxLines="1"
