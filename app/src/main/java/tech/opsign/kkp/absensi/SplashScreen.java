@@ -61,6 +61,7 @@ public class SplashScreen extends AppCompatActivity {
         try {
             pInfo = activity.getPackageManager().getPackageInfo(getPackageName(), 0);
             String version = pInfo.versionName;
+//            String version = key.gen_pass("1234");
             ((TextView) findViewById(R.id.version)).setText(version);
 //            Log.e("ER", version);
         } catch (Exception ignored) {
@@ -109,8 +110,8 @@ public class SplashScreen extends AppCompatActivity {
         AlertDialog alert = new AlertDialog.Builder(this, R.style.Theme_AppCompat_Dialog_Alert).create();
         if ((new InetConnection()).isConnected(activity)) {
 
-//            if (sp.getString("username", "").equals("") && sp.getString("token", "").equals("")) {
-            if (false) {
+            if (sp.getString("username", "").equals("") && sp.getString("token", "").equals("")) {
+//            if (true) {
                 new Handler().postDelayed(
                         new Runnable() {
                             @Override
@@ -119,8 +120,9 @@ public class SplashScreen extends AppCompatActivity {
                                 finish();
                             }
                         }, 2000
-                ); 
+                );
             } else {
+
                 mulai();
             }
         } else {
@@ -172,7 +174,7 @@ public class SplashScreen extends AppCompatActivity {
         }, Utilities.rto());
     }
 
-    class Param {
+    private class Param {
         String x1d, type, key, token, akses;
     }
 
@@ -195,27 +197,23 @@ public class SplashScreen extends AppCompatActivity {
 
 
                 Param param = new Param();
-//                param.x1d = sp.getString("username", "");
-//                param.token = sp.getString("token", "");
-//                param.type = "mmm";
-//                param.key = Utilities.imei(activity);
-                param.x1d = "1";
-                param.token = "5b567e0200dca80bb76c075ea92216f5";
+                param.x1d = sp.getString("username", "");
+                param.token = sp.getString("token", "");
                 param.type = "mmm";
-                param.key = "192.168.1.1";
-                param.akses = "0";
+                param.key = Utilities.imei(activity);
+                param.akses = sp.getString("status", "");
 
                 Gson gson = new Gson();
                 List<NameValuePair> p = new ArrayList<NameValuePair>();
                 p.add(new BasicNameValuePair("parsing", gson.toJson(param)));
                 JsonParser jParser = new JsonParser();
-                Log.e("ER_", key.url(2));
-                Log.e("ER_", String.valueOf(p));
-                Log.e("ER_", "asdwad");
+//                Log.e("ER_", key.url(2));
+//                Log.e("ER_", String.valueOf(p));
+//                Log.e("ER_", "asdwad");
                 json = jParser.getJSONFromUrl(key.url(2), p);
                 Log.e("ER_", json.toString(3));
 //
-//                code = json.getString("code");
+                code = json.getString("code");
 
             } catch (Exception e) {
                 e.printStackTrace();
@@ -229,35 +227,64 @@ public class SplashScreen extends AppCompatActivity {
             super.onPostExecute(result);
             try {
                 runhttpget = false;
-//               Log.e("token", json.toString(3));
+//               Log.e("xp455", json.toString(3));
 
                 handler.removeCallbacksAndMessages(null);
                 if (background) {
-//                if (code.equals("OK4")) {
-////                    if () {
-////                        Log.d("yeyy", "1");
-////                        startActivity(new Intent(activity, MainAdmin.class));
-////                        finish();
-////                    } else {
-////                        Log.d("yeyy", "2");
-////                        startActivity(new Intent(activity, MainSiswa.class));
-////                        finish();
-////
-////                    }
-//                } else {
-//                     AlertDialog.Builder ab = new AlertDialog.Builder(activity);
-//                    ab
-//                            .setCancelable(false).setTitle("Informasi")
-//                            .setMessage("gagal")
-//                            .setPositiveButton("Tutup", new DialogInterface.OnClickListener() {
-//                                @Override
-//                                public void onClick(DialogInterface dialog, int which) {
-//                                    dialog.dismiss();
-//
-//                                }
-//                            })
-//                            .show();
-//                }
+                    if (code.equals("OK4")) {
+
+                        try {
+                            Intent homeIntent;
+                            if (sp.getString("status", "").equals("1")) {
+                                Log.d("yeyy", "1");
+                                homeIntent = new Intent(activity, MainAdmin.class);
+                            } else {
+                                Log.d("yeyy", "2");
+                                homeIntent = new Intent(activity, MainSiswa.class);
+                            }
+
+                            SharedPreferences.Editor editor = sp.edit();
+                            editor.putString("thn_ajar", json.getString("thn-ajar"));
+                            editor.putString("tanggal", json.getString("tanggal"));
+                            json = json.getJSONObject("data");
+                            editor.putString("nama", json.getString("nama"));
+                            editor.putString("level", json.getString("level"));
+                            editor.commit();
+                            new Handler().postDelayed(
+                                    new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            Intent homeIntent;
+                                            if (sp.getString("status", "").equals("1")) {
+                                                Log.d("yeyy", "1");
+                                                homeIntent = new Intent(activity, MainAdmin.class);
+                                            } else {
+                                                Log.d("yeyy", "2");
+                                                homeIntent = new Intent(activity, MainSiswa.class);
+                                            }
+                                            startActivity(homeIntent);
+                                            finish();
+                                        }
+                                    }, 2000
+                            );
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+
+                    } else {
+                        AlertDialog.Builder ab = new AlertDialog.Builder(activity);
+                        ab
+                                .setCancelable(false).setTitle("Informasi")
+                                .setMessage("gagal")
+                                .setPositiveButton("Tutup", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        dialog.dismiss();
+
+                                    }
+                                })
+                                .show();
+                    }
                 } else {
                     Utilities.codeerror(activity, "ER0211");
                 }

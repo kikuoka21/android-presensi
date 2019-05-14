@@ -39,7 +39,7 @@
                 android:maxLines="1"
                 android:padding="14dp"
                 android:singleLine="true"
-                android:text="" />
+                android:text="1" />
 
             <EditText
                 android:id="@+id/password"
@@ -54,7 +54,7 @@
                 android:maxLines="1"
                 android:padding="14dp"
                 android:singleLine="true"
-                android:text="" />
+                android:text="admin" />
 
             <Button
                 android:id="@+id/login"

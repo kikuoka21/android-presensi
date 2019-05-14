@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import Tools.GenKey;
 import tech.opsign.kkp.absensi.R;
@@ -22,13 +23,11 @@ public class Dashboard extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        getActivity().setTitle("Input Tanggal");
+        getActivity().setTitle("Dashboard Siswa");
         v = inflater.inflate(R.layout.s_fragmen_dashboard, container, false);
 
         key = new GenKey();
-        sp = v.getContext().getSharedPreferences(key.key(9145), 0x0000);
-//        getnama();
-        Log.e("ER", "Input tanggal");
+        sp = v.getContext().getSharedPreferences("shared", 0x0000);
 
         getnama();
         return v;
@@ -36,6 +35,7 @@ public class Dashboard extends Fragment {
 
     private void getnama() {
 
+        ((TextView)v.findViewById(R.id.textView14)).setText(sp.getString("nama", ""));
     }
 
 

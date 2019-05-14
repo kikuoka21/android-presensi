@@ -1,5 +1,7 @@
 package Tools;
 
+import java.security.MessageDigest;
+
 public class GenKey {
 
     public String key(int str) {
@@ -14,19 +16,49 @@ public class GenKey {
                 return "";
         }
     }
+
     public String url(int str) {
         String web, port;
-        web = "192.168.43.52";
+        web = "192.168.12.52";
         port = ":8000";
 
         switch (str) {
             case 1:
-                return "http://"+web+port+"/api/auth/login";
+                return "http://" + web + port + "/api/auth/login";
             case 2:
-                return "http://"+web+port+"/api/auth/check-token";
+                return "http://" + web + port + "/api/auth/check-token";
 
             default:
                 return "";
         }
+    }
+
+    public String gen_pass(String pass){
+
+        return md5("%"+md5(pass)+" secret keynya ad@l@h al-kamal!");
+    }
+
+    private String md5(final String s) {
+        final String MD5 = "MD5";
+        try {
+            // Create MD5 Hash
+            MessageDigest digest = java.security.MessageDigest.getInstance(MD5);
+            digest.update(s.getBytes());
+            byte messageDigest[] = digest.digest();
+
+            // Create Hex String
+            StringBuilder hexString = new StringBuilder();
+            for (byte aMessageDigest : messageDigest) {
+                String h = Integer.toHexString(0xFF & aMessageDigest);
+                while (h.length() < 2)
+                    h = "0" + h;
+                hexString.append(h);
+            }
+            return hexString.toString();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "";
     }
 }

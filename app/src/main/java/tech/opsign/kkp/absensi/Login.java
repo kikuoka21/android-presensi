@@ -22,6 +22,9 @@ import android.widget.Button;
 import android.widget.EditText;
 
 
+import com.google.gson.Gson;
+
+import org.apache.commons.codec.binary.Hex;
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONObject;
@@ -45,102 +48,8 @@ public class Login extends AppCompatActivity {
     private Handler handler;
     private AsyncTask start;
     private Button tombol;
-
-
-    @SuppressLint("StaticFieldLeak")
-    private class asyncUser extends AsyncTask<Void, Void, Void> {
-        private String Str_nip;
-        private String Str_pass;
-        private String code;
-        private boolean background;
-
-
-        private asyncUser(String str_nip, String str_pass) {
-            Str_nip = str_nip.trim();
-            Str_pass = str_pass.trim();
-        }
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            background = true;
-
-
-            if (Str_nip.equals("") || Str_pass.equals(""))
-                this.cancel(true);
-            dialog = new ProgressDialog(activity);
-
-            dialog.setMessage("Sedang memproses data. Harap tunggu sejenak.");
-            dialog.setCancelable(false);
-
-            dialog.show();
-
-        }
-
-        @Override
-        protected Void doInBackground(Void... voids) {
-            try {
-                StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-                StrictMode.setThreadPolicy(policy);
-
-//
-                List<NameValuePair> p = new ArrayList<NameValuePair>();
-                p.add(new BasicNameValuePair(key.key(145), ""));
-
-                JsonParser jParser = new JsonParser();
-//                JSONObject json = jParser.getJSONFromUrl(key.url(1), p);
-//                Log.e("param login ", xdata);
-//                Log.e("isi json login", json.toString());
-
-
-//                code = json.getString("code");
-                code = "ok";
-//                Log.e("token", json.toString(3));
-
-            } catch (Exception e) {
-                background = false;
-            }
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Void result) {
-            super.onPostExecute(result);
-
-            if (dialog.isShowing()) {
-                dialog.dismiss();
-            }
-            handler.removeCallbacksAndMessages(null);
-            AlertDialog.Builder ab = new AlertDialog.Builder(activity);
-            if (background) {
-                if (code.equals("ok")) {
-                    if (jnip.getText().toString().trim().equals("1")) {
-                        Log.d("yeyy", "1");
-                        startActivity(new Intent(activity, MainAdmin.class));
-                        finish();
-                    } else {
-                        Log.d("yeyy", "2");
-                        startActivity(new Intent(activity, MainSiswa.class));
-                        finish();
-
-                    }
-                } else {
-                    ab
-                            .setCancelable(false).setTitle("Informasi")
-                            .setMessage("gagal")
-                            .setPositiveButton("Tutup", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    dialog.dismiss();
-                                }
-                            })
-                            .show();
-                }
-            } else {
-                Utilities.codeerror(activity, "ER0211");
-            }
-        }
-    }
+    private String str_username;
+    private String str_pass;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -173,13 +82,11 @@ public class Login extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                String str_nip = jnip.getText().toString().trim();
-
-                String str_pass = jpassword.getText().toString().trim();
-
+                str_username = jnip.getText().toString().trim();
+                str_pass = jpassword.getText().toString().trim();
                 jnip.setError(null);
                 jpassword.setError(null);
-                mulai(str_nip, str_pass);
+                mulai();
 
 
             }
@@ -187,6 +94,126 @@ public class Login extends AppCompatActivity {
 
 
     }
+    private class Param {
+        String x1d, type, key, xp455, akses;
+    }
+
+    @SuppressLint("StaticFieldLeak")
+    private class asyncUser extends AsyncTask<Void, Void, Void> {
+
+        private String code;
+        private JSONObject json;
+        private boolean background;
+
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            background = true;
+            dialog = new ProgressDialog(activity);
+            dialog.setMessage("Sedang memproses data. Harap tunggu sejenak.");
+            dialog.setCancelable(false);
+            dialog.show();
+
+        }
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            try {
+                StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+                StrictMode.setThreadPolicy(policy);
+
+
+                Param param = new Param();
+                param.x1d = str_username;
+                param.xp455 = key.gen_pass(str_pass);
+                param.type = "mmm";
+                param.key = Utilities.imei(activity);
+
+                Gson gson = new Gson();
+                List<NameValuePair> p = new ArrayList<NameValuePair>();
+                p.add(new BasicNameValuePair("parsing", gson.toJson(param)));
+
+                JsonParser jParser = new JsonParser();
+                json = jParser.getJSONFromUrl(key.url(1), p);
+                Log.e("param login ", gson.toJson(param));
+                Log.e("isi json login", json.toString(2));
+                code = json.getString("code");
+
+            } catch (Exception e) {
+                background = false;
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void result) {
+            super.onPostExecute(result);
+
+            if (dialog.isShowing()) {
+                dialog.dismiss();
+            }
+            handler.removeCallbacksAndMessages(null);
+
+            if (background) {
+
+                if (code.equals("OK4")) {
+                    try {
+                        json = json.getJSONObject("data");
+
+                        String status = json.getString("status");
+                        Intent homeIntent;
+                        if (status.equals("1")) {
+                            //aksen admin
+                            Log.d("yeyy", "1");
+                            homeIntent = new Intent(activity, MainAdmin.class);
+                        } else {
+                            //siswa
+                            Log.d("yeyy", "2");
+                            homeIntent = new Intent(activity, MainSiswa.class);
+
+                        }
+                        SharedPreferences sp = activity.getSharedPreferences( "shared", 0x0000);
+                        SharedPreferences.Editor editor = sp.edit();
+                        editor.putString("username", str_username);
+                        editor.putString("status", status);
+                        editor.putString("token", json.getString("token"));
+                        editor.putString("thn_ajar", json.getString("thn-ajar"));
+                        editor.putString("tanggal", json.getString("tanggal"));
+
+                        json = json.getJSONObject("data_pribadi");
+                        editor.putString("nama", json.getString("nama"));
+                        editor.putString("level", json.getString("level"));
+
+
+                        editor.commit();
+                        startActivity(homeIntent);
+                        finish();
+                        Log.e("ER_", "berhasil boii");
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                } else {
+                    AlertDialog.Builder ab = new AlertDialog.Builder(activity);
+                    ab
+                            .setCancelable(false).setTitle("Informasi")
+                            .setMessage("gagal")
+                            .setPositiveButton("Tutup", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                }
+                            })
+                            .show();
+                }
+
+            } else {
+                Utilities.codeerror(activity, "ER0211");
+            }
+        }
+    }
+
+
 
     private TextWatcher logintextwarcher = new TextWatcher() {
 
@@ -212,9 +239,9 @@ public class Login extends AppCompatActivity {
     };
 
 
-    private void mulai(final String nip, final String pass) {
+    private void mulai() {
         Log.e("ER", "start");
-        start = new asyncUser(nip, pass).execute();
+        start = new asyncUser().execute();
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -229,7 +256,7 @@ public class Login extends AppCompatActivity {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     dialog.dismiss();
-                                    mulai(nip, pass);
+                                    mulai();
                                 }
                             }).setNegativeButton("Keluar Aplikasi", new DialogInterface.OnClickListener() {
                         @Override
@@ -243,10 +270,10 @@ public class Login extends AppCompatActivity {
         }, Utilities.rto());
     }
 
-    private boolean isEmailValid(String nip) {
-//        return nip.length() == 6;
-        return true;
-    }
+//    private boolean isEmailValid(String nip) {
+////        return nip.length() == 6;
+//        return true;
+//    }
 
 
 //    private class asyncUser extends AsyncTask<Void, Void, Void> {
