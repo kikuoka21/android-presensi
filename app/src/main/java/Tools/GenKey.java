@@ -19,7 +19,7 @@ public class GenKey {
 
     public String url(int str) {
         String web, port;
-        web = "192.168.12.52";
+        web = "192.168.0.17";
         port = ":8000";
 
         switch (str) {

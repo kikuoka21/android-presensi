@@ -139,7 +139,7 @@ public class Utilities {
         return "";
     }
     public static int rto(){
-        return 50000;
+        return 5000;
     }
 
     public boolean checkjson(String test) {

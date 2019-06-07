@@ -30,13 +30,10 @@ public class InputTanggal extends Fragment {
 //        getnama();
         Log.e("ER", "Input tanggal");
 
-        getnama();
         return v;
     }
 
-    private void getnama() {
 
-    }
 
 
 }

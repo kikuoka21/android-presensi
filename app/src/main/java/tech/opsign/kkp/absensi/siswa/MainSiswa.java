@@ -78,83 +78,8 @@ public class MainSiswa extends AppCompatActivity implements NavigationView.OnNav
         }
         navHeaderView = navigationView.inflateHeaderView(R.layout.nav_header);
 
-        mulai();
 
     }
-
-
-    private void mulai() {
-//        start = new cektoken().execute();
-    }
-
-    private class cektoken extends AsyncTask<Void, Void, Void> {
-        private boolean background;
-
-
-        @Override
-        protected void onPreExecute() {
-
-        }
-
-        @Override
-        protected Void doInBackground(Void... voids) {
-            try {
-
-
-            } catch (Exception e) {
-//
-                background = false;
-            }
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Void aVoid) {
-            AlertDialog.Builder ab = new AlertDialog.Builder(activity);
-            halder.removeCallbacksAndMessages(null);
-            try {
-
-//                getprofil();
-            } catch (Exception e) {
-                codeeror("ER0023");
-            }
-
-        }
-    }
-
-
-    private void getprofil() {
-
-//        Bitmap logo = null;
-        try {
-//            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-//            StrictMode.setThreadPolicy(policy);
-//
-//            JSONObject nama = new JSONObject(sp.getString(GenKey.GenKey(1102), ""));
-//            JSONObject foto = new JSONObject(sp.getString(GenKey.GenKey(8920), ""));
-//            JSONObject df = foto.getJSONObject("data");
-
-//            ((TextView) navHeaderView.findViewById(R.id.nama_nav)).setText(sp.getString(key.key(1102), ""));
-//            ((TextView) navHeaderView.findViewById(R.id.nip_nav)).setText(sp.getString(key.key(1001), ""));
-//
-//            NavigationView navigationView = findViewById(R.id.nav_view);
-//            View hView = navigationView.getHeaderView(0);
-
-//            InputStream is = new URL(df.getString("path")).openStream();
-//            try {
-//                logo = BitmapFactory.decodeStream(is);
-//                if (logo != null)
-//                    ((ImageView) hView.findViewById(R.id.profile_image)).setImageBitmap(logo);
-//            } finally {
-//                is.close();
-//            }
-        } catch (Exception e) {
-            codeeror("ER0021");
-//            Log.e("ER", String.valueOf(e));
-
-        }
-    }
-
 
 
     @Override
@@ -172,7 +97,7 @@ public class MainSiswa extends AppCompatActivity implements NavigationView.OnNav
         int id = item.getItemId();
 
         if (id == R.id.scanqr) {
-            Toast.makeText(activity, "Scan Now",Toast.LENGTH_LONG).show();
+            Toast.makeText(activity, "Scan Now", Toast.LENGTH_LONG).show();
         }
         return super.onOptionsItemSelected(item);
     }
@@ -191,48 +116,11 @@ public class MainSiswa extends AppCompatActivity implements NavigationView.OnNav
 //            Intent intent = new Intent(activity, DataDiri.class);
 //            startActivity(intent);
 //        }
-//        if (id == R.id.riwayatpgw) {
-//            Intent intent = new Intent(activity, RiwayatPekerjaan.class);
-//            startActivity(intent);
-//        }
-//        if (id == R.id.absensi) {
-//            Intent intent = new Intent(activity, Absensi.class);
-//            startActivity(intent);
-//        }
-//        if (id == R.id.form_izin) {
-//            Intent intent = new Intent(activity, Pengajuan_surat.class);
-//            startActivity(intent);
-//        }
-//        if (id == R.id.history_ijin) {
-//            Intent intent = new Intent(activity, HistoriIzin.class);
-//            startActivity(intent);
-//        }
-//        if (id == R.id.mnggu_persetujuan) {
-//            Intent intent = new Intent(activity, Menunggu_Persetujuan.class);
-//            startActivity(intent);
-//        }
-
         if (id == R.id.homedashboard) {
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_containter
                     , new Dashboard()).commit();
         }
-//        if (id == R.id.input_tanggal) {
-//            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_containter
-//                    , new InputTanggal()).commit();
-//        }
 
-//        if (id == R.id.nav_dos_penelitian) {
-////            Intent intent = new Intent(activity, DPenelitian.class);
-////            startActivity(intent);
-//            /*new AlertDialog.Builder(activity).setTitle("Informasi").setMessage("Mohon maaf, untuk saat ini fitur yang Anda pilih masih dalam pengembangan.").setNegativeButton("tutup", new DialogInterface.OnClickListener() {
-//                @Override
-//                public void onClick(DialogInterface dialog, int which) {
-//                    dialog.dismiss();
-//                }
-//            }).show();*/
-//        }
-
-//
         if (id == R.id.nav_out) {
             new AlertDialog.Builder(activity)
                     .setCancelable(false).setTitle("Konfirmasi")
@@ -240,11 +128,10 @@ public class MainSiswa extends AppCompatActivity implements NavigationView.OnNav
                     .setPositiveButton("Konfirmasi", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-
-//                            SharedPreferences.Editor editorr = sp.edit();
-//                            editorr.putString(key.key(1001), "");
-//                            editorr.putString(key.key(1002), "");
-//                            editorr.commit();
+                            SharedPreferences.Editor editor = sp.edit();
+                            editor.putString("username", "");
+                            editor.putString("token", "");
+                            editor.commit();
                             startActivity(new Intent(activity, Login.class));
                             overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
                             finish();
@@ -278,7 +165,7 @@ public class MainSiswa extends AppCompatActivity implements NavigationView.OnNav
             drawer.closeDrawer(GravityCompat.START);
         } else {
             this.doubleBackToExitPressedOnce = true;
-            Toast.makeText(this, "Please click BACK again to exit", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Tekan KEMBALI lagi untuk keluar", Toast.LENGTH_SHORT).show();
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
@@ -289,12 +176,5 @@ public class MainSiswa extends AppCompatActivity implements NavigationView.OnNav
 
     }
 
-  
-    private void codeeror(String kode) {
-        if (flag) {
-            Utilities.codeerror(activity, kode);
-            flag = false;
-        }
-    }
 
 }

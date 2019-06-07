@@ -116,8 +116,8 @@ public class SplashScreen extends AppCompatActivity {
                         new Runnable() {
                             @Override
                             public void run() {
-                                startActivity(new Intent(activity, Login.class));
-                                finish();
+                                inten_Login();
+
                             }
                         }, 2000
                 );
@@ -234,14 +234,7 @@ public class SplashScreen extends AppCompatActivity {
                     if (code.equals("OK4")) {
 
                         try {
-                            Intent homeIntent;
-                            if (sp.getString("status", "").equals("1")) {
-                                Log.d("yeyy", "1");
-                                homeIntent = new Intent(activity, MainAdmin.class);
-                            } else {
-                                Log.d("yeyy", "2");
-                                homeIntent = new Intent(activity, MainSiswa.class);
-                            }
+
 
                             SharedPreferences.Editor editor = sp.edit();
                             editor.putString("thn_ajar", json.getString("thn-ajar"));
@@ -272,19 +265,25 @@ public class SplashScreen extends AppCompatActivity {
                         }
 
                     } else {
+                        SharedPreferences.Editor editor = sp.edit();
+                        editor.putString("username", "");
+                        editor.putString("token", "");
+                        editor.commit();
                         AlertDialog.Builder ab = new AlertDialog.Builder(activity);
                         ab
                                 .setCancelable(false).setTitle("Informasi")
-                                .setMessage("gagal")
-                                .setPositiveButton("Tutup", new DialogInterface.OnClickListener() {
+                                .setMessage(code)
+                                .setPositiveButton("okay", new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
                                         dialog.dismiss();
 
+                                        inten_Login();
                                     }
                                 })
                                 .show();
                     }
+
                 } else {
                     Utilities.codeerror(activity, "ER0211");
                 }
@@ -292,5 +291,10 @@ public class SplashScreen extends AppCompatActivity {
                 e.printStackTrace();
             }
         }
+    }
+
+    private void inten_Login(){
+        startActivity(new Intent(activity, Login.class));
+        finish();
     }
 }

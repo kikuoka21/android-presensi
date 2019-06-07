@@ -25,7 +25,7 @@
                 android:textColor="#000"
                 android:textSize="18sp" />
 
-            <TextView
+            <EditText
                 android:id="@+id/nis"
                 android:layout_weight="1"
                 android:paddingStart="0dp"
@@ -51,13 +51,14 @@
                 android:textColor="#000"
                 android:textSize="18sp" />
 
-            <TextView
+            <EditText
                 android:id="@+id/namarow"
                 android:layout_weight="1"
                 android:paddingStart="0dp"
                 android:paddingEnd="5dp"
                 android:textColor="#000"
-                android:textSize="18sp" />
+                android:textSize="18sp"
+                android:inputType="" />
 
         </TableRow>
 
@@ -68,6 +69,7 @@
         android:layout_height="wrap_content"
         app:cardCornerRadius="20dp">
         <Button
+            android:id="@+id/kirimtanggal"
             android:background="#00aaaaaa"
             android:layout_width="match_parent"
             android:text="Kirim"

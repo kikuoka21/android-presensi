@@ -39,13 +39,13 @@ public class MainAdmin extends AppCompatActivity implements NavigationView.OnNav
     private boolean flag = true;
 
     private GenKey key;
-
+    Handler mHandler;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.a_mainactivity_admin);
 //        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        Toast.makeText(this, "Selamat Datang", Toast.LENGTH_SHORT).show();
+//        Toast.makeText(this, "Selamat Datang", Toast.LENGTH_SHORT).show();
         this.activity = this;
         key = new GenKey();
         sp = activity.getSharedPreferences(key.key(9145), 0x0000);
@@ -79,81 +79,26 @@ public class MainAdmin extends AppCompatActivity implements NavigationView.OnNav
         }
         navHeaderView = navigationView.inflateHeaderView(R.layout.nav_header);
 
-        mulai();
-
+        mHandler = new Handler();
+//        m_Runnable.run();
     }
 
+    private final Runnable m_Runnable = new Runnable()
+    {
+        public void run()
 
-    private void mulai() {
-//        start = new cektoken().execute();
-    }
+        {
+            Toast.makeText(activity,"in runnable "+ aaa(),Toast.LENGTH_SHORT).show();
 
-    private class cektoken extends AsyncTask<Void, Void, Void> {
-        private boolean background;
-
-
-        @Override
-        protected void onPreExecute() {
-
+            mHandler.postDelayed(m_Runnable, 7000);
         }
 
-        @Override
-        protected Void doInBackground(Void... voids) {
-            try {
+    };
+    int a=1;
+    String aaa(){
 
-
-            } catch (Exception e) {
-//
-                background = false;
-            }
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Void aVoid) {
-            android.app.AlertDialog.Builder ab = new android.app.AlertDialog.Builder(activity);
-            halder.removeCallbacksAndMessages(null);
-            try {
-
-//                getprofil();
-            } catch (Exception e) {
-                codeeror("ER0023");
-            }
-
-        }
-    }
-
-
-    private void getprofil() {
-
-//        Bitmap logo = null;
-        try {
-//            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-//            StrictMode.setThreadPolicy(policy);
-//
-//            JSONObject nama = new JSONObject(sp.getString(GenKey.GenKey(1102), ""));
-//            JSONObject foto = new JSONObject(sp.getString(GenKey.GenKey(8920), ""));
-//            JSONObject df = foto.getJSONObject("data");
-
-//            ((TextView) navHeaderView.findViewById(R.id.nama_nav)).setText(sp.getString(key.key(1102), ""));
-//            ((TextView) navHeaderView.findViewById(R.id.nip_nav)).setText(sp.getString(key.key(1001), ""));
-//
-//            NavigationView navigationView = findViewById(R.id.nav_view);
-//            View hView = navigationView.getHeaderView(0);
-
-//            InputStream is = new URL(df.getString("path")).openStream();
-//            try {
-//                logo = BitmapFactory.decodeStream(is);
-//                if (logo != null)
-//                    ((ImageView) hView.findViewById(R.id.profile_image)).setImageBitmap(logo);
-//            } finally {
-//                is.close();
-//            }
-        } catch (Exception e) {
-            codeeror("ER0021");
-//            Log.e("ER", String.valueOf(e));
-
-        }
+        a++;
+        return String.valueOf(a);
     }
 
 
@@ -229,10 +174,10 @@ public class MainAdmin extends AppCompatActivity implements NavigationView.OnNav
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
 
-//                            SharedPreferences.Editor editorr = sp.edit();
-//                            editorr.putString(key.key(1001), "");
-//                            editorr.putString(key.key(1002), "");
-//                            editorr.commit();
+                            SharedPreferences.Editor editor = sp.edit();
+                            editor.putString("username", "");
+                            editor.putString("token", "");
+                            editor.commit();
                             startActivity(new Intent(activity, Login.class));
                             overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
                             finish();
