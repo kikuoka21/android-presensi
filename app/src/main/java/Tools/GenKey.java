@@ -28,14 +28,22 @@ public class GenKey {
             case 2:
                 return "http://" + web + port + "/api/auth/check-token";
 
+
+            case 101:
+                return "http://" + web + port + "/api/siswa/presensi/buat";
+            case 102:
+                return "http://" + web + port + "/api/siswa/presensi/isi";
+            case 100:
+                return "http://" + web + port + "/api/siswa/dashboard";
+
             default:
                 return "";
         }
     }
 
-    public String gen_pass(String pass){
+    public String gen_pass(String pass) {
 
-        return md5("%"+md5(pass)+" secret keynya ad@l@h al-kamal!");
+        return md5("%" + md5(pass) + " secret keynya ad@l@h al-kamal!");
     }
 
     private String md5(final String s) {

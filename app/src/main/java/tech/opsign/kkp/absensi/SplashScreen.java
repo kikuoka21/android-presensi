@@ -1,6 +1,7 @@
 package tech.opsign.kkp.absensi;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -35,6 +36,8 @@ import Tools.JsonParser;
 import Tools.Utilities;
 import tech.opsign.kkp.absensi.admin.MainAdmin;
 import tech.opsign.kkp.absensi.siswa.MainSiswa;
+import tech.opsign.kkp.absensi.siswa.isi_absen;
+import tech.opsign.kkp.absensi.siswa.pengurus.generate_qr;
 
 public class SplashScreen extends AppCompatActivity {
     private SharedPreferences sp;
@@ -72,24 +75,40 @@ public class SplashScreen extends AppCompatActivity {
     }
 
     private void loadIMEI() {
-        // Check if the READ_PHONE_STATE permission is already available.
-        if (ActivityCompat.checkSelfPermission(activity, Manifest.permission.READ_PHONE_STATE)
-                != PackageManager.PERMISSION_GRANTED) {
-            // READ_PHONE_STATE permission has not been granted.
 
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_PHONE_STATE},
-                    0);
-//            requestReadPhoneStatePermission();
-        } else {
+        int PERMISSION_ALL = 1;
+        String[] PERMISSIONS = {
+                android.Manifest.permission.READ_PHONE_STATE,
+                android.Manifest.permission.CAMERA
+        };
+
+        if(!hasPermissions(activity, PERMISSIONS)){
+            ActivityCompat.requestPermissions(activity, PERMISSIONS, PERMISSION_ALL);
+        }else{
             inten();
         }
+
+
+
+    }
+    public static boolean hasPermissions(Context context, String... permissions) {
+        if (context != null && permissions != null) {
+            for (String permission : permissions) {
+                if (ActivityCompat.checkSelfPermission(context, permission) != PackageManager.PERMISSION_GRANTED) {
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        if (requestCode == 0) {
-            if (grantResults.length == 1 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+        int PERMISSION_ALL = 1;
+
+        if (requestCode == PERMISSION_ALL) {
+            if (hasPermissions(activity, permissions)) {
                 inten();
             } else {
                 new android.app.AlertDialog.Builder(activity)
@@ -174,6 +193,7 @@ public class SplashScreen extends AppCompatActivity {
         }, Utilities.rto());
     }
 
+
     private class Param {
         String x1d, type, key, token, akses;
     }
@@ -207,11 +227,8 @@ public class SplashScreen extends AppCompatActivity {
                 List<NameValuePair> p = new ArrayList<NameValuePair>();
                 p.add(new BasicNameValuePair("parsing", gson.toJson(param)));
                 JsonParser jParser = new JsonParser();
-//                Log.e("ER_", key.url(2));
-//                Log.e("ER_", String.valueOf(p));
-//                Log.e("ER_", "asdwad");
                 json = jParser.getJSONFromUrl(key.url(2), p);
-                Log.e("ER_", json.toString(3));
+//                Log.e("ER_", json.toString(3));
 //
                 code = json.getString("code");
 

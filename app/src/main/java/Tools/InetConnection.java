@@ -18,13 +18,13 @@ public class InetConnection {
             connected = ((netInfo != null) && netInfo.isAvailable() && netInfo.isConnected());
 
             if (connected) {
-                // melakukan double check ke server budi luhur
-                InetAddress ipAddr = InetAddress.getByName("budiluhur.ac.id");
+                InetAddress ipAddr = InetAddress.getByName("google.co.id");
                 connected = !ipAddr.equals("");
             }
         } catch (Exception ex) {
 //            Log.v("inetOnline", ex.getMessage() == null ? "Unknow error" : ex.getMessage());
         }
-        return connected;
+//        return connected;
+        return true;
     }
 }

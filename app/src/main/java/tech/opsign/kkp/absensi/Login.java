@@ -199,7 +199,7 @@ public class Login extends AppCompatActivity {
                     AlertDialog.Builder ab = new AlertDialog.Builder(activity);
                     ab
                             .setCancelable(false).setTitle("Informasi")
-                            .setMessage("gagal")
+                            .setMessage(code)
                             .setPositiveButton("Tutup", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {

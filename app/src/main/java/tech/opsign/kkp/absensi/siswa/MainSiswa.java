@@ -15,6 +15,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -27,6 +28,7 @@ import Tools.Utilities;
 import tech.opsign.kkp.absensi.Login;
 import tech.opsign.kkp.absensi.R;
 import tech.opsign.kkp.absensi.siswa.Fragmen.Dashboard;
+import tech.opsign.kkp.absensi.siswa.pengurus.generate_qr;
 
 public class MainSiswa extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     private SharedPreferences sp;
@@ -36,6 +38,7 @@ public class MainSiswa extends AppCompatActivity implements NavigationView.OnNav
     private Handler halder;
     private AsyncTask start;
     private boolean flag = true;
+    private String level;
 
     private GenKey key;
 
@@ -47,7 +50,7 @@ public class MainSiswa extends AppCompatActivity implements NavigationView.OnNav
         Toast.makeText(this, "Selamat Datang", Toast.LENGTH_SHORT).show();
         this.activity = this;
         key = new GenKey();
-        sp = activity.getSharedPreferences(key.key(9145), 0x0000);
+        sp = activity.getSharedPreferences("shared", 0x0000);
         halder = new Handler();
 
         if (Build.VERSION.SDK_INT >= 21) {
@@ -61,10 +64,10 @@ public class MainSiswa extends AppCompatActivity implements NavigationView.OnNav
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        DrawerLayout drawer = findViewById(R.id.drawer_layout);
-        NavigationView navigationView = findViewById(R.id.nav_view);
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar,
                 R.string.navigation_drawer_open, R.string.navigation_drawer_close) {
 
@@ -78,7 +81,15 @@ public class MainSiswa extends AppCompatActivity implements NavigationView.OnNav
         }
         navHeaderView = navigationView.inflateHeaderView(R.layout.nav_header);
 
+        level = sp.getString("level", "");
+        Log.e("ER_", level);
 
+        Menu menu = navigationView.getMenu();
+        if (level.equals("1")) {
+            menu.findItem(R.id.pengurus).setVisible(true);
+        } else {
+            menu.findItem(R.id.pengurus).setVisible(false);
+        }
     }
 
 
@@ -97,7 +108,8 @@ public class MainSiswa extends AppCompatActivity implements NavigationView.OnNav
         int id = item.getItemId();
 
         if (id == R.id.scanqr) {
-            Toast.makeText(activity, "Scan Now", Toast.LENGTH_LONG).show();
+            Intent intent = new Intent(activity, isi_absen.class);
+            startActivity(intent);
         }
         return super.onOptionsItemSelected(item);
     }
@@ -121,6 +133,11 @@ public class MainSiswa extends AppCompatActivity implements NavigationView.OnNav
                     , new Dashboard()).commit();
         }
 
+
+        if (id == R.id.buatqr) {
+            Intent intent = new Intent(activity, generate_qr.class);
+            startActivity(intent);
+        }
         if (id == R.id.nav_out) {
             new AlertDialog.Builder(activity)
                     .setCancelable(false).setTitle("Konfirmasi")

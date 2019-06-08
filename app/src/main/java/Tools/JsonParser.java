@@ -1,9 +1,4 @@
-//      ____  __________   __  ______  __ 
-//     / __ \/_  __/  _/  / / / / __ )/ / 
-//    / / / / / /  / /   / / / / __  / /  
-//   / /_/ / / / _/ /   / /_/ / /_/ / /___
-//  /_____/ /_/ /___/   \____/_____/_____/
-//                                        
+
 // Copyright © 2018 - Fathalfath30.
 // Created On 9/4/2018 
 // Email : fathalfath30@gmail.com
@@ -40,13 +35,14 @@ import java.util.List;
 
 public class JsonParser {
     static InputStream is = null;
-    static JSONObject jObj = null;
+    static JSONObject jObj ;
     static String json = "";
 
     public JSONObject getJSONFromUrl(String url, List<NameValuePair> params) {
 
         // Making HTTP request
         try {
+            jObj = new JSONObject("{}");
             // defaultHttpClient
             DefaultHttpClient httpClient = new DefaultHttpClient();
             HttpPost httpPost = new HttpPost(url);
@@ -56,13 +52,7 @@ public class JsonParser {
             HttpEntity httpEntity = httpResponse.getEntity();
             is = httpEntity.getContent();
 
-        }catch (Exception e) {
-            e.printStackTrace();
-            Log.e("ER", "eror disini  3");
 
-        }
-
-        try {
             BufferedReader reader = new BufferedReader(new InputStreamReader(
                     is, "iso-8859-1"), 8);
             StringBuilder sb = new StringBuilder();
@@ -72,22 +62,15 @@ public class JsonParser {
             }
             is.close();
             json = sb.toString();
-            //Log.e("JSON", json);
+
+            jObj = new JSONObject(json);
         } catch (Exception e) {
             e.printStackTrace();
-            Log.e("ER", "eror disini  4");
-
-            //Log.e("Buffer Error", "Error converting result " + e.toString());
-        }
-
-        // try parse the string to a JSON object
-        try {
-            jObj = new JSONObject(json);
-        } catch (JSONException e) {
-            e.printStackTrace();
-            Log.e("ER", "eror disini  5`");
-
-            //Log.e("JSON Parser", "Error parsing data " + e.toString());
+            try {
+                jObj = new JSONObject("{\"code\":\"Telah Terjadi kesalahan pada http request\"}");
+            }catch (Exception se){
+                se.printStackTrace();
+            }
         }
         json = "";
         return jObj;

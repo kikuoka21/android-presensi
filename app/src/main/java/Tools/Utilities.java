@@ -1,22 +1,4 @@
-//      ____  __________   __  ______  __
-//     / __ \/_  __/  _/  / / / / __ )/ /
-//    / / / / / /  / /   / / / / __  / /
-//   / /_/ / / / _/ /   / /_/ / /_/ / /___
-//  /_____/ /_/ /___/   \____/_____/_____/
-//
-// Copyright © 2018 - Fathalfath30.
-// Created On 9/2/2018
-// Email : fathalfath30@gmail.com
-// Follow me on GithHub : https://github.com/Fathalfath30
-//
-// For the brave souls who get this far: You are the chosen ones,
-// the valiant knights of programming who toil away, without rest,
-// fixing our most awful code. To you, true saviors, kings of men,
-//
-// I say this: never gonna give you up, never gonna let you down,
-// never gonna run around and desert you. Never gonna make you cry,
-// never gonna say goodbye. Never gonna tell a lie and hurt you.
-//
+
 
 package Tools;
 
@@ -31,12 +13,19 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.support.v4.app.ActivityCompat;
 import android.telephony.TelephonyManager;
+import android.util.Log;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.EntityReference;
 
 import java.net.InetAddress;
+import java.security.spec.ECField;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 
 public class Utilities {
     public static void codeerror(final Context context, String message) {
@@ -111,38 +100,56 @@ public class Utilities {
                         }
                     });
             alert.show();
-        }catch (Exception e){
+        } catch (Exception e) {
 //            Log.e("ER_", String.valueOf(e));
         }
     }
 
 
-
-
-
-    public static String imei(Context context) {
+    public static String imei(final Context context) {
         try {
             TelephonyManager telephonyManager = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
             if (ActivityCompat.checkSelfPermission(context, Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED) {
-                return "";
+                int PERMISSION_ALL = 1;
+                String[] PERMISSIONS = {
+                        android.Manifest.permission.READ_PHONE_STATE,
+                        android.Manifest.permission.CAMERA
+                };
+                ActivityCompat.requestPermissions((Activity) context, PERMISSIONS, PERMISSION_ALL);
             }
             @SuppressLint("HardwareIds")
             String imei = telephonyManager.getDeviceId();
             if (imei != null && !imei.isEmpty()) {
                 return imei;
             } else {
-                return android.os.Build.SERIAL;
+                return "berubah";
             }
         } catch (Exception e) {
-            //Log.e("ER_UTIL_IMEI", e.getMessage(), e);
+            new android.app.AlertDialog.Builder(context)
+                    .setTitle("Permission Request")
+                    .setMessage("Wajib Memberikan Akses")
+                    .setCancelable(false)
+                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    }).setOnDismissListener(new DialogInterface.OnDismissListener() {
+                @Override
+                public void onDismiss(DialogInterface dialog) {
+                    ((Activity) context).finish();
+                }
+            })
+                    .show();
+            return "gagal";
         }
-        return "";
     }
-    public static int rto(){
+
+
+    public static int rto() {
         return 5000;
     }
 
-    public boolean checkjson(String test) {
+    public static boolean checkjson(String test) {
         try {
             new JSONObject(test);
         } catch (JSONException ex) {
@@ -154,4 +161,103 @@ public class Utilities {
         }
         return true;
     }
+
+    public static String gettanggal(String tanggal) {
+        try {
+            DateFormat kedua, df = new SimpleDateFormat("yyyy-MM-dd");
+
+
+            Date date = df.parse(tanggal);
+            Calendar c = Calendar.getInstance();
+            c.setTime(date);
+            kedua = new SimpleDateFormat("EEE");
+//           Log.e("ER_asdj,awd", df.format(c.getTime()));
+            String balikan = hari_ini(kedua.format(c.getTime())) + ", ";
+            kedua = new SimpleDateFormat("dd");
+            balikan = balikan + kedua.format(c.getTime()) + " ";
+            kedua = new SimpleDateFormat("MMMM");
+            balikan = balikan + bulan(kedua.format(c.getTime())) + " ";
+
+            kedua = new SimpleDateFormat("yyyy");
+            balikan = balikan + kedua.format(c.getTime());
+
+            return balikan;
+
+        } catch (Exception e) {
+            return "tidak diketahui";
+        }
+    }
+
+    private static String hari_ini(String hari) {
+        switch (hari) {
+            case "Sun":
+                return "Minggu";
+
+            case "Mon":
+                return "Senin";
+
+            case "Tue":
+                return "Selasa";
+
+            case "Wed":
+                return "Rabu";
+
+            case "Thu":
+                return "Kamis";
+
+            case "Fri":
+                return "Jumat";
+
+            case "Sat":
+                return "Sabtu";
+
+            default:
+                return "Tidak di ketahui";
+        }
+    }
+
+    private static String bulan(String bulan) {
+        switch (bulan.substring(0, 3)) {
+            case "Jan":
+                return "Januari";
+
+            case "Feb":
+                return "Februari";
+
+            case "Mar":
+                return "Maret";
+
+            case "Apr":
+                return "April";
+
+            case "May":
+                return "Mei";
+
+            case "Jun":
+                return "Juni";
+
+            case "Jul":
+                return "Juli";
+
+            case "Aug":
+                return "Agustus";
+
+            case "Sep":
+                return "September";
+
+            case "Oct":
+                return "Oktober";
+
+            case "Nov":
+                return "November";
+
+            case "Des":
+                return "Desember";
+
+            default:
+                return bulan;
+        }
+    }
+
+
 }
