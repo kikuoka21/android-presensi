@@ -187,6 +187,30 @@ public class Utilities {
             return "tidak diketahui";
         }
     }
+     public static String gettgl_lahir(String tanggal) {
+        try {
+            DateFormat kedua, df = new SimpleDateFormat("yyyy-MM-dd");
+
+
+            Date date = df.parse(tanggal);
+            Calendar c = Calendar.getInstance();
+            c.setTime(date);
+//           Log.e("ER_asdj,awd", df.format(c.getTime()));
+            kedua = new SimpleDateFormat("dd");
+            String balikan = kedua.format(c.getTime()) + " ";
+            kedua = new SimpleDateFormat("MMMM");
+            balikan = balikan + bulan(kedua.format(c.getTime())) + " ";
+
+            kedua = new SimpleDateFormat("yyyy");
+            balikan = balikan + kedua.format(c.getTime());
+
+            return balikan;
+
+        } catch (Exception e) {
+            return "tidak diketahui";
+        }
+    }
+
 
     private static String hari_ini(String hari) {
         switch (hari) {

@@ -12,22 +12,23 @@
                 android:title="Profile" />
         </menu>
     </item>
-        <item android:title="Presensi Kelas"
-            android:id="@+id/pengurus"
-            android:visible="false">
-            <menu>
-                <item
-                    android:id="@+id/buatqr"
-                    android:title="Buat QR Code Abesn" />
-                <item
-                    android:id="@+id/presensi_hari_ini"
-                    android:title="Lihat Presensi Hari Ini" />
-                <item
-                    android:id="@+id/presensi_bulan"
-                    android:title="Lihat Presensi Perbulan" />
+    <item
+        android:id="@+id/pengurus"
+        android:title="Presensi Kelas"
+        android:visible="false">
+        <menu>
+            <item
+                android:id="@+id/buatqr"
+                android:title="Buat QR Code Abesn" />
+            <item
+                android:id="@+id/presensi_hari_ini"
+                android:title="Lihat Presensi Hari Ini" />
+            <item
+                android:id="@+id/presensi_bulan"
+                android:title="Lihat Presensi Perbulan" />
 
-            </menu>
-        </item>
+        </menu>
+    </item>
     <item android:title="Presensi">
         <menu>
             <item
@@ -40,6 +41,9 @@
 
     <item android:title="System">
         <menu>
+            <item
+                android:id="@+id/ganti_pswd"
+                android:title="Ganti Password" />
             <item
                 android:id="@+id/nav_out"
                 android:icon="@drawable/ic_logout"

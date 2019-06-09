@@ -18,23 +18,37 @@ public class GenKey {
     }
 
     public String url(int str) {
-        String web, port;
+        String web, port, head;
         web = "192.168.0.17";
         port = ":8000";
-
+        head = "http://" + web + port;
         switch (str) {
             case 1:
-                return "http://" + web + port + "/api/auth/login";
+                return head + "/api/auth/login";
             case 2:
-                return "http://" + web + port + "/api/auth/check-token";
+                return head + "/api/auth/check-token";
+            case 3:
+                return head + "/api/auth/ganti-pswd";
 
 
+//                siswa
             case 101:
-                return "http://" + web + port + "/api/siswa/presensi/buat";
+                return head + "/api/siswa/presensi/buat";
             case 102:
-                return "http://" + web + port + "/api/siswa/presensi/isi";
+                return head + "/api/siswa/presensi/isi";
             case 100:
-                return "http://" + web + port + "/api/siswa/dashboard";
+                return head + "/api/siswa/dashboard";
+            case 103:
+                return head + "/api/siswa/profil";
+
+
+//                admin
+
+            case 300:
+                return head + "/api/admin/dashboard";
+
+            case 310:
+                return head + "/api/admin/master/lihat/tanggal";
 
             default:
                 return "";

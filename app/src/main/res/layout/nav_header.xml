@@ -5,16 +5,18 @@
     android:background="@mipmap/grid"
     android:gravity="bottom"
     android:orientation="vertical"
-    android:padding="16dp"
+    android:paddingStart="16dp"
+    android:paddingEnd="16dp"
+    android:paddingBottom="16dp"
     android:theme="@style/ThemeOverlay.AppCompat.Dark">
 
     <ImageView
+        android:visibility="invisible"
         android:id="@+id/profile_image"
         android:layout_width="104dp"
-        android:layout_height="151dp"
+        android:layout_height="0dp"
         android:layout_weight="1"
-        android:paddingTop="20dp"
-        android:src="@mipmap/profil_default_1" />
+        android:paddingTop="0dp" />
 
     <TextView
         android:id="@+id/nama_nav"

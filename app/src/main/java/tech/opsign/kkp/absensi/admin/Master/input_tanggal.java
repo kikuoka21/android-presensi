@@ -1,11 +1,8 @@
-package tech.opsign.kkp.absensi.siswa.pengurus;
+package tech.opsign.kkp.absensi.admin.Master;
 
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Bitmap;
-import android.media.Image;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
@@ -18,13 +15,8 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.ImageView;
 
 import com.google.gson.Gson;
-import com.google.zxing.BarcodeFormat;
-import com.google.zxing.MultiFormatWriter;
-import com.google.zxing.common.BitMatrix;
-import com.journeyapps.barcodescanner.BarcodeEncoder;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
@@ -38,9 +30,9 @@ import Tools.JsonParser;
 import Tools.Utilities;
 import tech.opsign.kkp.absensi.R;
 
-public class generate_qr extends AppCompatActivity {
+public class input_tanggal extends AppCompatActivity {
     private SharedPreferences sp;
-    private generate_qr activity;
+    private input_tanggal activity;
     private Handler handler;
     private AsyncTask start;
     private ProgressDialog dialog;
@@ -56,7 +48,7 @@ public class generate_qr extends AppCompatActivity {
         key = new GenKey();
         sp = activity.getSharedPreferences("shared", 0x0000);
         handler = new Handler();
-        setTitle("QR Code Kelas " + sp.getString("nama_kelas", ""));
+        setTitle("Input Hari Libur");
         if (Build.VERSION.SDK_INT >= 21) {
             Window window = this.getWindow();
             window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
@@ -87,7 +79,7 @@ public class generate_qr extends AppCompatActivity {
                 if (dialog.isShowing()) {
                     dialog.dismiss();
                     start.cancel(true);
-                    new android.support.v7.app.AlertDialog.Builder(activity)
+                    new AlertDialog.Builder(activity)
                             .setTitle("Informasi")
                             .setMessage("Telah Terjadi Kesalahan Pada Koneksi Anda.")
                             .setCancelable(false)
@@ -112,16 +104,16 @@ public class generate_qr extends AppCompatActivity {
         String id_kelas, tanggal, token;
     }
 
-    private class Param {
-        String x1d, type, key, token, kd_kls;
-    }
+
 
     private class callAPI extends AsyncTask<Void, Void, Void> {
 
         private String code;
         private JSONObject json;
         private boolean background;
-
+        class Param {
+            String x1d, type, key, token, tanggal;
+        }
 
         @Override
         protected void onPreExecute() {
@@ -146,14 +138,14 @@ public class generate_qr extends AppCompatActivity {
                 param.type = "mmm";
                 param.key = Utilities.imei(activity);
                 param.token = sp.getString("token", "");
-                param.kd_kls = sp.getString("kd_kelas", "");
+                param.tanggal = sp.getString("tanggal", "");
 
                 Gson gson = new Gson();
                 List<NameValuePair> p = new ArrayList<NameValuePair>();
                 p.add(new BasicNameValuePair("parsing", gson.toJson(param)));
 
                 JsonParser jParser = new JsonParser();
-                json = jParser.getJSONFromUrl(key.url(101), p);
+                json = jParser.getJSONFromUrl(key.url(310), p);
                 Log.e("param login ", gson.toJson(param));
                 Log.e("isi json login", json.toString(2));
                 code = json.getString("code");
@@ -201,17 +193,7 @@ public class generate_qr extends AppCompatActivity {
 
         private void proses() {
             try {
-                generate obj = new generate();
-                obj.id_kelas = "K00001";
-                obj.tanggal = json.getString("tanggal");
-                obj.token = json.getString("tokennya");
-                Gson gson = new Gson();
-                MultiFormatWriter multi = new MultiFormatWriter();
-                BitMatrix bitMatrix = multi.encode(gson.toJson(obj), BarcodeFormat.QR_CODE, 200, 200);
-                BarcodeEncoder barcodeEncoder = new BarcodeEncoder();
-                Bitmap bitmap = barcodeEncoder.createBitmap(bitMatrix);
-                ImageView image = (ImageView) findViewById(R.id.qrcodenya);
-                image.setImageBitmap(bitmap);
+
             } catch (Exception e) {
                 Log.e("ER___", String.valueOf(e));
             }

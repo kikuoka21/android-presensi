@@ -76,5 +76,17 @@
             android:layout_height="wrap_content" />
     </android.support.v7.widget.CardView>
 
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        app:cardCornerRadius="10dp">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/list_tanggal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp" />
+    </android.support.v7.widget.CardView>
 
 </LinearLayout>

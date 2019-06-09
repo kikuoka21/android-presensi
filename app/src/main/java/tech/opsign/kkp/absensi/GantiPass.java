@@ -1,7 +1,8 @@
-package tech.opsign.kkp.absensi.admin.Fragment;
+package tech.opsign.kkp.absensi;
 
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -10,21 +11,21 @@ import android.os.StrictMode;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
+import android.widget.Button;
+import android.widget.EditText;
 
 import com.google.gson.Gson;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -33,50 +34,84 @@ import java.util.List;
 import Tools.GenKey;
 import Tools.JsonParser;
 import Tools.Utilities;
-import tech.opsign.kkp.absensi.R;
-import tech.opsign.kkp.absensi.admin.Fragment.ToolDashboard.Adapter;
-import tech.opsign.kkp.absensi.admin.Fragment.ToolDashboard.Model;
 
-public class DashboardFragmentAdmin extends Fragment {
+public class GantiPass extends Fragment {
 
     private GenKey key;
     private View v;
     private SharedPreferences sp;
-
     private Handler handler;
     private AsyncTask start;
     private ProgressDialog dialog;
+    private EditText pas_lama, pas_baru_1, pas_baru_2;
+    private Button tombol;
+    private String pas1_string, pas2_string, paslama_string;
 
-
-    private List<Model> modelList = new ArrayList<>();
-    private Adapter adapter;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        getActivity().setTitle(R.string.home);
-        v = inflater.inflate(R.layout.a_fragmen_admin, container, false);
+        getActivity().setTitle("Ganti Password");
+        v = inflater.inflate(R.layout.ganti_pass, container, false);
 
         key = new GenKey();
         sp = v.getContext().getSharedPreferences("shared", 0x0000);
         handler = new Handler();
+        pas_lama = (EditText) v.findViewById(R.id.password_lama);
+        pas_baru_1 = (EditText) v.findViewById(R.id.password_baru1);
+        pas_baru_2 = (EditText) v.findViewById(R.id.password_baru2);
 
-        ((TextView) v.findViewById(R.id.textView14)).setText(sp.getString("nama", ""));
-        ((TextView) v.findViewById(R.id.tanggal)).setText(Utilities.gettanggal(sp.getString("tanggal", "")));
+        pas_lama.addTextChangedListener(logintextwarcher);
+        pas_baru_1.addTextChangedListener(logintextwarcher);
+        pas_baru_2.addTextChangedListener(logintextwarcher);
+
+        tombol = (Button) v.findViewById(R.id.tombol_ubah);
+        tombol.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                pas_baru_2.setError(null);
+                if (pas1_string.equals(pas2_string)) {
+                    mulai();
+                    Log.e("ER", "mulai");
+                } else {
+                    pas_baru_2.setError("Password Baru Tidak Sama");
+                }
 
 
-        adapter = new Adapter(modelList);
-        RecyclerView recyclerView = (RecyclerView) v.findViewById(R.id.list_kehadiran_siswa);
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(v.getContext());
-        recyclerView.setLayoutManager(layoutManager);
-        recyclerView.setNestedScrollingEnabled(false);
+            }
+        });
 
-        recyclerView.setItemAnimator(new DefaultItemAnimator());
-        recyclerView.setAdapter(adapter);
-
-        mulai();
         return v;
     }
+
+    private TextWatcher logintextwarcher = new TextWatcher() {
+
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+        }
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+
+            pas1_string = pas_baru_1.getText().toString().trim();
+            pas2_string = pas_baru_2.getText().toString().trim();
+            paslama_string = pas_lama.getText().toString().trim();
+            boolean b = !pas1_string.isEmpty() && !pas2_string.isEmpty() && !paslama_string.isEmpty();
+            tombol.setEnabled(b);
+
+            if (b)
+                tombol.setBackground(ContextCompat.getDrawable(v.getContext(), R.drawable.button));
+            else
+                tombol.setBackground(ContextCompat.getDrawable(v.getContext(), R.drawable.button_deny));
+        }
+
+        @Override
+        public void afterTextChanged(Editable s) {
+
+        }
+    };
 
 
     private void mulai() {
@@ -104,7 +139,7 @@ public class DashboardFragmentAdmin extends Fragment {
     }
 
     private class Param {
-        String x1d, type, key, token;
+        String x1d, type, key, token, xp4s5, xp4s5_lama;
     }
 
     private class callAPI extends AsyncTask<Void, Void, Void> {
@@ -137,14 +172,14 @@ public class DashboardFragmentAdmin extends Fragment {
                 param.type = "mmm";
                 param.key = Utilities.imei(getActivity());
                 param.token = sp.getString("token", "");
-//                param.kd_kls = sp.getString("token", "");
-
+                param.xp4s5 = key.gen_pass(pas2_string);
+                param.xp4s5_lama = key.gen_pass(paslama_string);
                 Gson gson = new Gson();
                 List<NameValuePair> p = new ArrayList<NameValuePair>();
                 p.add(new BasicNameValuePair("parsing", gson.toJson(param)));
 
                 JsonParser jParser = new JsonParser();
-                json = jParser.getJSONFromUrl(key.url(300), p);
+                json = jParser.getJSONFromUrl(key.url(3), p);
                 Log.e("param login ", gson.toJson(param));
                 Log.e("isi json login", json.toString(2));
                 code = json.getString("code");
@@ -167,7 +202,23 @@ public class DashboardFragmentAdmin extends Fragment {
             if (background) {
 
                 if (code.equals("OK4")) {
-                    proses();
+                    AlertDialog.Builder ab = new AlertDialog.Builder(v.getContext());
+                    SharedPreferences.Editor editor = sp.edit();
+                    editor.putString("username", "");
+                    editor.putString("token", "");
+                    editor.commit();
+                    ab
+                            .setCancelable(false).setTitle("Informasi")
+                            .setMessage("Password sudah Berhasil Ganti, Silahkan Login Kembali")
+                            .setPositiveButton("Tutup", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+
+                                    startActivity(new Intent(v.getContext(), Login.class));
+                                    getActivity().finish();
+                                }
+                            })
+                            .show();
                 } else {
                     AlertDialog.Builder ab = new AlertDialog.Builder(v.getContext());
                     ab
@@ -177,7 +228,6 @@ public class DashboardFragmentAdmin extends Fragment {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     dialog.dismiss();
-                                    getActivity().finish();
                                 }
                             })
                             .show();
@@ -185,45 +235,10 @@ public class DashboardFragmentAdmin extends Fragment {
 
 
             } else {
-                Utilities.codeerror(v.getContext(), "error saat pemanggilan api");
+                Utilities.codeerror(v.getContext(), "ER0211");
             }
         }
 
-        private void proses() {
-            try {
-                JSONObject data = json.getJSONObject("date");
-                if (data.getString("status").equals("L")) {
-                    ((TextView) v.findViewById(R.id.keterangan)).setText("Libur");
-                    ((TextView) v.findViewById(R.id.info)).setVisibility(View.VISIBLE);
-                } else {
-                    ((TextView) v.findViewById(R.id.keterangan)).setText("Masuk");
-                    ((TextView) v.findViewById(R.id.info)).setVisibility(View.GONE);
-                }
-                ((TextView) v.findViewById(R.id.info)).setText(data.getString("ket"));
-
-                Model row;
-                JSONArray aray = json.getJSONArray("list_absen");
-                if (aray != null && aray.length() > 0) {
-                    for(int i =0; i<aray.length();i++){
-//               for(int i =0; i<1;i++){
-                        data = aray.getJSONObject(i);
-                        // type true akan menghilangkan row kelas
-                        row = new Model(
-                                data.getString("nis"),
-                                data.getString("nama"),
-                                data.getString("kelas"),
-                                data.getString("ket")
-
-                        );
-                        modelList.add(row);
-                    }
-                }
-                adapter.notifyDataSetChanged();
-            } catch (Exception e) {
-                Log.e("ER___", String.valueOf(e));
-            }
-        }
     }
-
 
 }

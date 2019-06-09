@@ -24,10 +24,11 @@ import android.widget.Toast;
 
 import Tools.GenKey;
 import Tools.Utilities;
+import tech.opsign.kkp.absensi.GantiPass;
 import tech.opsign.kkp.absensi.Login;
 import tech.opsign.kkp.absensi.R;
 import tech.opsign.kkp.absensi.admin.Fragment.DashboardFragmentAdmin;
-import tech.opsign.kkp.absensi.admin.Fragment.InputTanggal;
+import tech.opsign.kkp.absensi.admin.Master.input_tanggal;
 
 public class MainAdmin extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     private SharedPreferences sp;
@@ -48,7 +49,7 @@ public class MainAdmin extends AppCompatActivity implements NavigationView.OnNav
 //        Toast.makeText(this, "Selamat Datang", Toast.LENGTH_SHORT).show();
         this.activity = this;
         key = new GenKey();
-        sp = activity.getSharedPreferences(key.key(9145), 0x0000);
+        sp = activity.getSharedPreferences("shared", 0x0000);
         halder = new Handler();
 
         if (Build.VERSION.SDK_INT >= 21) {
@@ -80,26 +81,35 @@ public class MainAdmin extends AppCompatActivity implements NavigationView.OnNav
         navHeaderView = navigationView.inflateHeaderView(R.layout.nav_header);
 
         mHandler = new Handler();
-//        m_Runnable.run();
-    }
-
-    private final Runnable m_Runnable = new Runnable()
-    {
-        public void run()
-
-        {
-            Toast.makeText(activity,"in runnable "+ aaa(),Toast.LENGTH_SHORT).show();
-
-            mHandler.postDelayed(m_Runnable, 7000);
+        String level = sp.getString("level", "");
+        Menu menu = navigationView.getMenu();
+        if (level.equals("1")) {
+            menu.findItem(R.id.master).setVisible(true);
+        } else {
+            menu.findItem(R.id.master).setVisible(false);
         }
+//        m_Runnable.run();
 
-    };
-    int a=1;
-    String aaa(){
-
-        a++;
-        return String.valueOf(a);
     }
+
+
+//    private final Runnable m_Runnable = new Runnable()
+//    {
+//        public void run()
+//
+//        {
+//            Toast.makeText(activity,"in runnable "+ aaa(),Toast.LENGTH_SHORT).show();
+//
+//            mHandler.postDelayed(m_Runnable, 7000);
+//        }
+//
+//    };
+//    int a=1;
+//    String aaa(){
+//
+//        a++;
+//        return String.valueOf(a);
+//    }
 
 
     @Override
@@ -128,44 +138,19 @@ public class MainAdmin extends AppCompatActivity implements NavigationView.OnNav
 //            Intent intent = new Intent(activity, RiwayatPekerjaan.class);
 //            startActivity(intent);
 //        }
-//        if (id == R.id.absensi) {
-//            Intent intent = new Intent(activity, Absensi.class);
-//            startActivity(intent);
-//        }
-//        if (id == R.id.form_izin) {
-//            Intent intent = new Intent(activity, Pengajuan_surat.class);
-//            startActivity(intent);
-//        }
-//        if (id == R.id.history_ijin) {
-//            Intent intent = new Intent(activity, HistoriIzin.class);
-//            startActivity(intent);
-//        }
-//        if (id == R.id.mnggu_persetujuan) {
-//            Intent intent = new Intent(activity, Menunggu_Persetujuan.class);
-//            startActivity(intent);
-//        }
-
+//
         if (id == R.id.homedashboard) {
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_containter
                     , new DashboardFragmentAdmin()).commit();
         }
         if (id == R.id.input_tanggal) {
+            startActivity(new Intent(activity, input_tanggal.class));
+        }
+        if (id == R.id.ganti_pswd) {
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_containter
-                    , new InputTanggal()).commit();
+                    , new GantiPass()).commit();
         }
 
-//        if (id == R.id.nav_dos_penelitian) {
-////            Intent intent = new Intent(activity, DPenelitian.class);
-////            startActivity(intent);
-//            /*new AlertDialog.Builder(activity).setTitle("Informasi").setMessage("Mohon maaf, untuk saat ini fitur yang Anda pilih masih dalam pengembangan.").setNegativeButton("tutup", new DialogInterface.OnClickListener() {
-//                @Override
-//                public void onClick(DialogInterface dialog, int which) {
-//                    dialog.dismiss();
-//                }
-//            }).show();*/
-//        }
-
-//
         if (id == R.id.nav_out) {
             new AlertDialog.Builder(activity)
                     .setCancelable(false).setTitle("Konfirmasi")

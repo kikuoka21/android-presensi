@@ -190,8 +190,7 @@ public class Dashboard extends Fragment {
                     ((TextView) v.findViewById(R.id.keterangan)).setText("Masuk");
                     ((TextView) v.findViewById(R.id.info)).setVisibility(View.GONE);
                 }
-                ((TextView) v.findViewById(R.id.info)).setText(json.getString("ket"));
-            } catch (Exception e) {
+             } catch (Exception e) {
                 Log.e("ER___", String.valueOf(e));
             }
         }

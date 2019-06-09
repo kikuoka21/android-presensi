@@ -61,6 +61,7 @@ public class SplashScreen extends AppCompatActivity {
         sp = activity.getSharedPreferences("shared", 0x0000);
         handler = new Handler();
         PackageInfo pInfo;
+
         try {
             pInfo = activity.getPackageManager().getPackageInfo(getPackageName(), 0);
             String version = pInfo.versionName;
@@ -129,7 +130,7 @@ public class SplashScreen extends AppCompatActivity {
         AlertDialog alert = new AlertDialog.Builder(this, R.style.Theme_AppCompat_Dialog_Alert).create();
         if ((new InetConnection()).isConnected(activity)) {
 
-            if (sp.getString("username", "").equals("") && sp.getString("token", "").equals("")) {
+            if (sp.getString("username", "").equals("") || sp.getString("token", "").equals("")) {
 //            if (true) {
                 new Handler().postDelayed(
                         new Runnable() {
@@ -228,7 +229,7 @@ public class SplashScreen extends AppCompatActivity {
                 p.add(new BasicNameValuePair("parsing", gson.toJson(param)));
                 JsonParser jParser = new JsonParser();
                 json = jParser.getJSONFromUrl(key.url(2), p);
-//                Log.e("ER_", json.toString(3));
+                Log.e("ER_", json.toString(3));
 //
                 code = json.getString("code");
 

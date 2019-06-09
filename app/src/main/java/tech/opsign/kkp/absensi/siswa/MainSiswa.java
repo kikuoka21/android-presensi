@@ -2,6 +2,7 @@ package tech.opsign.kkp.absensi.siswa;
 
 import android.app.AlertDialog;
 import android.app.FragmentManager;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -21,13 +22,16 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
 import Tools.GenKey;
 import Tools.Utilities;
+import tech.opsign.kkp.absensi.GantiPass;
 import tech.opsign.kkp.absensi.Login;
 import tech.opsign.kkp.absensi.R;
 import tech.opsign.kkp.absensi.siswa.Fragmen.Dashboard;
+import tech.opsign.kkp.absensi.siswa.Fragmen.Profile;
 import tech.opsign.kkp.absensi.siswa.pengurus.generate_qr;
 
 public class MainSiswa extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -38,7 +42,6 @@ public class MainSiswa extends AppCompatActivity implements NavigationView.OnNav
     private Handler halder;
     private AsyncTask start;
     private boolean flag = true;
-    private String level;
 
     private GenKey key;
 
@@ -77,12 +80,25 @@ public class MainSiswa extends AppCompatActivity implements NavigationView.OnNav
 
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_containter,
-                    new Dashboard()).commit();
+//                    new Dashboard()).commit();
+                    new GantiPass()).commit();
         }
         navHeaderView = navigationView.inflateHeaderView(R.layout.nav_header);
 
-        level = sp.getString("level", "");
+        String level = sp.getString("level", "");
         Log.e("ER_", level);
+        toggle.setToolbarNavigationClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d("toolbar", "Clicked");
+            }
+        });
+//                setNavigationOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Log.d("toolbar","Clicked");
+//            }
+//        });
 
         Menu menu = navigationView.getMenu();
         if (level.equals("1")) {
@@ -90,6 +106,8 @@ public class MainSiswa extends AppCompatActivity implements NavigationView.OnNav
         } else {
             menu.findItem(R.id.pengurus).setVisible(false);
         }
+
+
     }
 
 
@@ -131,6 +149,14 @@ public class MainSiswa extends AppCompatActivity implements NavigationView.OnNav
         if (id == R.id.homedashboard) {
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_containter
                     , new Dashboard()).commit();
+        }
+        if (id == R.id.profil) {
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_containter
+                    , new Profile()).commit();
+        }
+        if (id == R.id.ganti_pswd) {
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_containter
+                    , new GantiPass()).commit();
         }
 
 

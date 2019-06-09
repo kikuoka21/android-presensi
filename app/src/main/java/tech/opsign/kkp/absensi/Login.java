@@ -58,6 +58,8 @@ public class Login extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.login);
+
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
         this.activity = this;
         if (Build.VERSION.SDK_INT >= 21) {
             Window window = this.getWindow();
@@ -75,6 +77,9 @@ public class Login extends AppCompatActivity {
         jnip.addTextChangedListener(logintextwarcher);
         jpassword.addTextChangedListener(logintextwarcher);
 
+        SharedPreferences sp = activity.getSharedPreferences("shared", 0x0000);
+        Log.e("username", sp.getString("username", ""));
+        Log.e("ERtoken", sp.getString("token", ""));
 
         tombol = findViewById(R.id.login);
         tombol.setEnabled(true);
