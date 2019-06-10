@@ -49,6 +49,8 @@ public class GenKey {
 
             case 310:
                 return head + "/api/admin/master/lihat/tanggal";
+            case 309:
+                return head + "/api/admin/master/tanggal";
 
             default:
                 return "";

@@ -80,8 +80,8 @@ public class MainSiswa extends AppCompatActivity implements NavigationView.OnNav
 
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_containter,
-//                    new Dashboard()).commit();
-                    new GantiPass()).commit();
+                    new Dashboard()).commit();
+//                    new GantiPass()).commit();
         }
         navHeaderView = navigationView.inflateHeaderView(R.layout.nav_header);
 

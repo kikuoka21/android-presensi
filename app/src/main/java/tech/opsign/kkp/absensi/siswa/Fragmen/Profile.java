@@ -61,7 +61,7 @@ public class Profile extends Fragment {
         handler = new Handler();
 //        ((TextView) v.findViewById(R.id.textView14)).setText(sp.getString("nama", ""));
 //        ((TextView) v.findViewById(R.id.tanggal)).setText(Utilities.gettanggal(sp.getString("tanggal", "")));
-        mulai();
+
         adapter = new Adapter(modelList);
         recyclerView = (RecyclerView) v.findViewById(R.id.profil_kelas);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(v.getContext());
@@ -70,6 +70,8 @@ public class Profile extends Fragment {
 
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(adapter);
+
+        mulai();
         return v;
     }
 

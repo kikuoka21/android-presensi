@@ -35,6 +35,7 @@ import Tools.InetConnection;
 import Tools.JsonParser;
 import Tools.Utilities;
 import tech.opsign.kkp.absensi.admin.MainAdmin;
+import tech.opsign.kkp.absensi.admin.Master.input_tanggal;
 import tech.opsign.kkp.absensi.siswa.MainSiswa;
 import tech.opsign.kkp.absensi.siswa.isi_absen;
 import tech.opsign.kkp.absensi.siswa.pengurus.generate_qr;
@@ -269,6 +270,7 @@ public class SplashScreen extends AppCompatActivity {
                                             if (sp.getString("status", "").equals("1")) {
                                                 Log.d("yeyy", "1");
                                                 homeIntent = new Intent(activity, MainAdmin.class);
+//                                                homeIntent = new Intent(activity, input_tanggal.class);
                                             } else {
                                                 Log.d("yeyy", "2");
                                                 homeIntent = new Intent(activity, MainSiswa.class);

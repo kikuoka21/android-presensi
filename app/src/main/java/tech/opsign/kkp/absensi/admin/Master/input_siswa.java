@@ -1,9 +1,9 @@
 package tech.opsign.kkp.absensi.admin.Master;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
-import android.app.AlertDialog;
 import android.app.DialogFragment;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -33,13 +33,12 @@ import android.widget.TextView;
 
 import com.google.gson.Gson;
 
-import java.text.SimpleDateFormat;
-
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -52,9 +51,9 @@ import tech.opsign.kkp.absensi.R;
 import tech.opsign.kkp.absensi.admin.Master.Tool_Input_Tanggal.Adapter_tanggal;
 import tech.opsign.kkp.absensi.admin.Master.Tool_Input_Tanggal.Model_tanggal;
 
-public class input_tanggal extends AppCompatActivity {
+public class input_siswa extends AppCompatActivity {
     private static SharedPreferences sp;
-    private input_tanggal activity;
+    private input_siswa activity;
     private Handler handler;
     private AsyncTask start;
     private ProgressDialog dialog;

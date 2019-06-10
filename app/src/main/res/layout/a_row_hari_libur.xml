@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="10dp"
+
+    app:cardCornerRadius="10dp">
+
+    <TableLayout
+        android:id="@+id/latar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/hitam"
+        android:padding="10dp">
+
+
+        <TableRow>
+
+            <TextView
+                android:layout_marginStart="0dp"
+                android:layout_marginEnd="10dp"
+                android:text="Tanggal"
+                android:textColor="#FFF"
+                android:textSize="16sp" />
+
+            <TextView
+                android:paddingStart="2dp"
+                android:paddingEnd="6dp"
+                android:text=":"
+                android:textColor="#FFF"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/tanggal"
+                android:layout_weight="1"
+                android:paddingStart="0dp"
+                android:paddingEnd="5dp"
+                android:text="kasnfkasnkald askdmakd kasmdiwaldmasdaw"
+                android:textColor="#FFF"
+                android:textSize="18sp" />
+
+        </TableRow>
+
+        <TableRow>
+
+            <TextView
+                android:layout_marginStart="0dp"
+                android:layout_marginEnd="10dp"
+                android:text="Keterangan"
+                android:textColor="#FFF"
+                android:textSize="16sp" />
+
+            <TextView
+                android:paddingStart="2dp"
+                android:paddingEnd="6dp"
+                android:text=":"
+                android:textColor="#FFF"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/keterangan"
+                android:layout_weight="1"
+                android:paddingStart="0dp"
+                android:paddingEnd="5dp"
+                android:text="kasnfkasnkald askdmakd kasmdiwaldmasdaw"
+                android:textColor="#FFF"
+                android:textSize="18sp" />
+
+        </TableRow>
+
+
+    </TableLayout>
+
+</android.support.v7.widget.CardView>

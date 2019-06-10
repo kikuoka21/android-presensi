@@ -131,8 +131,8 @@ public class Dashboard extends Fragment {
 
                 JsonParser jParser = new JsonParser();
                 json = jParser.getJSONFromUrl(key.url(100), p);
-                Log.e("param login ", gson.toJson(param));
-//                Log.e("isi json login", json.toString(2));
+//                Log.e("param login ", gson.toJson(param));
+                Log.e("isi json login", json.toString(2));
                 code = json.getString("code");
 
             } catch (Exception e) {
