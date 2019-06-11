@@ -28,6 +28,7 @@ import tech.opsign.kkp.absensi.GantiPass;
 import tech.opsign.kkp.absensi.Login;
 import tech.opsign.kkp.absensi.R;
 import tech.opsign.kkp.absensi.admin.Fragment.DashboardFragmentAdmin;
+import tech.opsign.kkp.absensi.admin.Master.input_siswa;
 import tech.opsign.kkp.absensi.admin.Master.input_tanggal;
 
 public class MainAdmin extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -145,6 +146,9 @@ public class MainAdmin extends AppCompatActivity implements NavigationView.OnNav
         }
         if (id == R.id.input_tanggal) {
             startActivity(new Intent(activity, input_tanggal.class));
+        }
+        if (id == R.id.input_siswa) {
+            startActivity(new Intent(activity, input_siswa.class));
         }
         if (id == R.id.ganti_pswd) {
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_containter

@@ -4,18 +4,6 @@ import java.security.MessageDigest;
 
 public class GenKey {
 
-    public String key(int str) {
-
-        switch (str) {
-            case 2://id
-                return "id";
-            case 1://id
-                return "token";
-
-            default:
-                return "";
-        }
-    }
 
     public String url(int str) {
         String web, port, head;
@@ -25,8 +13,10 @@ public class GenKey {
         switch (str) {
             case 1:
                 return head + "/api/auth/login";
+
             case 2:
                 return head + "/api/auth/check-token";
+
             case 3:
                 return head + "/api/auth/ganti-pswd";
 
@@ -34,10 +24,13 @@ public class GenKey {
 //                siswa
             case 101:
                 return head + "/api/siswa/presensi/buat";
+
             case 102:
                 return head + "/api/siswa/presensi/isi";
+
             case 100:
                 return head + "/api/siswa/dashboard";
+
             case 103:
                 return head + "/api/siswa/profil";
 
@@ -47,10 +40,17 @@ public class GenKey {
             case 300:
                 return head + "/api/admin/dashboard";
 
+
+
+            case 308:
+                return head + "/api/admin/master/siswa";
+
             case 310:
                 return head + "/api/admin/master/lihat/tanggal";
+
             case 309:
                 return head + "/api/admin/master/tanggal";
+
 
             default:
                 return "";

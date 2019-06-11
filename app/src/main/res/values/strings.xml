@@ -3,6 +3,8 @@
     <string name="home">Home</string>
     <string name="navigation_drawer_open">Open navigation Drawer</string>
     <string name="navigation_drawer_close">Close navigation Drawer</string>
-    <string name="error_invalid_email">NIP Anda Salah, Wajib berisi 6 Digit Angka</string>
+
+    <string name="ijazah">No Ijazah/\nSKHUN SMP/MTs</string>
+    <string name="ortu">Nama Orang Tua/\nWali Siswa</string>
 
 </resources>

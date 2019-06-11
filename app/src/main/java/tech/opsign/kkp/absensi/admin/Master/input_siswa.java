@@ -16,26 +16,25 @@ import android.os.Handler;
 import android.os.StrictMode;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
@@ -48,10 +47,8 @@ import Tools.GenKey;
 import Tools.JsonParser;
 import Tools.Utilities;
 import tech.opsign.kkp.absensi.R;
-import tech.opsign.kkp.absensi.admin.Master.Tool_Input_Tanggal.Adapter_tanggal;
-import tech.opsign.kkp.absensi.admin.Master.Tool_Input_Tanggal.Model_tanggal;
 
-public class input_siswa extends AppCompatActivity {
+public class input_siswa extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
     private static SharedPreferences sp;
     private input_siswa activity;
     private Handler handler;
@@ -59,26 +56,22 @@ public class input_siswa extends AppCompatActivity {
     private ProgressDialog dialog;
     private GenKey key;
 
-    private RecyclerView recyclerView;
-    private List<Model_tanggal> modelList = new ArrayList<>();
-    private Adapter_tanggal adapter;
-
-    private EditText ket;
     @SuppressLint("StaticFieldLeak")
     private static TextView tgl;
-    private static String tgl_string = "";
-    private String ket_string;
+    private static String str_tgl_lahir = "";
+    private EditText nis, nisn, nama, tmp_lahir, nama_wali, alamat, no_ijazah, no_ujian;
+    private String str_nis, str_nisn, str_nama, str_tmp_lahir,str_agama, str_nama_wali, str_alamat, str_no_ijazah, str_no_ujian;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.a_input_tanggal);
+        setContentView(R.layout.a_input_siswa);
 
         this.activity = this;
         key = new GenKey();
         sp = activity.getSharedPreferences("shared", 0x0000);
         handler = new Handler();
-        setTitle("Input Hari Libur");
+        setTitle("Input Siswa");
         if (Build.VERSION.SDK_INT >= 21) {
             Window window = this.getWindow();
             window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
@@ -86,45 +79,75 @@ public class input_siswa extends AppCompatActivity {
             window.setStatusBarColor(this.getResources().getColor(R.color.colorPrimary));
         }
 
-        awalan();
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
+        Spinner spiner = findViewById(R.id.agama);
+        spiner.setAdapter(null);
+        ArrayList<String> jenis = new ArrayList<String>();
+        jenis.add("Islam");
+        jenis.add("Kristen");
+        jenis.add("Katolik");
+        jenis.add("Hindu");
+        jenis.add("Buddha");
+        jenis.add("Kong Hu Cu");
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(activity, R.layout.spiner_item, jenis);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spiner.setAdapter(adapter);
+        spiner.setOnItemSelectedListener(this);
 
         tgl = (TextView) findViewById(R.id.inpt_tgl);
-        ket = (EditText) findViewById(R.id.ket);
-
-
-        adapter = new Adapter_tanggal(modelList);
-        recyclerView = (RecyclerView) findViewById(R.id.list_tanggal);
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(activity);
-        recyclerView.setLayoutManager(layoutManager);
-        recyclerView.setNestedScrollingEnabled(false);
-
-        recyclerView.setItemAnimator(new DefaultItemAnimator());
-        recyclerView.setAdapter(adapter);
-
+//        nisn, nama, tmp_lahir,nama_wali, alamat, no_ijazah, no_ujian;
+        nis = (EditText) findViewById(R.id.nis);
+        nisn = (EditText) findViewById(R.id.nisn);
+        nama = (EditText) findViewById(R.id.namna);
+        tmp_lahir = (EditText) findViewById(R.id.tmp_lahir);
+        nama_wali = (EditText) findViewById(R.id.orang_tua);
+        alamat = (EditText) findViewById(R.id.alamat);
+        no_ijazah = (EditText) findViewById(R.id.no_ijazah);
+        no_ujian = (EditText) findViewById(R.id.no_ujian);
         LinearLayout date_pick = (LinearLayout) findViewById(R.id.pilih_tgl);
         date_pick.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                tgl.setError(null);
                 closekeyboard();
                 DialogFragment dialogfragment = new tanggalmulai();
                 dialogfragment.show(getFragmentManager(), "Tanggal Mulai");
             }
         });
+
         Button tombol = findViewById(R.id.kirimtanggal);
         tombol.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 closekeyboard();
+                nis.setError(null);
+                nama.setError(null);
+                tmp_lahir.setError(null);
+                nama_wali.setError(null);
+                alamat.setError(null);
+                str_nis = nis.getText().toString().trim();
+                str_nisn = nisn.getText().toString().trim();
+                str_nama = nama.getText().toString().trim();
+                str_tmp_lahir = tmp_lahir.getText().toString().trim();
+                str_nama_wali = nama_wali.getText().toString().trim();
+                str_alamat = alamat.getText().toString().trim();
+                str_no_ijazah = no_ijazah.getText().toString().trim();
+                str_no_ujian = no_ujian.getText().toString().trim();
 
-                ket_string = ket.getText().toString().trim();
-                if (tgl_string.equals("")) {
-                    pesan("Tanggal Tidak Boleh Kosong", activity);
-                } else if (ket.getText().toString().trim().equals("")) {
-                    pesan("Keterangan Tidak Boleh Kosong", activity);
+
+                if (str_nis.equals("")) {
+                    nis.setError("Wajib diisi");
+                } else if (str_nis.length() != 6) {
+                    nis.setError("Harus 6 Digit Angka");
+                } else if (nama.getText().toString().trim().equals("")) {
+                    nama.setError("Wajib diisi");
+                } else if (str_tmp_lahir.equals("")) {
+                    tmp_lahir.setError("Wajib diisi");
+                } else if (str_tgl_lahir.equals("")) {
+                    pesan("Tanggal Lahir Wajib Diisi", activity);
+                } else if (str_alamat.equals("")) {
+                    alamat.setError("Wajib diisi");
                 } else {
                     Log.e("ER__", "KIRM BOIIIII");
                     kirim();
@@ -145,7 +168,7 @@ public class input_siswa extends AppCompatActivity {
 
     private void kirim() {
         Log.e("ER", "start");
-        start = new kirim_tgl().execute();
+        start = new kirim_siswa().execute();
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -160,7 +183,7 @@ public class input_siswa extends AppCompatActivity {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     dialog.dismiss();
-                                    awalan();
+                                    kirim();
                                 }
                             }).setNegativeButton("kembali", new DialogInterface.OnClickListener() {
                         @Override
@@ -174,14 +197,27 @@ public class input_siswa extends AppCompatActivity {
         }, Utilities.rto());
     }
 
-    private class kirim_tgl extends AsyncTask<Void, Void, Void> {
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        Log.e("agamanya", parent.getItemAtPosition(position).toString());
+        str_agama = parent.getItemAtPosition(position).toString();
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+
+    }
+
+    private class kirim_siswa extends AsyncTask<Void, Void, Void> {
 
         private String code;
         private JSONObject json;
         private boolean background;
 
         class Param {
-            String x1d, type, key, token, tanggal, ket;
+            String x1d, type, key, token;
+            String nis, nisn, nama_siswa, tgl_lhr, alamat, tmpt_lhr, agama,
+                    orangtua, no_ijazah, no_ujiansmp;
         }
 
         @Override
@@ -207,15 +243,25 @@ public class input_siswa extends AppCompatActivity {
                 param.type = "mmm";
                 param.key = Utilities.imei(activity);
                 param.token = sp.getString("token", "");
-                param.tanggal = tgl_string;
-                param.ket = ket_string;
+                param.nis = str_nis;
+                param.nisn = str_nisn;
+                param.nama_siswa = str_nama;
+                param.tmpt_lhr = str_tmp_lahir;
+                param.alamat = str_alamat;
+                param.agama = str_agama;
+                param.orangtua = str_nama_wali;
+                param.no_ijazah = str_no_ijazah;
+                param.no_ujiansmp = str_no_ujian;
+
+
+                param.tgl_lhr = str_tgl_lahir;
 
                 Gson gson = new Gson();
                 List<NameValuePair> p = new ArrayList<NameValuePair>();
                 p.add(new BasicNameValuePair("parsing", gson.toJson(param)));
 
                 JsonParser jParser = new JsonParser();
-                json = jParser.getJSONFromUrl(key.url(309), p);
+                json = jParser.getJSONFromUrl(key.url(308), p);
 //                Log.e("isi json login", json.toString(2));
                 code = json.getString("code");
 
@@ -237,7 +283,7 @@ public class input_siswa extends AppCompatActivity {
             if (background) {
 
                 if (code.equals("OK4")) {
-                    pesan("Penginputan Tanggal Berhasil", activity);
+                    pesan("Penginputan Siswa Berhasil.\nUsername \'"+str_nis+"\'\nPassword 'admin'", activity);
                 } else {
                     AlertDialog.Builder ab = new AlertDialog.Builder(activity);
                     ab
@@ -261,151 +307,6 @@ public class input_siswa extends AppCompatActivity {
         }
 
 
-    }
-
-    private void awalan() {
-        Log.e("ER", "start");
-        start = new callAPI().execute();
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                if (dialog.isShowing()) {
-                    dialog.dismiss();
-                    start.cancel(true);
-                    new AlertDialog.Builder(activity)
-                            .setTitle("Informasi")
-                            .setMessage("Telah Terjadi Kesalahan Pada Koneksi Anda.")
-                            .setCancelable(false)
-                            .setPositiveButton("Coba Lagi", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    dialog.dismiss();
-                                    awalan();
-                                }
-                            }).setNegativeButton("kembali", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.dismiss();
-                            finish();
-                        }
-                    }).show();
-                }
-            }
-        }, Utilities.rto());
-    }
-
-    private class callAPI extends AsyncTask<Void, Void, Void> {
-
-        private String code;
-        private JSONObject json;
-        private boolean background;
-
-        class Param {
-            String x1d, type, key, token, tanggal;
-        }
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            background = true;
-            dialog = new ProgressDialog(activity);
-            dialog.setMessage("Sedang memproses data. Harap tunggu sejenak.");
-            dialog.setCancelable(false);
-            dialog.show();
-
-        }
-
-        @Override
-        protected Void doInBackground(Void... voids) {
-            try {
-                StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-                StrictMode.setThreadPolicy(policy);
-
-
-                Param param = new Param();
-                param.x1d = sp.getString("username", "");
-                param.type = "mmm";
-                param.key = Utilities.imei(activity);
-                param.token = sp.getString("token", "");
-                param.tanggal = sp.getString("tanggal", "");
-
-                Gson gson = new Gson();
-                List<NameValuePair> p = new ArrayList<NameValuePair>();
-                p.add(new BasicNameValuePair("parsing", gson.toJson(param)));
-
-                JsonParser jParser = new JsonParser();
-                json = jParser.getJSONFromUrl(key.url(310), p);
-//                Log.e("isi json login", json.toString(2));
-                code = json.getString("code");
-
-            } catch (Exception e) {
-                background = false;
-            }
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Void result) {
-            super.onPostExecute(result);
-
-            if (dialog.isShowing()) {
-                dialog.dismiss();
-            }
-            handler.removeCallbacksAndMessages(null);
-
-            if (background) {
-
-                if (code.equals("OK4")) {
-                    proses();
-                } else {
-                    AlertDialog.Builder ab = new AlertDialog.Builder(activity);
-                    ab
-                            .setCancelable(false).setTitle("Informasi")
-                            .setMessage(code)
-                            .setPositiveButton("Tutup", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-
-                                    dialog.dismiss();
-                                    finish();
-                                }
-                            })
-                            .show();
-                }
-
-
-            } else {
-                Utilities.codeerror(activity, "ER0211");
-            }
-        }
-
-        private void proses() {
-            try {
-                Model_tanggal row;
-                JSONArray aray = json.getJSONArray("data");
-                if (aray != null && aray.length() > 0) {
-                    ((LinearLayout) findViewById(R.id.nulldata)).setVisibility(View.GONE);
-                    recyclerView.setVisibility(View.VISIBLE);
-                    for (int i = 0; i < aray.length(); i++) {
-                        json = aray.getJSONObject(i);
-                        // type true akan menghilangkan row kelas
-                        Log.e("ER__ keterangan ", json.getString("ket"));
-                        row = new Model_tanggal(
-                                Utilities.gettanggal(json.getString("tgl")),
-                                json.getString("ket")
-
-                        );
-                        modelList.add(row);
-                    }
-                } else {
-                    ((LinearLayout) findViewById(R.id.nulldata)).setVisibility(View.VISIBLE);
-                    recyclerView.setVisibility(View.GONE);
-                }
-                adapter.notifyDataSetChanged();
-            } catch (Exception e) {
-                Log.e("ER___", String.valueOf(e));
-            }
-        }
     }
 
 
@@ -433,12 +334,12 @@ public class input_siswa extends AppCompatActivity {
                 Date tanggalpilihan, tanggalskrng;
                 tanggalskrng = date.parse(sp.getString("tanggal", ""));
                 tanggalpilihan = date.parse(strin);
-                if ((tanggalpilihan.after(tanggalskrng) || tanggalpilihan.equals(tanggalskrng))) {
-                    tgl_string = strin;
-                    tgl.setText(Utilities.gettanggal(strin));
+                if ((tanggalpilihan.before(tanggalskrng) || tanggalpilihan.equals(tanggalskrng))) {
+                    str_tgl_lahir = strin;
+                    tgl.setText(Utilities.gettgl_lahir(strin));
                 } else {
-                    tgl_string = "";
-                    pesan("Pilihan Tanggal Tidak Boleh Sebelum " + Utilities.gettanggal(sp.getString("tanggal", "")), getActivity());
+                    str_tgl_lahir = "";
+                    pesan("Pilihan Tanggal Tidak Boleh Sesudah " + Utilities.gettgl_lahir(sp.getString("tanggal", "")), getActivity());
                     tgl.setText("Pilih Tanggal");
 
                 }
