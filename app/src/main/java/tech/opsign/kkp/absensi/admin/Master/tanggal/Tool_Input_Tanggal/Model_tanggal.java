@@ -1,4 +1,4 @@
-package tech.opsign.kkp.absensi.admin.Master.Tool_Input_Tanggal;
+package tech.opsign.kkp.absensi.admin.Master.tanggal.Tool_Input_Tanggal;
 
 public class Model_tanggal {
         public String tanggal,keterangan;

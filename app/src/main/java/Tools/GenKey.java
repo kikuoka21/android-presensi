@@ -43,13 +43,24 @@ public class GenKey {
 
 
             case 308:
-                return head + "/api/admin/master/siswa";
+                return head + "/api/admin/master/siswa/input";
+            case 307:
+                return head + "/api/admin/master/siswa/cari";
+            case 306:
+                return head + "/api/admin/master/siswa/datasiswa";
+            case 305:
+                return head + "/api/admin/master/siswa/ubah";
+
+
+
+
 
             case 310:
-                return head + "/api/admin/master/lihat/tanggal";
-
+                return head + "/api/admin/master/tanggal/list";
             case 309:
-                return head + "/api/admin/master/tanggal";
+                return head + "/api/admin/master/tanggal/input";
+            case 311:
+                return head + "/api/admin/master/tanggal/history";
 
 
             default:

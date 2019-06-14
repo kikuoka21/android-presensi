@@ -16,16 +16,16 @@
         <menu>
             <item
                 android:id="@+id/input_siswa"
-                android:title="Input Siswa" />
+                android:title="Siswa" />
             <item
                 android:id="@+id/input_tanggal"
-                android:title="Input Tanggal" />
+                android:title="Tanggal" />
             <item
                 android:id="@+id/input_staff"
-                android:title="Input Staff" />
+                android:title="Staff" />
             <item
                 android:id="@+id/input_kelas"
-                android:title="Input Kelas" />
+                android:title="Kelas" />
 
         </menu>
     </item>

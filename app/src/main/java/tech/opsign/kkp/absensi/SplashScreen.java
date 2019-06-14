@@ -1,6 +1,5 @@
 package tech.opsign.kkp.absensi;
 
-import android.Manifest;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -35,11 +34,9 @@ import Tools.InetConnection;
 import Tools.JsonParser;
 import Tools.Utilities;
 import tech.opsign.kkp.absensi.admin.MainAdmin;
-import tech.opsign.kkp.absensi.admin.Master.input_siswa;
-import tech.opsign.kkp.absensi.admin.Master.input_tanggal;
+import tech.opsign.kkp.absensi.admin.Master.siswa.Cari_siswa;
+import tech.opsign.kkp.absensi.admin.Master.siswa.input_siswa;
 import tech.opsign.kkp.absensi.siswa.MainSiswa;
-import tech.opsign.kkp.absensi.siswa.isi_absen;
-import tech.opsign.kkp.absensi.siswa.pengurus.generate_qr;
 
 public class SplashScreen extends AppCompatActivity {
     private SharedPreferences sp;
@@ -231,7 +228,7 @@ public class SplashScreen extends AppCompatActivity {
                 p.add(new BasicNameValuePair("parsing", gson.toJson(param)));
                 JsonParser jParser = new JsonParser();
                 json = jParser.getJSONFromUrl(key.url(2), p);
-                Log.e("ER_", json.toString(3));
+//                Log.e("ER_", json.toString(3));
 //
                 code = json.getString("code");
 
@@ -271,7 +268,8 @@ public class SplashScreen extends AppCompatActivity {
                                             if (sp.getString("status", "").equals("1")) {
                                                 Log.d("yeyy", "1");
                                                 homeIntent = new Intent(activity, MainAdmin.class);
-                                                homeIntent = new Intent(activity, input_siswa.class);
+//                                                homeIntent = new Intent(activity, Cari_siswa.class);
+//                                                homeIntent = new Intent(activity, input_siswa.class);
                                             } else {
                                                 Log.d("yeyy", "2");
                                                 homeIntent = new Intent(activity, MainSiswa.class);

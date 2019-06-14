@@ -1,4 +1,4 @@
-package tech.opsign.kkp.absensi.admin.Master.Tool_Input_Tanggal;
+package tech.opsign.kkp.absensi.admin.Master.tanggal.Tool_Input_Tanggal;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;

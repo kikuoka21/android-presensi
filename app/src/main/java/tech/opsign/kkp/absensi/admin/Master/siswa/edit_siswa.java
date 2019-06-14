@@ -1,4 +1,4 @@
-package tech.opsign.kkp.absensi.admin.Master;
+package tech.opsign.kkp.absensi.admin.Master.siswa;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
@@ -8,6 +8,7 @@ import android.app.DialogFragment;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -48,24 +49,26 @@ import Tools.JsonParser;
 import Tools.Utilities;
 import tech.opsign.kkp.absensi.R;
 
-public class input_staff extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
+public class edit_siswa extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
     private static SharedPreferences sp;
-    private input_staff activity;
+    private edit_siswa activity;
     private Handler handler;
     private AsyncTask start;
     private ProgressDialog dialog;
     private GenKey key;
+    private Spinner spiner;
 
     @SuppressLint("StaticFieldLeak")
     private static TextView tgl;
-    private static String str_level = "";
+    private static String str_tgl_lahir = "";
     private EditText nis, nisn, nama, tmp_lahir, nama_wali, alamat, no_ijazah, no_ujian;
-    private String str_nip,  str_nama;
+    private String str_nis, str_nisn, str_nama, str_tmp_lahir, str_agama, str_nama_wali, str_alamat, str_no_ijazah, str_no_ujian;
 
+    String[] pilihan_agama = {"Islam","Kristen","Katolik","Hindu","Buddha","Kong Hu Cu"};
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.a_input_siswa);
+        setContentView(R.layout.a_siswa_input);
 
         this.activity = this;
         key = new GenKey();
@@ -82,11 +85,13 @@ public class input_staff extends AppCompatActivity implements AdapterView.OnItem
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
-        Spinner spiner = findViewById(R.id.level);
+        spiner = findViewById(R.id.agama);
         spiner.setAdapter(null);
         ArrayList<String> jenis = new ArrayList<String>();
-        jenis.add("Guru Wali Kelas");
-        jenis.add("Guru Piket");
+        int i;
+        for(i = 0; pilihan_agama.length>i; i++){
+            jenis.add(pilihan_agama[i]);
+        }
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(activity, R.layout.spiner_item, jenis);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spiner.setAdapter(adapter);
@@ -122,7 +127,7 @@ public class input_staff extends AppCompatActivity implements AdapterView.OnItem
                 tmp_lahir.setError(null);
                 nama_wali.setError(null);
                 alamat.setError(null);
-                str_nip = nis.getText().toString().trim();
+                str_nis = nis.getText().toString().trim();
                 str_nisn = nisn.getText().toString().trim();
                 str_nama = nama.getText().toString().trim();
                 str_tmp_lahir = tmp_lahir.getText().toString().trim();
@@ -132,15 +137,11 @@ public class input_staff extends AppCompatActivity implements AdapterView.OnItem
                 str_no_ujian = no_ujian.getText().toString().trim();
 
 
-                if (str_nip.equals("")) {
-                    nis.setError("Wajib diisi");
-                } else if (str_nip.length() != 6) {
-                    nis.setError("Harus 6 Digit Angka");
-                } else if (nama.getText().toString().trim().equals("")) {
+                if (nama.getText().toString().trim().equals("")) {
                     nama.setError("Wajib diisi");
                 } else if (str_tmp_lahir.equals("")) {
                     tmp_lahir.setError("Wajib diisi");
-                } else if (str_level.equals("")) {
+                } else if (str_tgl_lahir.equals("")) {
                     pesan("Tanggal Lahir Wajib Diisi", activity);
                 } else if (str_alamat.equals("")) {
                     alamat.setError("Wajib diisi");
@@ -151,6 +152,8 @@ public class input_staff extends AppCompatActivity implements AdapterView.OnItem
             }
         });
 
+        nis.setEnabled(false);
+        ambil();
     }
 
 
@@ -162,7 +165,168 @@ public class input_staff extends AppCompatActivity implements AdapterView.OnItem
         return super.onOptionsItemSelected(item);
     }
 
-    private void kirim() {
+    private void ambil() {
+        Log.e("ER", "start");
+        start = new panggilan_awal().execute();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                if (dialog.isShowing()) {
+                    dialog.dismiss();
+                    start.cancel(true);
+                    new AlertDialog.Builder(activity)
+                            .setTitle("Informasi")
+                            .setMessage("Telah Terjadi Kesalahan Pada Koneksi Anda.")
+                            .setCancelable(false)
+                            .setPositiveButton("Coba Lagi", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                    ambil();
+                                }
+                            }).setNegativeButton("kembali", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                            finish();
+                        }
+                    }).show();
+                }
+            }
+        }, Utilities.rto());
+    }
+
+
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        Log.e("agamanya", parent.getItemAtPosition(position).toString());
+        str_agama = parent.getItemAtPosition(position).toString();
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+
+    }
+
+    private class panggilan_awal extends AsyncTask<Void, Void, Void> {
+
+        private String code;
+        private JSONObject json;
+        private boolean background;
+
+        class Param {
+            String x1d, type, key, token;
+            String nis;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            background = true;
+            dialog = new ProgressDialog(activity);
+            dialog.setMessage("Sedang memproses data. Harap tunggu sejenak.");
+            dialog.setCancelable(false);
+            dialog.show();
+
+        }
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            try {
+                StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+                StrictMode.setThreadPolicy(policy);
+
+                Intent intent = getIntent();
+                Param param = new Param();
+                param.x1d = sp.getString("username", "");
+                param.type = "mmm";
+                param.key = Utilities.imei(activity);
+                param.token = sp.getString("token", "");
+                param.nis = intent.getStringExtra("nis_target");
+
+
+                Gson gson = new Gson();
+                List<NameValuePair> p = new ArrayList<NameValuePair>();
+                p.add(new BasicNameValuePair("parsing", gson.toJson(param)));
+
+                JsonParser jParser = new JsonParser();
+                json = jParser.getJSONFromUrl(key.url(306), p);
+                Log.e("isi json login", json.toString(2));
+                code = json.getString("code");
+
+            } catch (Exception e) {
+                background = false;
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void result) {
+            super.onPostExecute(result);
+
+            if (dialog.isShowing()) {
+                dialog.dismiss();
+            }
+            handler.removeCallbacksAndMessages(null);
+
+            if (background) {
+
+                if (code.equals("OK4")) {
+                    try {
+                        json = json.getJSONObject("data");
+                        nis.setText(json.getString("nis"));
+                        nisn.setText(json.getString("nisn"));
+                        nama.setText(json.getString("nama_siswa"));
+                        tmp_lahir.setText(json.getString("tmp_lahir"));
+
+                        int i;
+                        str_agama = json.getString("agama");
+                        for(i = 0; pilihan_agama.length>i; i++){
+                            if (pilihan_agama[i].equals(str_agama)){
+                                spiner.setSelection(i);
+                                break;
+                            }else {
+                                spiner.setSelection(0);
+                            }
+                        }
+                        nama_wali.setText(json.getString("orang_tua"));
+                        alamat.setText(json.getString("alamat"));
+                        no_ijazah.setText(json.getString("no_ijazah"));
+                        no_ujian.setText(json.getString("no_ujiansmp"));
+
+                        str_tgl_lahir = json.getString("tgl_lahir");
+                        tgl.setText(Utilities.gettgl_lahir(str_tgl_lahir));
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
+                } else {
+                    AlertDialog.Builder ab = new AlertDialog.Builder(activity);
+                    ab
+                            .setCancelable(false).setTitle("Informasi")
+                            .setMessage(code)
+                            .setPositiveButton("Tutup", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+
+                                    dialog.dismiss();
+                                    finish();
+                                }
+                            })
+                            .show();
+                }
+
+
+            } else {
+                Utilities.codeerror(activity, "ER0211");
+            }
+        }
+
+
+    }
+
+        private void kirim() {
         Log.e("ER", "start");
         start = new kirim_siswa().execute();
         handler.postDelayed(new Runnable() {
@@ -192,18 +356,6 @@ public class input_staff extends AppCompatActivity implements AdapterView.OnItem
             }
         }, Utilities.rto());
     }
-
-    @Override
-    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        Log.e("agamanya", parent.getItemAtPosition(position).toString());
-        str_agama = parent.getItemAtPosition(position).toString();
-    }
-
-    @Override
-    public void onNothingSelected(AdapterView<?> parent) {
-
-    }
-
     private class kirim_siswa extends AsyncTask<Void, Void, Void> {
 
         private String code;
@@ -239,7 +391,7 @@ public class input_staff extends AppCompatActivity implements AdapterView.OnItem
                 param.type = "mmm";
                 param.key = Utilities.imei(activity);
                 param.token = sp.getString("token", "");
-                param.nis = str_nip;
+                param.nis = str_nis;
                 param.nisn = str_nisn;
                 param.nama_siswa = str_nama;
                 param.tmpt_lhr = str_tmp_lahir;
@@ -248,16 +400,14 @@ public class input_staff extends AppCompatActivity implements AdapterView.OnItem
                 param.orangtua = str_nama_wali;
                 param.no_ijazah = str_no_ijazah;
                 param.no_ujiansmp = str_no_ujian;
-
-
-                param.tgl_lhr = str_level;
+                param.tgl_lhr = str_tgl_lahir;
 
                 Gson gson = new Gson();
                 List<NameValuePair> p = new ArrayList<NameValuePair>();
                 p.add(new BasicNameValuePair("parsing", gson.toJson(param)));
 
                 JsonParser jParser = new JsonParser();
-                json = jParser.getJSONFromUrl(key.url(308), p);
+                json = jParser.getJSONFromUrl(key.url(305), p);
 //                Log.e("isi json login", json.toString(2));
                 code = json.getString("code");
 
@@ -278,22 +428,21 @@ public class input_staff extends AppCompatActivity implements AdapterView.OnItem
 
             if (background) {
 
-                if (code.equals("OK4")) {
-                    pesan("Penginputan Siswa Berhasil.\nUsername \'"+ str_nip +"\'\nPassword 'admin'", activity);
-                } else {
-                    AlertDialog.Builder ab = new AlertDialog.Builder(activity);
-                    ab
-                            .setCancelable(false).setTitle("Informasi")
-                            .setMessage(code)
-                            .setPositiveButton("Tutup", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
+                AlertDialog.Builder ab = new AlertDialog.Builder(activity);
+                ab
+                        .setCancelable(false).setTitle("Informasi")
+                        .setPositiveButton("Tutup", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
 
-                                    dialog.dismiss();
-                                    finish();
-                                }
-                            })
-                            .show();
+                                dialog.dismiss();
+                                finish();
+                            }
+                        });
+                if (code.equals("OK4")) {
+                    ab.setMessage("Data sudah berhasil diubah").show();
+                } else {
+                    ab.setMessage(code).show();
                 }
 
 
@@ -331,20 +480,23 @@ public class input_staff extends AppCompatActivity implements AdapterView.OnItem
                 tanggalskrng = date.parse(sp.getString("tanggal", ""));
                 tanggalpilihan = date.parse(strin);
                 if ((tanggalpilihan.before(tanggalskrng) || tanggalpilihan.equals(tanggalskrng))) {
-                    str_level = strin;
+                    str_tgl_lahir = strin;
                     tgl.setText(Utilities.gettgl_lahir(strin));
                 } else {
-                    str_level = "";
+                    str_tgl_lahir = "";
                     pesan("Pilihan Tanggal Tidak Boleh Sesudah " + Utilities.gettgl_lahir(sp.getString("tanggal", "")), getActivity());
                     tgl.setText("Pilih Tanggal");
 
                 }
             } catch (Exception e) {
-//                e.printStackTrace();
+                e.printStackTrace();
             }
 
 
         }
+
+
+
 
     }
 

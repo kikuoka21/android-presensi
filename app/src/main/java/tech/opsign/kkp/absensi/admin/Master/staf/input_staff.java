@@ -1,4 +1,4 @@
-package tech.opsign.kkp.absensi.admin.Master;
+package tech.opsign.kkp.absensi.admin.Master.staf;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
@@ -48,9 +48,9 @@ import Tools.JsonParser;
 import Tools.Utilities;
 import tech.opsign.kkp.absensi.R;
 
-public class input_siswa extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
+public class input_staff extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
     private static SharedPreferences sp;
-    private input_siswa activity;
+    private input_staff activity;
     private Handler handler;
     private AsyncTask start;
     private ProgressDialog dialog;
@@ -58,14 +58,14 @@ public class input_siswa extends AppCompatActivity implements AdapterView.OnItem
 
     @SuppressLint("StaticFieldLeak")
     private static TextView tgl;
-    private static String str_tgl_lahir = "";
+    private static String str_level = "";
     private EditText nis, nisn, nama, tmp_lahir, nama_wali, alamat, no_ijazah, no_ujian;
-    private String str_nis, str_nisn, str_nama, str_tmp_lahir,str_agama, str_nama_wali, str_alamat, str_no_ijazah, str_no_ujian;
+    private String str_nip, str_nama;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.a_input_siswa);
+        setContentView(R.layout.a_siswa_input);
 
         this.activity = this;
         key = new GenKey();
@@ -82,15 +82,11 @@ public class input_siswa extends AppCompatActivity implements AdapterView.OnItem
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
-        Spinner spiner = findViewById(R.id.agama);
+        Spinner spiner = findViewById(R.id.level);
         spiner.setAdapter(null);
         ArrayList<String> jenis = new ArrayList<String>();
-        jenis.add("Islam");
-        jenis.add("Kristen");
-        jenis.add("Katolik");
-        jenis.add("Hindu");
-        jenis.add("Buddha");
-        jenis.add("Kong Hu Cu");
+        jenis.add("Guru Wali Kelas");
+        jenis.add("Guru Piket");
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(activity, R.layout.spiner_item, jenis);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spiner.setAdapter(adapter);
@@ -126,28 +122,18 @@ public class input_siswa extends AppCompatActivity implements AdapterView.OnItem
                 tmp_lahir.setError(null);
                 nama_wali.setError(null);
                 alamat.setError(null);
-                str_nis = nis.getText().toString().trim();
-                str_nisn = nisn.getText().toString().trim();
+                str_nip = nis.getText().toString().trim();
                 str_nama = nama.getText().toString().trim();
-                str_tmp_lahir = tmp_lahir.getText().toString().trim();
-                str_nama_wali = nama_wali.getText().toString().trim();
-                str_alamat = alamat.getText().toString().trim();
-                str_no_ijazah = no_ijazah.getText().toString().trim();
-                str_no_ujian = no_ujian.getText().toString().trim();
 
 
-                if (str_nis.equals("")) {
+                if (str_nip.equals("")) {
                     nis.setError("Wajib diisi");
-                } else if (str_nis.length() != 6) {
+                } else if (str_nip.length() != 6) {
                     nis.setError("Harus 6 Digit Angka");
                 } else if (nama.getText().toString().trim().equals("")) {
                     nama.setError("Wajib diisi");
-                } else if (str_tmp_lahir.equals("")) {
-                    tmp_lahir.setError("Wajib diisi");
-                } else if (str_tgl_lahir.equals("")) {
+                } else if (str_level.equals("")) {
                     pesan("Tanggal Lahir Wajib Diisi", activity);
-                } else if (str_alamat.equals("")) {
-                    alamat.setError("Wajib diisi");
                 } else {
                     Log.e("ER__", "KIRM BOIIIII");
                     kirim();
@@ -200,7 +186,7 @@ public class input_siswa extends AppCompatActivity implements AdapterView.OnItem
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         Log.e("agamanya", parent.getItemAtPosition(position).toString());
-        str_agama = parent.getItemAtPosition(position).toString();
+        str_level = parent.getItemAtPosition(position).toString();
     }
 
     @Override
@@ -243,18 +229,9 @@ public class input_siswa extends AppCompatActivity implements AdapterView.OnItem
                 param.type = "mmm";
                 param.key = Utilities.imei(activity);
                 param.token = sp.getString("token", "");
-                param.nis = str_nis;
-                param.nisn = str_nisn;
+                param.nis = str_nip;
                 param.nama_siswa = str_nama;
-                param.tmpt_lhr = str_tmp_lahir;
-                param.alamat = str_alamat;
-                param.agama = str_agama;
-                param.orangtua = str_nama_wali;
-                param.no_ijazah = str_no_ijazah;
-                param.no_ujiansmp = str_no_ujian;
-
-
-                param.tgl_lhr = str_tgl_lahir;
+                param.tgl_lhr = str_level;
 
                 Gson gson = new Gson();
                 List<NameValuePair> p = new ArrayList<NameValuePair>();
@@ -283,7 +260,7 @@ public class input_siswa extends AppCompatActivity implements AdapterView.OnItem
             if (background) {
 
                 if (code.equals("OK4")) {
-                    pesan("Penginputan Siswa Berhasil.\nUsername \'"+str_nis+"\'\nPassword 'admin'", activity);
+                    pesan("Penginputan Siswa Berhasil.\nUsername \'" + str_nip + "\'\nPassword 'admin'", activity);
                 } else {
                     AlertDialog.Builder ab = new AlertDialog.Builder(activity);
                     ab
@@ -335,10 +312,10 @@ public class input_siswa extends AppCompatActivity implements AdapterView.OnItem
                 tanggalskrng = date.parse(sp.getString("tanggal", ""));
                 tanggalpilihan = date.parse(strin);
                 if ((tanggalpilihan.before(tanggalskrng) || tanggalpilihan.equals(tanggalskrng))) {
-                    str_tgl_lahir = strin;
+                    str_level = strin;
                     tgl.setText(Utilities.gettgl_lahir(strin));
                 } else {
-                    str_tgl_lahir = "";
+                    str_level = "";
                     pesan("Pilihan Tanggal Tidak Boleh Sesudah " + Utilities.gettgl_lahir(sp.getString("tanggal", "")), getActivity());
                     tgl.setText("Pilih Tanggal");
 

@@ -46,12 +46,27 @@
             android:theme="@style/AppTheme.NoActionBar" />
 <!--admin-->
         <activity
-            android:name=".admin.Master.input_tanggal"
+            android:name=".admin.Master.tanggal.input_tanggal"
             android:configChanges="orientation|screenSize"
             android:windowSoftInputMode="stateAlwaysHidden"
             android:screenOrientation="portrait"/>
         <activity
-            android:name=".admin.Master.input_siswa"
+            android:name=".admin.Master.siswa.input_siswa"
+            android:configChanges="orientation|screenSize"
+            android:windowSoftInputMode="stateAlwaysHidden"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".admin.Master.siswa.edit_siswa"
+            android:configChanges="orientation|screenSize"
+            android:windowSoftInputMode="stateAlwaysHidden"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".admin.Master.siswa.Cari_siswa"
+            android:configChanges="orientation|screenSize"
+            android:windowSoftInputMode="stateAlwaysHidden"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".admin.Master.siswa.hapus_siswa"
             android:configChanges="orientation|screenSize"
             android:windowSoftInputMode="stateAlwaysHidden"
             android:screenOrientation="portrait"/>

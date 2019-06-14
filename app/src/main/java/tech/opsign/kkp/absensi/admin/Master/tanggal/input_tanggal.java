@@ -1,4 +1,4 @@
-package tech.opsign.kkp.absensi.admin.Master;
+package tech.opsign.kkp.absensi.admin.Master.tanggal;
 
 import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
@@ -49,8 +49,8 @@ import Tools.GenKey;
 import Tools.JsonParser;
 import Tools.Utilities;
 import tech.opsign.kkp.absensi.R;
-import tech.opsign.kkp.absensi.admin.Master.Tool_Input_Tanggal.Adapter_tanggal;
-import tech.opsign.kkp.absensi.admin.Master.Tool_Input_Tanggal.Model_tanggal;
+import tech.opsign.kkp.absensi.admin.Master.tanggal.Tool_Input_Tanggal.Adapter_tanggal;
+import tech.opsign.kkp.absensi.admin.Master.tanggal.Tool_Input_Tanggal.Model_tanggal;
 
 public class input_tanggal extends AppCompatActivity {
     private static SharedPreferences sp;

@@ -20,6 +20,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import Tools.GenKey;
@@ -28,8 +29,8 @@ import tech.opsign.kkp.absensi.GantiPass;
 import tech.opsign.kkp.absensi.Login;
 import tech.opsign.kkp.absensi.R;
 import tech.opsign.kkp.absensi.admin.Fragment.DashboardFragmentAdmin;
-import tech.opsign.kkp.absensi.admin.Master.input_siswa;
-import tech.opsign.kkp.absensi.admin.Master.input_tanggal;
+import tech.opsign.kkp.absensi.admin.Fragment.master_siswa;
+import tech.opsign.kkp.absensi.admin.Master.tanggal.input_tanggal;
 
 public class MainAdmin extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     private SharedPreferences sp;
@@ -89,6 +90,9 @@ public class MainAdmin extends AppCompatActivity implements NavigationView.OnNav
         } else {
             menu.findItem(R.id.master).setVisible(false);
         }
+        ((TextView) navHeaderView.findViewById(R.id.nama_nav)).setText(sp.getString("nama", ""));
+        ((TextView) navHeaderView.findViewById(R.id.nip_nav)).setText(sp.getString("username", ""));
+
 //        m_Runnable.run();
 
     }
@@ -148,7 +152,9 @@ public class MainAdmin extends AppCompatActivity implements NavigationView.OnNav
             startActivity(new Intent(activity, input_tanggal.class));
         }
         if (id == R.id.input_siswa) {
-            startActivity(new Intent(activity, input_siswa.class));
+//            startActivity(new Intent(activity, input_siswa.class));
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_containter
+                    , new master_siswa()).commit();
         }
         if (id == R.id.ganti_pswd) {
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_containter
