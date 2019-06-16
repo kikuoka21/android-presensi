@@ -50,6 +50,8 @@ public class GenKey {
                 return head + "/api/admin/master/siswa/datasiswa";
             case 305:
                 return head + "/api/admin/master/siswa/ubah";
+            case 304:
+                return head + "/api/admin/master/siswa/hapus";
 
 
 

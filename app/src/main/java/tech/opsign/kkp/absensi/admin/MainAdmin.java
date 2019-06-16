@@ -29,7 +29,10 @@ import tech.opsign.kkp.absensi.GantiPass;
 import tech.opsign.kkp.absensi.Login;
 import tech.opsign.kkp.absensi.R;
 import tech.opsign.kkp.absensi.admin.Fragment.DashboardFragmentAdmin;
+import tech.opsign.kkp.absensi.admin.Fragment.master_kelas;
 import tech.opsign.kkp.absensi.admin.Fragment.master_siswa;
+import tech.opsign.kkp.absensi.admin.Fragment.master_staf;
+import tech.opsign.kkp.absensi.admin.Fragment.master_tanggal;
 import tech.opsign.kkp.absensi.admin.Master.tanggal.input_tanggal;
 
 public class MainAdmin extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -149,12 +152,24 @@ public class MainAdmin extends AppCompatActivity implements NavigationView.OnNav
                     , new DashboardFragmentAdmin()).commit();
         }
         if (id == R.id.input_tanggal) {
-            startActivity(new Intent(activity, input_tanggal.class));
+//            startActivity(new Intent(activity, input_tanggal.class));
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_containter
+                    , new master_tanggal()).commit();
         }
         if (id == R.id.input_siswa) {
 //            startActivity(new Intent(activity, input_siswa.class));
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_containter
                     , new master_siswa()).commit();
+        }
+        if (id == R.id.input_staff) {
+//            startActivity(new Intent(activity, input_tanggal.class));
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_containter
+                    , new master_staf()).commit();
+        }
+        if (id == R.id.input_kelas) {
+//            startActivity(new Intent(activity, input_siswa.class));
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_containter
+                    , new master_kelas()).commit();
         }
         if (id == R.id.ganti_pswd) {
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_containter

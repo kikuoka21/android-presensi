@@ -12,34 +12,32 @@
 
 
         <Button
-            android:id="@+id/input_tanggal"
+            android:id="@+id/input_kelas"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="7dp"
-            android:background="@drawable/button_master"
-            android:text="Input Tanggal"
+            android:textSize="16sp"
+            android:text="Input Kelas Baru"
             android:textAllCaps="false"
-            android:textSize="16sp" />
-
+            android:background="@drawable/button_master"/>
         <Button
-            android:id="@+id/lihat_tanggal"
+            android:id="@+id/lihat_kelas"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="7dp"
-            android:background="@drawable/button_master"
-            android:text="Lihat riwayat Tanggal"
+            android:textSize="16sp"
+            android:text="Cari dan Ubah data kelas"
             android:textAllCaps="false"
-            android:textSize="16sp" />
-
+            android:background="@drawable/button_master"/>
         <Button
-            android:id="@+id/hapus_tanggal"
+            android:id="@+id/hapus_kelas"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="7dp"
-            android:background="@drawable/button_master"
-            android:text="Hapus Tanggal"
+            android:textSize="16sp"
+            android:text="Hapus kelas"
             android:textAllCaps="false"
-            android:textSize="16sp" />
+            android:background="@drawable/button_master"/>
 
 
     </LinearLayout>

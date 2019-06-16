@@ -4,7 +4,6 @@ import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -16,6 +15,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.InputType;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -27,6 +27,7 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 
@@ -60,7 +61,10 @@ public class hapus_siswa extends AppCompatActivity {
 
     private boolean muncul = true;
     private EditText nama, tahun;
-    private String str_nama, str_tahun_lahir;
+    private String str_nama, str_tahun_lahir, str_pass, str_nis;
+
+    EditText pass;
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -82,8 +86,8 @@ public class hapus_siswa extends AppCompatActivity {
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
-        nama = (EditText) findViewById(R.id.namasiswa) ;
-        tahun = (EditText) findViewById(R.id.tahun_lahir) ;
+        nama = (EditText) findViewById(R.id.namasiswa);
+        tahun = (EditText) findViewById(R.id.tahun_lahir);
 
 
         TextView textdetil = (TextView) findViewById(R.id.textdetil);
@@ -91,12 +95,12 @@ public class hapus_siswa extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                TableRow row = (TableRow)findViewById(R.id.detil);
+                TableRow row = (TableRow) findViewById(R.id.detil);
 
-                if (muncul){
+                if (muncul) {
                     row.setVisibility(View.VISIBLE);
                     muncul = false;
-                }else{
+                } else {
                     //set text clear untuk tahun
                     tahun.setText("");
                     row.setVisibility(View.GONE);
@@ -114,7 +118,6 @@ public class hapus_siswa extends AppCompatActivity {
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(adapter);
 
-
         Button tombol = findViewById(R.id.carisiswa);
         tombol.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -125,11 +128,11 @@ public class hapus_siswa extends AppCompatActivity {
                 str_tahun_lahir = tahun.getText().toString().trim();
                 if (str_nama.equals("")) {
                     Utilities.showMessageBox(activity, "Warning", "Kolom cari tidak boleh kosng");
-                } else if (str_nama.length() <=2) {
+                } else if (str_nama.length() <= 2) {
                     Utilities.showMessageBox(activity, "Warning", "Minimal 3 huruf");
-                } else  {
+                } else {
 //                    Log.e("ER__", "KIRM BOIIIII");
-                    kirim();
+                    awalan();
                 }
             }
         });
@@ -145,11 +148,11 @@ public class hapus_siswa extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private void kirim() {
+    private void awalan() {
         modelList.clear();
         adapter.notifyDataSetChanged();
         Log.e("ER", "start");
-        start = new kirim_tgl().execute();
+        start = new call_awal().execute();
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -164,7 +167,7 @@ public class hapus_siswa extends AppCompatActivity {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     dialog.dismiss();
-                                    kirim();
+                                    awalan();
                                 }
                             }).setNegativeButton("kembali", new DialogInterface.OnClickListener() {
                         @Override
@@ -178,7 +181,7 @@ public class hapus_siswa extends AppCompatActivity {
         }, Utilities.rto());
     }
 
-    private class kirim_tgl extends AsyncTask<Void, Void, Void> {
+    private class call_awal extends AsyncTask<Void, Void, Void> {
 
         private String code;
         private JSONObject json;
@@ -211,8 +214,8 @@ public class hapus_siswa extends AppCompatActivity {
                 param.type = "mmm";
                 param.key = Utilities.imei(activity);
                 param.token = sp.getString("token", "");
-                param.nama=str_nama;
-                param.thn_lahir=str_tahun_lahir;
+                param.nama = str_nama;
+                param.thn_lahir = str_tahun_lahir;
 
                 Gson gson = new Gson();
                 List<NameValuePair> p = new ArrayList<NameValuePair>();
@@ -264,6 +267,7 @@ public class hapus_siswa extends AppCompatActivity {
                 Utilities.codeerror(activity, "ER0211");
             }
         }
+
         private void proses() {
             try {
                 Model_list_siswa row;
@@ -295,15 +299,173 @@ public class hapus_siswa extends AppCompatActivity {
                 }
 
 
-
             } catch (Exception e) {
                 Log.e("ER___", String.valueOf(e));
             }
         }
 
         private void showSelectedMatkul(Model_list_siswa hadir) {
-//            Toast.makeText(activity, hadir.nis, Toast.LENGTH_SHORT).show();
+            str_nis = hadir.nis;
+            AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+            builder.setTitle("Informasi");
+            builder.setMessage("Masukan Password anda");
+            pass = new EditText(activity);
+            pass.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+            builder.setView(pass);
+            builder.setPositiveButton("kirim", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    str_pass = key.gen_pass(pass.getText().toString().trim());
 
+//                    Toast.makeText(activity, str_pass+str_nis, Toast.LENGTH_SHORT).show();
+                    dialog.dismiss();
+                    Log.e("ER", "alkndnwa");
+                    kirim();
+                }
+            });
+            builder.setNegativeButton("Batal", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            });
+            AlertDialog ad = builder.create();
+            ad.show();
+
+        }
+
+
+    }
+
+    private void kirim() {
+        Log.e("ER", "start");
+        start = new call_hapus().execute();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                if (dialog.isShowing()) {
+                    dialog.dismiss();
+                    start.cancel(true);
+                    new AlertDialog.Builder(activity)
+                            .setTitle("Informasi")
+                            .setMessage("Telah Terjadi Kesalahan Pada Koneksi Anda.")
+                            .setCancelable(false)
+                            .setPositiveButton("Coba Lagi", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                    kirim();
+                                }
+                            }).setNegativeButton("kembali", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                            finish();
+                        }
+                    }).show();
+                }
+            }
+        }, Utilities.rto());
+    }
+
+    private class call_hapus extends AsyncTask<Void, Void, Void> {
+
+        private String code;
+        private JSONObject json;
+        private boolean background;
+
+        class Param {
+            String x1d, type, key, token, nis, p4ss;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            background = true;
+            dialog = new ProgressDialog(activity);
+            dialog.setMessage("Sedang memproses data. Harap tunggu sejenak.");
+            dialog.setCancelable(false);
+            dialog.show();
+
+        }
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            try {
+                StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+                StrictMode.setThreadPolicy(policy);
+
+
+                Param param = new Param();
+                param.x1d = sp.getString("username", "");
+                param.type = "mmm";
+                param.key = Utilities.imei(activity);
+                param.token = sp.getString("token", "");
+                param.nis = str_nis;
+                param.p4ss = str_pass;
+
+                Gson gson = new Gson();
+                List<NameValuePair> p = new ArrayList<NameValuePair>();
+                p.add(new BasicNameValuePair("parsing", gson.toJson(param)));
+
+                JsonParser jParser = new JsonParser();
+                json = jParser.getJSONFromUrl(key.url(304), p);
+                Log.e("isi json login", json.toString(2));
+                Log.e("isi json login", gson.toJson(param));
+                code = json.getString("code");
+
+            } catch (Exception e) {
+                background = false;
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void result) {
+            super.onPostExecute(result);
+
+            if (dialog.isShowing()) {
+                dialog.dismiss();
+            }
+            handler.removeCallbacksAndMessages(null);
+
+            if (background) {
+
+                if (code.equals("OK4")) {
+                    AlertDialog.Builder ab = new AlertDialog.Builder(activity);
+                    ab
+                            .setCancelable(false).setTitle("Informasi")
+                            .setMessage("Siswa telah berhasil dihapus")
+                            .setPositiveButton("Tutup", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+
+                                    dialog.dismiss();
+                                    awalan();
+                                }
+                            })
+                            .show();
+
+                } else {
+                    AlertDialog.Builder ab = new AlertDialog.Builder(activity);
+                    ab
+                            .setCancelable(false).setTitle("Informasi")
+                            .setMessage(code)
+                            .setPositiveButton("Tutup", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+
+                                    dialog.dismiss();
+                                    finish();
+                                }
+                            })
+                            .show();
+                }
+
+
+            } else {
+                Utilities.codeerror(activity, "ER0211");
+            }
         }
 
 
