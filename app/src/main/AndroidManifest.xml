@@ -72,6 +72,18 @@
             android:screenOrientation="portrait"/>
 
 
+        <activity
+            android:name=".admin.Master.kelas.input_kelas"
+            android:configChanges="orientation|screenSize"
+            android:windowSoftInputMode="stateAlwaysHidden"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".admin.Master.kelas.cari_kelas"
+            android:configChanges="orientation|screenSize"
+            android:windowSoftInputMode="stateAlwaysHidden"
+            android:screenOrientation="portrait"/>
+
+
 <!--siswa-->
         <activity
             android:name=".siswa.pengurus.generate_qr"

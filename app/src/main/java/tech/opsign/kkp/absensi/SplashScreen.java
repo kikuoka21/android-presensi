@@ -34,8 +34,8 @@ import Tools.InetConnection;
 import Tools.JsonParser;
 import Tools.Utilities;
 import tech.opsign.kkp.absensi.admin.MainAdmin;
-import tech.opsign.kkp.absensi.admin.Master.siswa.Cari_siswa;
-import tech.opsign.kkp.absensi.admin.Master.siswa.input_siswa;
+import tech.opsign.kkp.absensi.admin.Master.kelas.cari_kelas;
+import tech.opsign.kkp.absensi.admin.Master.kelas.input_kelas;
 import tech.opsign.kkp.absensi.siswa.MainSiswa;
 
 public class SplashScreen extends AppCompatActivity {
@@ -251,8 +251,6 @@ public class SplashScreen extends AppCompatActivity {
                     if (code.equals("OK4")) {
 
                         try {
-
-
                             SharedPreferences.Editor editor = sp.edit();
                             editor.putString("thn_ajar", json.getString("thn-ajar"));
                             editor.putString("tanggal", json.getString("tanggal"));
@@ -268,8 +266,7 @@ public class SplashScreen extends AppCompatActivity {
                                             if (sp.getString("status", "").equals("1")) {
                                                 Log.d("yeyy", "1");
                                                 homeIntent = new Intent(activity, MainAdmin.class);
-//                                                homeIntent = new Intent(activity, Cari_siswa.class);
-//                                                homeIntent = new Intent(activity, input_siswa.class);
+                                                homeIntent = new Intent(activity, cari_kelas.class);
                                             } else {
                                                 Log.d("yeyy", "2");
                                                 homeIntent = new Intent(activity, MainSiswa.class);

@@ -64,6 +64,12 @@ public class GenKey {
             case 311:
                 return head + "/api/admin/master/tanggal/history";
 
+//                kelas
+            case 320:
+                return head + "/api/admin/master/kelas/input";
+            case 321:
+                return head + "/api/admin/master/kelas/list";
+
 
             default:
                 return "";
@@ -97,5 +103,17 @@ public class GenKey {
             e.printStackTrace();
         }
         return "";
+    }
+
+    public static String pesan(String key){
+        switch (key) {
+            case "TOKEN1":
+                return  "Token Sudah Tidak Valid, Silahkan Login Kembali";
+            case "TOKEN2":
+                return  "Token Anda Salah, Silahkan Login Kembali";
+
+            default:
+                return "Generate Pesan salah";
+        }
     }
 }

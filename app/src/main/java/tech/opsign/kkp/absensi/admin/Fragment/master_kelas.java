@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import tech.opsign.kkp.absensi.R;
+import tech.opsign.kkp.absensi.admin.Master.kelas.input_kelas;
 
 public class master_kelas extends Fragment {
 
@@ -19,13 +20,14 @@ public class master_kelas extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        getActivity().setTitle("List Menu Master Tanggal");
+        getActivity().setTitle("List Menu Master Kelas");
         v = inflater.inflate(R.layout.a_fragmen_masterkelas, container, false);
+
         Button input = (Button) v.findViewById(R.id.input_kelas);
         input.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                startActivity(new Intent(getContext(), input_tanggal.class));
+                startActivity(new Intent(getContext(), input_kelas.class));
             }
         });
         Button cari = (Button) v.findViewById(R.id.lihat_kelas);

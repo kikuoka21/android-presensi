@@ -200,30 +200,47 @@ public class GantiPass extends Fragment {
             handler.removeCallbacksAndMessages(null);
 
             if (background) {
-
+                AlertDialog.Builder ab = new AlertDialog.Builder(v.getContext());
+                ab.setCancelable(false).setTitle("Informasi");
                 if (code.equals("OK4")) {
-                    AlertDialog.Builder ab = new AlertDialog.Builder(v.getContext());
                     SharedPreferences.Editor editor = sp.edit();
                     editor.putString("username", "");
                     editor.putString("token", "");
                     editor.commit();
+
                     ab
-                            .setCancelable(false).setTitle("Informasi")
                             .setMessage("Password sudah Berhasil Ganti, Silahkan Login Kembali")
                             .setPositiveButton("Tutup", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
-
-                                    startActivity(new Intent(v.getContext(), Login.class));
+                                    Intent login = new Intent(v.getContext(), Login.class);
+                                    login.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                    startActivity(login);
                                     getActivity().finish();
                                 }
                             })
                             .show();
+                } else if (code.equals("TOKEN2") || code.equals("TOKEN1")) {
+                    SharedPreferences.Editor editorr = sp.edit();
+                    editorr.putString("username", "");
+                    editorr.putString("token", "");
+                    editorr.commit();
+
+                    ab.setMessage(GenKey.pesan(code)).setPositiveButton("Tutup", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+
+                            dialog.dismiss();
+
+                            Intent login = new Intent(v.getContext(), Login.class);
+                            login.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                            startActivity(login);
+                            getActivity().finish();
+                        }
+                    })
+                            .show();
                 } else {
-                    AlertDialog.Builder ab = new AlertDialog.Builder(v.getContext());
-                    ab
-                            .setCancelable(false).setTitle("Informasi")
-                            .setMessage(code)
+                    ab.setMessage(code)
                             .setPositiveButton("Tutup", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
