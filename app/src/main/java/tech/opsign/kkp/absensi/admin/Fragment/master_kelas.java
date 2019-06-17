@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import tech.opsign.kkp.absensi.R;
+import tech.opsign.kkp.absensi.admin.Master.kelas.cari_kelas;
 import tech.opsign.kkp.absensi.admin.Master.kelas.input_kelas;
 
 public class master_kelas extends Fragment {
@@ -34,7 +35,7 @@ public class master_kelas extends Fragment {
         cari.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                startActivity(new Intent(getContext(), Cari_siswa.class));
+                startActivity(new Intent(getContext(), cari_kelas.class));
             }
         });
         Button hapus = (Button) v.findViewById(R.id.hapus_kelas);

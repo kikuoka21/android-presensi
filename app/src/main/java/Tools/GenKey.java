@@ -3,11 +3,10 @@ package Tools;
 import java.security.MessageDigest;
 
 public class GenKey {
-
-
     public String url(int str) {
         String web, port, head;
-        web = "192.168.0.17";
+//        web = "192.168.0.17";
+        web = "192.168.12.17";
         port = ":8000";
         head = "http://" + web + port;
         switch (str) {
@@ -41,7 +40,6 @@ public class GenKey {
                 return head + "/api/admin/dashboard";
 
 
-
             case 308:
                 return head + "/api/admin/master/siswa/input";
             case 307:
@@ -52,9 +50,6 @@ public class GenKey {
                 return head + "/api/admin/master/siswa/ubah";
             case 304:
                 return head + "/api/admin/master/siswa/hapus";
-
-
-
 
 
             case 310:
@@ -69,10 +64,12 @@ public class GenKey {
                 return head + "/api/admin/master/kelas/input";
             case 321:
                 return head + "/api/admin/master/kelas/list";
+            case 322:
+                return head + "/api/admin/master/kelas/isi";
 
 
             default:
-                return "";
+                return head;
         }
     }
 
@@ -105,12 +102,12 @@ public class GenKey {
         return "";
     }
 
-    public static String pesan(String key){
+    public static String pesan(String key) {
         switch (key) {
             case "TOKEN1":
-                return  "Token Sudah Tidak Valid, Silahkan Login Kembali";
+                return "Token Sudah Tidak Valid, Silahkan Login Kembali";
             case "TOKEN2":
-                return  "Token Anda Salah, Silahkan Login Kembali";
+                return "Token Anda Salah, Silahkan Login Kembali";
 
             default:
                 return "Generate Pesan salah";

@@ -1,6 +1,5 @@
 package tech.opsign.kkp.absensi.admin.Master.kelas;
 
-import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -14,6 +13,9 @@ import android.os.Handler;
 import android.os.StrictMode;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -24,12 +26,15 @@ import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -38,31 +43,33 @@ import java.util.List;
 import Tools.GenKey;
 import Tools.JsonParser;
 import Tools.Utilities;
+import tech.opsign.kkp.absensi.Listener.ItemClickSupport;
 import tech.opsign.kkp.absensi.Login;
 import tech.opsign.kkp.absensi.R;
+import tech.opsign.kkp.absensi.admin.Master.kelas.Tool_list_siswa.Adapter_siswakelas;
+import tech.opsign.kkp.absensi.admin.Master.kelas.Tool_list_siswa.Model_siswakelas;
 
-public class input_kelas extends AppCompatActivity {
+public class lihat_kelas extends AppCompatActivity {
     private static SharedPreferences sp;
-    private input_kelas activity;
+    private lihat_kelas activity;
     private Handler handler;
     private AsyncTask start;
     private ProgressDialog dialog;
     private GenKey key;
-
-    @SuppressLint("StaticFieldLeak")
-    private EditText nama, thn_ajar;
-    private String str_thn, str_nama;
+    private RecyclerView recyclerView;
+    private List<Model_siswakelas> modelList = new ArrayList<>();
+    private Adapter_siswakelas adapter;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.a_kelas_input);
+        setContentView(R.layout.a_kelas_lihat);
 
         this.activity = this;
         key = new GenKey();
         sp = activity.getSharedPreferences("shared", 0x0000);
         handler = new Handler();
-        setTitle("Input Kelas");
+        setTitle("Cari Kelas");
         if (Build.VERSION.SDK_INT >= 21) {
             Window window = this.getWindow();
             window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
@@ -74,71 +81,20 @@ public class input_kelas extends AppCompatActivity {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
 
-        nama = (EditText) findViewById(R.id.nama_kelas);
-        thn_ajar = (EditText) findViewById(R.id.thn_ajar);
 
-        thn_ajar.addTextChangedListener(tahunajarlistener);
+        adapter = new Adapter_siswakelas(modelList);
+        recyclerView = (RecyclerView) findViewById(R.id.list_siswa);
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(activity);
+        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setNestedScrollingEnabled(false);
 
-        Button tombol = findViewById(R.id.kirimtanggal);
-        tombol.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                closekeyboard();
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        recyclerView.setAdapter(adapter);
 
-                nama.setError(null);
-                thn_ajar.setError(null);
 
-                str_nama = nama.getText().toString().trim();
-                str_thn = thn_ajar.getText().toString();
-                if (str_nama.equals("")) {
-                    nama.setError("Tidak Boleh Kosong");
-                } else if (str_thn.equals("")) {
-                    thn_ajar.setError("Tidak boleh kosong");
-                } else {
-
-                    str_thn = str_thn + ubahan_thn_ajrn(str_thn);
-                    if (str_thn.length() != 8) {
-                        thn_ajar.setError("Tahun salah");
-                    } else if (Integer.parseInt(str_thn) < 19900000) {
-                        thn_ajar.setError("Tahun salah");
-                    } else {
-                        Log.e("ER__", "KIRM BOIIIII");
-                        kirim();
-                    }
-                }
-            }
-        });
-
+        kirim();
     }
 
-    private TextWatcher tahunajarlistener = new TextWatcher() {
-
-        @Override
-        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-        }
-
-        @Override
-        public void onTextChanged(CharSequence s, int start, int before, int count) {
-            str_thn = thn_ajar.getText().toString();
-            String aa;
-            if (str_thn.length() == 4) {
-                aa = str_thn + ubahan_thn_ajrn(str_thn);
-                if (aa.length() == 8)
-                    ((TextView) findViewById(R.id.blakangthn)).setText("/ " + ubahan_thn_ajrn(str_thn));
-                else
-                    ((TextView) findViewById(R.id.blakangthn)).setText("/");
-            } else
-                ((TextView) findViewById(R.id.blakangthn)).setText("/");
-
-
-        }
-
-        @Override
-        public void afterTextChanged(Editable s) {
-
-        }
-    };
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -185,10 +141,10 @@ public class input_kelas extends AppCompatActivity {
         private String code;
         private JSONObject json;
         private boolean background;
-
+        Intent intent = getIntent();
         class Param {
             String x1d, type, key, token;
-            String nama_kls, thn_ajar;
+            String kd_kelas;
         }
 
         @Override
@@ -209,21 +165,22 @@ public class input_kelas extends AppCompatActivity {
                 StrictMode.setThreadPolicy(policy);
 
 
+
                 Param param = new Param();
                 param.x1d = sp.getString("username", "");
                 param.type = "mmm";
                 param.key = Utilities.imei(activity);
                 param.token = sp.getString("token", "");
+//                param.kd_kelas =intent.getStringExtra("kd_kelas");
+                param.kd_kelas ="A00001";
 
-                param.nama_kls = str_nama;
-                param.thn_ajar = str_thn;
 
                 Gson gson = new Gson();
                 List<NameValuePair> p = new ArrayList<NameValuePair>();
                 p.add(new BasicNameValuePair("parsing", gson.toJson(param)));
 
                 JsonParser jParser = new JsonParser();
-                json = jParser.getJSONFromUrl(key.url(320), p);
+                json = jParser.getJSONFromUrl(key.url(322), p);
                 Log.e("ER___", json.toString(2));
                 code = json.getString("code");
 
@@ -247,22 +204,12 @@ public class input_kelas extends AppCompatActivity {
                 ab
                         .setCancelable(false).setTitle("Informasi");
                 if (code.equals("OK4")) {
-                    ab
-                            .setMessage("Penginputan Kelas berhasil")
-                            .setPositiveButton("Tutup", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-
-                                    dialog.dismiss();
-                                }
-                            })
-                            .show();
+                    proses();
                 } else if (code.equals("TOKEN2") || code.equals("TOKEN1")) {
                     SharedPreferences.Editor editorr = sp.edit();
                     editorr.putString("username", "");
                     editorr.putString("token", "");
                     editorr.commit();
-
                     ab.setMessage(GenKey.pesan(code))
                             .setPositiveButton("Tutup", new DialogInterface.OnClickListener() {
                                 @Override
@@ -290,7 +237,61 @@ public class input_kelas extends AppCompatActivity {
             }
         }
 
+        private void proses() {
+            try {
 
+                Model_siswakelas row;
+                JSONArray aray = json.getJSONArray("list");
+                if (aray != null && aray.length() > 0) {
+                    ((LinearLayout) findViewById(R.id.nulldata)).setVisibility(View.GONE);
+                    recyclerView.setVisibility(View.VISIBLE);
+                    JSONObject list ;
+                    for (int i = 0; i < aray.length(); i++) {
+                        list = aray.getJSONObject(i);
+                        row = new Model_siswakelas(
+                                list.getString("nis"),
+                                list.getString("nama_siswa"),
+                                list.getString("level")
+
+                        );
+                        modelList.add(row);
+                    }
+                    adapter.notifyDataSetChanged();
+                    ItemClickSupport.addTo(recyclerView).setOnItemClickListener(new ItemClickSupport.OnItemClickListener() {
+                        @Override
+                        public void onItemClicked(RecyclerView recyclerView, int position, View v) {
+                            showSelectedMatkul(modelList.get(position));
+                        }
+                    });
+                } else {
+                    ((LinearLayout) findViewById(R.id.nulldata)).setVisibility(View.VISIBLE);
+                    recyclerView.setVisibility(View.GONE);
+                }
+
+                json = json.getJSONObject("data");
+                ((TextView)findViewById(R.id.nama_kelas)).setText(intent.getStringExtra("nama"));
+                ((TextView)findViewById(R.id.blakangthn)).setText(intent.getStringExtra("thn_ajar"));
+                String str_wali = "-", str_ketua = "-";
+                if (!json.getString("nip").equals("-")) {
+                    str_wali = "(" + json.getString("nip") + ") " + json.getString("nama_staf");
+                }
+                if (!json.getString("nis").equals("-")) {
+                    str_ketua = "(" + json.getString("nis") + ") " + json.getString("nama_siswa");
+                }
+
+                ((TextView)findViewById(R.id.walikelas)).setText(str_wali);
+                ((TextView)findViewById(R.id.ketua_kelas)).setText(str_ketua);
+            } catch (Exception e) {
+                Log.e("ER___", String.valueOf(e));
+            }
+        }
+
+        private void showSelectedMatkul(Model_siswakelas hadir) {
+            Toast.makeText(activity, hadir.nama, Toast.LENGTH_SHORT).show();
+//            Intent myIntent = new Intent(activity, edit_siswa.class);
+//            myIntent.putExtra("nis_target", hadir.nis);
+//            startActivity(myIntent);
+        }
     }
 
 

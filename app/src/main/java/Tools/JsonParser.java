@@ -65,7 +65,7 @@ public class JsonParser {
 
             jObj = new JSONObject(json);
         } catch (Exception e) {
-            e.printStackTrace();
+            Log.e("VIEW HTMLNYA____", json);
             try {
                 jObj = new JSONObject("{\"code\":\"Telah Terjadi kesalahan pada http request\"}");
             }catch (Exception se){
