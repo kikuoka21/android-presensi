@@ -340,11 +340,21 @@ public class cari_kelas extends AppCompatActivity {
             }
         }
 
-        private void showSelectedMatkul(Model_kelas_list hadir) {
-            Toast.makeText(activity, hadir.kd_kelas, Toast.LENGTH_SHORT).show();
-//            Intent myIntent = new Intent(activity, edit_siswa.class);
-//            myIntent.putExtra("nis_target", hadir.nis);
-//            startActivity(myIntent);
+        private void showSelectedMatkul(Model_kelas_list kelas) {
+//            Toast.makeText(activity, kelas.kd_kelas, Toast.LENGTH_SHORT).show();
+            Intent intent = getIntent();
+            String next_action = intent.getStringExtra("next_action");
+            Intent myIntent;                myIntent = new Intent(activity, lihat_kelas.class);
+
+            if(next_action.equals("111")){
+                myIntent = new Intent(activity, lihat_kelas.class);
+                myIntent.putExtra("kd_kelas", kelas.kd_kelas);
+            }else {
+                myIntent = new Intent(activity, ubah_kelas.class);
+                myIntent.putExtra("kd_kelas", kelas.kd_kelas);
+            }
+
+            startActivity(myIntent);
         }
     }
 

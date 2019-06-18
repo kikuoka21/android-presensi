@@ -66,6 +66,12 @@ public class GenKey {
                 return head + "/api/admin/master/kelas/list";
             case 322:
                 return head + "/api/admin/master/kelas/isi";
+            case 323:
+                return head + "/api/admin/master/kelas/ubah/wali-kelas/list";
+            case 324:
+                return head + "/api/admin/master/kelas/ubah/wali-kelas";
+            case 325:
+                return head + "/api/admin/master/kelas/ubah/ketua-kelas";
 
 
             default:

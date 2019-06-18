@@ -26,7 +26,16 @@
             android:layout_height="wrap_content"
             android:layout_margin="7dp"
             android:textSize="16sp"
-            android:text="Cari dan Ubah data kelas"
+            android:text="Cari dan lihat data kelas"
+            android:textAllCaps="false"
+            android:background="@drawable/button_master"/>
+        <Button
+            android:id="@+id/Kelas_Ubha"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="7dp"
+            android:textSize="16sp"
+            android:text="Ubah data kelas"
             android:textAllCaps="false"
             android:background="@drawable/button_master"/>
         <Button

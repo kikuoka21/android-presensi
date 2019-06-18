@@ -37,6 +37,7 @@ import tech.opsign.kkp.absensi.admin.MainAdmin;
 import tech.opsign.kkp.absensi.admin.Master.kelas.cari_kelas;
 import tech.opsign.kkp.absensi.admin.Master.kelas.input_kelas;
 import tech.opsign.kkp.absensi.admin.Master.kelas.lihat_kelas;
+import tech.opsign.kkp.absensi.admin.Master.kelas.ubah_kelas;
 import tech.opsign.kkp.absensi.siswa.MainSiswa;
 
 public class SplashScreen extends AppCompatActivity {
@@ -267,8 +268,9 @@ public class SplashScreen extends AppCompatActivity {
                                             if (sp.getString("status", "").equals("1")) {
                                                 Log.d("yeyy", "1");
                                                 homeIntent = new Intent(activity, MainAdmin.class);
-                                                homeIntent = new Intent(activity, test_layout.class);
-                                                homeIntent = new Intent(activity, lihat_kelas.class);
+//                                                homeIntent = new Intent(activity, test_layout.class);
+                                                homeIntent = new Intent(activity, ubah_kelas.class);
+//                                                homeIntent = new Intent(activity, ubah_kelas.class);
                                             } else {
                                                 Log.d("yeyy", "2");
                                                 homeIntent = new Intent(activity, MainSiswa.class);
