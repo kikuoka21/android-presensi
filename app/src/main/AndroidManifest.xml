@@ -102,6 +102,11 @@
             android:configChanges="orientation|screenSize"
             android:windowSoftInputMode="stateAlwaysHidden"
             android:screenOrientation="portrait"/>
+        <activity
+            android:name=".admin.Master.kelas.edit_kelas.nama_kelas"
+            android:configChanges="orientation|screenSize"
+            android:windowSoftInputMode="stateAlwaysHidden"
+            android:screenOrientation="portrait"/>
 
 
 <!--siswa-->
