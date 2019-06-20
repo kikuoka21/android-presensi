@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -22,7 +23,6 @@ import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 
 import com.google.gson.Gson;
 
@@ -36,6 +36,7 @@ import java.util.List;
 import Tools.GenKey;
 import Tools.JsonParser;
 import Tools.Utilities;
+import tech.opsign.kkp.absensi.Login;
 import tech.opsign.kkp.absensi.R;
 import tech.opsign.kkp.absensi.admin.Master.tanggal.Tool_Input_Tanggal.Adapter_tanggal;
 import tech.opsign.kkp.absensi.admin.Master.tanggal.Tool_Input_Tanggal.Model_tanggal;
@@ -48,15 +49,11 @@ public class nama_kelas extends AppCompatActivity {
     private ProgressDialog dialog;
     private GenKey key;
 
-    private RecyclerView recyclerView;
-    private List<Model_tanggal> modelList = new ArrayList<>();
-    private Adapter_tanggal adapter;
 
-    private EditText ket;
+
+    private EditText nama_kelas;
     @SuppressLint("StaticFieldLeak")
-    private static TextView tgl;
-    private static String tgl_string = "";
-    private String ket_string;
+    private String str_nama, kd_kelas;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -79,26 +76,40 @@ public class nama_kelas extends AppCompatActivity {
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
+        Intent inten = getIntent();
+        nama_kelas = (EditText) findViewById(R.id.ubah_nama_kelas);
+        nama_kelas.setText(inten.getStringExtra("nama_kelas"));
+        kd_kelas = inten.getStringExtra("kode_kels");
 
-        ket = (EditText) findViewById(R.id.ket);
-
-
-
-        Button tombol = findViewById(R.id.kirimtanggal);
+        Button tombol = findViewById(R.id.kirimubah_nama);
         tombol.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 closekeyboard();
 
-                ket_string = ket.getText().toString().trim();
-                if (tgl_string.equals("")) {
-                    Utilities.showMessageBox(activity,"Informasi","Tanggal Tidak Boleh Kosong" );
-                } else if (ket.getText().toString().trim().equals("")) {
-                    Utilities.showMessageBox(activity,"Informasi","Keterangan Tidak Boleh Kosong" );
-
+                str_nama = nama_kelas.getText().toString().trim();
+                if (nama_kelas.getText().toString().trim().equals("")) {
+                    Utilities.showMessageBox(activity,"Informasi","Nama Kelas Tidak Boleh Kosong" );
                 } else {
                     Log.e("ER__", "KIRM BOIIIII");
-                    kirim();
+                    AlertDialog.Builder ab = new AlertDialog.Builder(activity);
+                    ab
+                            .setCancelable(false)
+                            .setTitle("Informasi")
+                            .setMessage("Apakah anda yakin ingin mengganti Nama Kelas Menjadi " + str_nama)
+                            .setPositiveButton("Kirim", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+
+                                    dialog.dismiss();
+                                    kirim();
+                                }
+                            }).setNegativeButton("Batal", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    }).show();
                 }
             }
         });
@@ -152,7 +163,7 @@ public class nama_kelas extends AppCompatActivity {
         private boolean background;
 
         class Param {
-            String x1d, type, key, token, id_kelas, ket;
+            String x1d, type, key, token, id_kelas, nama_kelas;
         }
 
         @Override
@@ -173,20 +184,21 @@ public class nama_kelas extends AppCompatActivity {
                 StrictMode.setThreadPolicy(policy);
 
 
+
                 Param param = new Param();
                 param.x1d = sp.getString("username", "");
                 param.type = "mmm";
                 param.key = Utilities.imei(activity);
                 param.token = sp.getString("token", "");
-                param.id_kelas = tgl_string;
-                param.ket = ket_string;
+                param.id_kelas = kd_kelas;
+                param.nama_kelas = str_nama;
 
                 Gson gson = new Gson();
                 List<NameValuePair> p = new ArrayList<NameValuePair>();
                 p.add(new BasicNameValuePair("parsing", gson.toJson(param)));
 
                 JsonParser jParser = new JsonParser();
-                json = jParser.getJSONFromUrl(key.url(309), p);
+                json = jParser.getJSONFromUrl(key.url(326), p);
 //                Log.e("isi json login", json.toString(2));
                 code = json.getString("code");
 
@@ -207,22 +219,42 @@ public class nama_kelas extends AppCompatActivity {
 
             if (background) {
 
+                AlertDialog.Builder ab = new AlertDialog.Builder(activity);
+                ab
+                        .setCancelable(false).setTitle("Informasi");
                 if (code.equals("OK4")) {
-                    pesan("Penginputan Tanggal Berhasil", activity);
-                } else {
-                    AlertDialog.Builder ab = new AlertDialog.Builder(activity);
-                    ab
-                            .setCancelable(false).setTitle("Informasi")
-                            .setMessage(code)
+                    ab.setMessage("Nama kelas sudah digantikan").setPositiveButton("Tutup", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                            setResult(RESULT_OK);
+                            finish();
+                        }
+                    }).show();
+                } else if (code.equals("TOKEN2") || code.equals("TOKEN1")) {
+                    SharedPreferences.Editor editorr = sp.edit();
+                    editorr.putString("username", "");
+                    editorr.putString("token", "");
+                    editorr.commit();
+                    ab.setMessage(GenKey.pesan(code))
                             .setPositiveButton("Tutup", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
 
                                     dialog.dismiss();
+                                    Intent login = new Intent(activity, Login.class);
+                                    login.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                    startActivity(login);
                                     finish();
                                 }
-                            })
-                            .show();
+                            }).show();
+                } else {
+                    ab.setMessage(code).setPositiveButton("Tutup", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    }).show();
                 }
 
 
@@ -237,20 +269,7 @@ public class nama_kelas extends AppCompatActivity {
 
 
 
-    private static void pesan(String pesannya, Context context) {
-        AlertDialog.Builder ab = new AlertDialog.Builder(context);
-        ab
-                .setCancelable(false).setTitle("Informasi")
-                .setMessage(pesannya)
-                .setPositiveButton("Tutup", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
 
-                        dialog.dismiss();
-                    }
-                })
-                .show();
-    }
 
     private void closekeyboard() {
         try {
@@ -265,13 +284,5 @@ public class nama_kelas extends AppCompatActivity {
         }
     }
 
-    public static String ubahan(int a) {
-        String x = String.valueOf(a);
-        if (x.length() == 1) {
-            return "0" + x;
-        } else {
-            return x;
-        }
-    }
 
 }

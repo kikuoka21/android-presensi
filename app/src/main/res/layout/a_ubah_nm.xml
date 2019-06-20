@@ -43,7 +43,7 @@
                     app:counterMaxLength="15">
 
                     <EditText
-                        android:id="@+id/ket"
+                        android:id="@+id/ubah_nama_kelas"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -70,7 +70,7 @@
             app:cardCornerRadius="20dp">
 
             <Button
-                android:id="@+id/kirimtanggal"
+                android:id="@+id/kirimubah_nama"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="#80bfff"

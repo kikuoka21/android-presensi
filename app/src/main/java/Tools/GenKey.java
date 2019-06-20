@@ -72,6 +72,8 @@ public class GenKey {
                 return head + "/api/admin/master/kelas/ubah/wali-kelas";
             case 325:
                 return head + "/api/admin/master/kelas/ubah/ketua-kelas";
+            case 326:
+                return head + "/api/admin/master/kelas/ubah/nama-kelas";
 
 
             default:

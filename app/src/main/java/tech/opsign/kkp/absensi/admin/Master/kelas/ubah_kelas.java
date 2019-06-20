@@ -45,6 +45,7 @@ import tech.opsign.kkp.absensi.R;
 import tech.opsign.kkp.absensi.admin.Master.kelas.Tool_list_siswa.Adapter_siswakelas;
 import tech.opsign.kkp.absensi.admin.Master.kelas.Tool_list_siswa.Model_siswakelas;
 import tech.opsign.kkp.absensi.admin.Master.kelas.edit_kelas.lihat_walikelas;
+import tech.opsign.kkp.absensi.admin.Master.kelas.edit_kelas.nama_kelas;
 import tech.opsign.kkp.absensi.admin.Master.kelas.edit_kelas.ubah_ketuakelas;
 
 public class ubah_kelas extends AppCompatActivity {
@@ -58,7 +59,7 @@ public class ubah_kelas extends AppCompatActivity {
     private List<Model_siswakelas> modelList = new ArrayList<>();
     private Adapter_siswakelas adapter;
     private JSONArray list_siswa;
-    String kode_kelas, tahun_ajar;
+    private String namakelas, kode_kelas, tahun_ajar;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -183,8 +184,8 @@ public class ubah_kelas extends AppCompatActivity {
                 param.type = "mmm";
                 param.key = Utilities.imei(activity);
                 param.token = sp.getString("token", "");
-//                kode_kelas = intent.getStringExtra("kd_kelas");
-                kode_kelas = "A00001";
+                kode_kelas = intent.getStringExtra("kd_kelas");
+                kode_kelas = "A00002";
                 param.kd_kelas = kode_kelas;
 
 
@@ -284,7 +285,8 @@ public class ubah_kelas extends AppCompatActivity {
                 }
 
                 json = json.getJSONObject("data");
-                ((TextView) findViewById(R.id.nama_kelas)).setText(json.getString("nama"));
+                namakelas = json.getString("nama");
+                ((TextView) findViewById(R.id.nama_kelas)).setText(namakelas);
                 ((TextView) findViewById(R.id.blakangthn)).setText(json.getString("tahun") + "/" + ubahan_thn_ajrn(json.getString("tahun")));
                 String str_wali = "-", str_ketua = "-";
                 if (!json.getString("nip").equals("-")) {
@@ -301,8 +303,10 @@ public class ubah_kelas extends AppCompatActivity {
                 ((LinearLayout) findViewById(R.id.ubahnama)).setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-//                Intent intent = new Intent(activity, input_kelas.class);
-//                startActivity(new Intent(activity, input_kelas.class));
+                        Intent intent = new Intent(activity, nama_kelas.class);
+                        intent.putExtra("nama_kelas", namakelas);
+                        intent.putExtra("kode_kels", kode_kelas);
+                        startActivityForResult(intent, 0);
                     }
                 });
                 ((LinearLayout) findViewById(R.id.ubahwali)).setOnClickListener(new View.OnClickListener() {
