@@ -36,6 +36,7 @@ import java.util.List;
 import Tools.GenKey;
 import Tools.JsonParser;
 import Tools.Utilities;
+import tech.opsign.kkp.absensi.Login;
 import tech.opsign.kkp.absensi.R;
 
 public class generate_qr extends AppCompatActivity {
@@ -176,23 +177,37 @@ public class generate_qr extends AppCompatActivity {
 
             if (background) {
 
+                AlertDialog.Builder ab = new AlertDialog.Builder(activity);
+                ab.setCancelable(false).setTitle("Informasi");
                 if (code.equals("OK4")) {
                     proses();
-                } else {
-                    AlertDialog.Builder ab = new AlertDialog.Builder(activity);
-                    ab
-                            .setCancelable(false).setTitle("Informasi")
-                            .setMessage(code)
+
+                } else if (code.equals("TOKEN2") || code.equals("TOKEN1")) {
+                    SharedPreferences.Editor editorr = sp.edit();
+                    editorr.putString("username", "");
+                    editorr.putString("token", "");
+                    editorr.commit();
+                    ab.setMessage(GenKey.pesan(code))
                             .setPositiveButton("Tutup", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
 
                                     dialog.dismiss();
+                                    Intent login = new Intent(activity, Login.class);
+                                    login.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                    startActivity(login);
                                     finish();
                                 }
-                            })
-                            .show();
+                            }).show();
+                } else {
+                    ab.setMessage(code).setPositiveButton("Tutup", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    }).show();
                 }
+
 
 
             } else {

@@ -61,10 +61,9 @@ public class master_kelas extends Fragment {
             @Override
             public void onClick(View v) {
 
-//                Intent myIntent = new Intent(getContext(), cari_kelas.class);
-//                myIntent.putExtra("next_action", "111");
-//                startActivity(myIntent);
-//                startActivity(new Intent(getContext(), hapus_siswa.class));
+               Intent myIntent = new Intent(getContext(), cari_kelas.class);
+                myIntent.putExtra("next_action", "333");
+                startActivity(myIntent);
             }
         });
 

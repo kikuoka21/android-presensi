@@ -1,6 +1,5 @@
-package tech.opsign.kkp.absensi.admin.Master.kelas;
+package tech.opsign.kkp.absensi.admin.Master.staf;
 
-import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -17,9 +16,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.Editable;
-import android.text.InputType;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -29,8 +25,8 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.TableRow;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.gson.Gson;
 
@@ -48,34 +44,36 @@ import Tools.Utilities;
 import tech.opsign.kkp.absensi.Listener.ItemClickSupport;
 import tech.opsign.kkp.absensi.Login;
 import tech.opsign.kkp.absensi.R;
-import tech.opsign.kkp.absensi.admin.Master.kelas.Tool_list_kelas.Adapter_kelas_list;
-import tech.opsign.kkp.absensi.admin.Master.kelas.Tool_list_kelas.Model_kelas_list;
+import tech.opsign.kkp.absensi.admin.Master.siswa.Tool_list_siswa.Adapter_list_siswa;
+import tech.opsign.kkp.absensi.admin.Master.siswa.edit_siswa;
+import tech.opsign.kkp.absensi.admin.Master.staf.Tool_list_staf.Adapter_list_staf;
+import tech.opsign.kkp.absensi.admin.Master.staf.Tool_list_staf.Model_list_staf;
 
-public class cari_kelas extends AppCompatActivity {
+public class Cari_staf extends AppCompatActivity {
     private static SharedPreferences sp;
-    private cari_kelas activity;
+    private Cari_staf activity;
     private Handler handler;
     private AsyncTask start;
     private ProgressDialog dialog;
     private GenKey key;
+
     private RecyclerView recyclerView;
-    private List<Model_kelas_list> modelList = new ArrayList<>();
-    private Adapter_kelas_list adapter;
-    private EditText thn_ajar;
-    private String str_thn;
-    //untuk hapus
-    private String kd_kelas , xpass; EditText pass;
+    private List<Model_list_staf> modelList = new ArrayList<>();
+    private Adapter_list_staf adapter;
+
+    private EditText nama;
+    private String str_nama;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.a_kelas_cari);
+        setContentView(R.layout.a_siswa_cari);
 
         this.activity = this;
         key = new GenKey();
         sp = activity.getSharedPreferences("shared", 0x0000);
         handler = new Handler();
-        setTitle("Cari Kelas");
+        setTitle("Cari Siswa");
         if (Build.VERSION.SDK_INT >= 21) {
             Window window = this.getWindow();
             window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
@@ -86,10 +84,11 @@ public class cari_kelas extends AppCompatActivity {
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
+        nama = (EditText) findViewById(R.id.nama_nip) ;
 
 
-        adapter = new Adapter_kelas_list(modelList);
-        recyclerView = (RecyclerView) findViewById(R.id.list_kelas);
+        adapter = new Adapter_list_staf(modelList);
+        recyclerView = (RecyclerView) findViewById(R.id.list_siswa);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(activity);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setNestedScrollingEnabled(false);
@@ -98,64 +97,26 @@ public class cari_kelas extends AppCompatActivity {
         recyclerView.setAdapter(adapter);
 
 
-        thn_ajar = (EditText) findViewById(R.id.thn_ajar);
-        thn_ajar.addTextChangedListener(tahunajarlistener);
-
-        Button tombol = findViewById(R.id.carikelas);
+        Button tombol = findViewById(R.id.carisiswa);
         tombol.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 closekeyboard();
 
-                thn_ajar.setError(null);
-
-                str_thn = thn_ajar.getText().toString();
-                if (str_thn.equals("")) {
-                    thn_ajar.setError("Tidak boleh kosong");
-                } else {
-                    str_thn = str_thn + ubahan_thn_ajrn(str_thn);
-                    if (str_thn.length() != 8) {
-                        thn_ajar.setError("Tahun salah");
-                    } else if (Integer.parseInt(str_thn) < 19900000) {
-                        thn_ajar.setError("Tahun salah");
-                    } else {
-                        Log.e("ER__", "KIRM BOIIIII");
-                        kirim();
-                    }
+                str_nama = nama.getText().toString().trim();
+                if (str_nama.equals("")) {
+                    Utilities.showMessageBox(activity, "Warning", "Kolom cari tidak boleh kosng");
+                } else if (str_nama.length() <=2) {
+                    Utilities.showMessageBox(activity, "Warning", "Minimal 3 huruf");
+                } else  {
+//                    Log.e("ER__", "KIRM BOIIIII");
+                    kirim();
                 }
-
             }
         });
+
     }
 
-    private TextWatcher tahunajarlistener = new TextWatcher() {
-
-        @Override
-        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-        }
-
-        @Override
-        public void onTextChanged(CharSequence s, int start, int before, int count) {
-            str_thn = thn_ajar.getText().toString();
-            String aa;
-            if (str_thn.length() == 4) {
-                aa = str_thn + ubahan_thn_ajrn(str_thn);
-                if (aa.length() == 8)
-                    ((TextView) findViewById(R.id.blakangthn)).setText("/ " + ubahan_thn_ajrn(str_thn));
-                else
-                    ((TextView) findViewById(R.id.blakangthn)).setText("/");
-            } else
-                ((TextView) findViewById(R.id.blakangthn)).setText("/");
-
-
-        }
-
-        @Override
-        public void afterTextChanged(Editable s) {
-
-        }
-    };
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -169,7 +130,7 @@ public class cari_kelas extends AppCompatActivity {
         modelList.clear();
         adapter.notifyDataSetChanged();
         Log.e("ER", "start");
-        start = new kirim_kelas().execute();
+        start = new kirim_tgl().execute();
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -198,16 +159,14 @@ public class cari_kelas extends AppCompatActivity {
         }, Utilities.rto());
     }
 
-
-    private class kirim_kelas extends AsyncTask<Void, Void, Void> {
+    private class kirim_tgl extends AsyncTask<Void, Void, Void> {
 
         private String code;
         private JSONObject json;
         private boolean background;
 
         class Param {
-            String x1d, type, key, token;
-            String thn_ajar;
+            String x1d, type, key, token, nama;
         }
 
         @Override
@@ -233,16 +192,16 @@ public class cari_kelas extends AppCompatActivity {
                 param.type = "mmm";
                 param.key = Utilities.imei(activity);
                 param.token = sp.getString("token", "");
-
-                param.thn_ajar = str_thn;
+                param.nama=str_nama;
 
                 Gson gson = new Gson();
                 List<NameValuePair> p = new ArrayList<NameValuePair>();
                 p.add(new BasicNameValuePair("parsing", gson.toJson(param)));
 
                 JsonParser jParser = new JsonParser();
-                json = jParser.getJSONFromUrl(key.url(321), p);
-                Log.e("ER___", json.toString(2));
+                json = jParser.getJSONFromUrl(key.url(307), p);
+                Log.e("isi json login", json.toString(2));
+                Log.e("isi json login", gson.toJson(param));
                 code = json.getString("code");
 
             } catch (Exception e) {
@@ -261,6 +220,7 @@ public class cari_kelas extends AppCompatActivity {
             handler.removeCallbacksAndMessages(null);
 
             if (background) {
+
                 AlertDialog.Builder ab = new AlertDialog.Builder(activity);
                 ab
                         .setCancelable(false).setTitle("Informasi");
@@ -293,16 +253,14 @@ public class cari_kelas extends AppCompatActivity {
                 }
 
 
+
             } else {
                 Utilities.codeerror(activity, "ER0211");
             }
         }
-
         private void proses() {
             try {
-                JSONObject ketua, wali;
-
-                Model_kelas_list row;
+                Model_list_staf row;
                 JSONArray aray = json.getJSONArray("data");
                 if (aray != null && aray.length() > 0) {
                     ((LinearLayout) findViewById(R.id.nulldata)).setVisibility(View.GONE);
@@ -310,21 +268,10 @@ public class cari_kelas extends AppCompatActivity {
                     for (int i = 0; i < aray.length(); i++) {
                         json = aray.getJSONObject(i);
                         // type true akan menghilangkan row kelas
-                        ketua = json.getJSONObject("ketua");
-                        wali = json.getJSONObject("wali");
-
-                        String str_wali = "-", str_ketua = "-";
-                        if (!wali.getString("id").equals("-")) {
-                            str_wali = "(" + wali.getString("id") + ") " + wali.getString("nama");
-                        }
-                        if (!ketua.getString("id").equals("-")) {
-                            str_ketua = "(" + ketua.getString("id") + ") " + ketua.getString("nama");
-                        }
-                        row = new Model_kelas_list(
-                                json.getString("id"),
-                                json.getString("nama_kelas"),
-                                str_wali,
-                                str_ketua
+                        row = new Model_list_staf(
+                                json.getString("nis"),
+                                json.getString("nama_siswa"),
+                                json.getString("nama_siswa")
 
                         );
                         modelList.add(row);
@@ -336,63 +283,27 @@ public class cari_kelas extends AppCompatActivity {
                             showSelectedMatkul(modelList.get(position));
                         }
                     });
+
                 } else {
                     ((LinearLayout) findViewById(R.id.nulldata)).setVisibility(View.VISIBLE);
                     recyclerView.setVisibility(View.GONE);
                 }
+
+
+
             } catch (Exception e) {
                 Log.e("ER___", String.valueOf(e));
             }
         }
-        private void showSelectedMatkul(Model_kelas_list kelas) {
-//            Toast.makeText(activity, kelas.kd_kelas, Toast.LENGTH_SHORT).show();
-            Intent intent = getIntent();
-            String next_action = intent.getStringExtra("next_action");
-            kd_kelas =kelas.kd_kelas;
-            if(next_action.equals("333")){
 
-                AlertDialog.Builder builder = new AlertDialog.Builder(activity);
-                builder.setTitle("Informasi");
-                builder.setMessage("Masukan Password anda");
-                pass = new EditText(activity);
-                pass.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
-                builder.setView(pass);
-                builder.setPositiveButton("kirim", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        xpass = key.gen_pass(pass.getText().toString().trim());
-
-//                    Toast.makeText(activity, str_pass+str_nis, Toast.LENGTH_SHORT).show();
-                        dialog.dismiss();
-                        hapus();
-                    }
-                });
-                builder.setNegativeButton("Batal", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                });
-                AlertDialog ad = builder.create();
-                ad.show();
-
-
-
-
-            }else{
-                Intent myIntent;
-                if(next_action.equals("111")){
-                    myIntent = new Intent(activity, lihat_kelas.class);
-                    myIntent.putExtra("kd_kelas",kd_kelas );
-                }else {
-                    myIntent = new Intent(activity, ubah_kelas.class);
-                    myIntent.putExtra("kd_kelas", kd_kelas);
-                }
-
-                startActivity(myIntent);
-            }
-
+        private void showSelectedMatkul(Model_list_staf hadir) {
+//            Toast.makeText(activity, hadir.nis, Toast.LENGTH_SHORT).show();
+            Intent myIntent = new Intent(activity, edit_siswa.class);
+            myIntent.putExtra("nis_target", hadir.nip);
+            startActivity(myIntent);
         }
+
+
     }
 
 
@@ -407,10 +318,6 @@ public class cari_kelas extends AppCompatActivity {
         } catch (Exception e) {
 
         }
-    }
-
-    public static String ubahan_thn_ajrn(String a) {
-        return String.valueOf(Integer.parseInt(a) + 1);
     }
 
     private void hapus() {
@@ -553,5 +460,6 @@ public class cari_kelas extends AppCompatActivity {
 
 
     }
+
 
 }

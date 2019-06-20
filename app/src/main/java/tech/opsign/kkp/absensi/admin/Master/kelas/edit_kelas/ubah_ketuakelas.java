@@ -52,7 +52,7 @@ public class ubah_ketuakelas extends AppCompatActivity {
     private RecyclerView recyclerView;
     private List<Model_list_siswa> modelList = new ArrayList<>();
     private Adapter_list_siswa adapter;
-    String str_nis, str_KDkelas;
+    private String str_nis, str_KDkelas, action;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -63,7 +63,14 @@ public class ubah_ketuakelas extends AppCompatActivity {
         key = new GenKey();
         sp = activity.getSharedPreferences("shared", 0x0000);
         handler = new Handler();
-        setTitle("Lihat Kelas");
+        Intent intent = getIntent();
+        action = intent.getStringExtra("action");
+        if (action.equals("1"))
+            setTitle("Pilih Ketua Kelas");
+        else
+            setTitle("Hapus Siswa dari Kelas");
+
+
         if (Build.VERSION.SDK_INT >= 21) {
             Window window = this.getWindow();
             window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
@@ -86,6 +93,8 @@ public class ubah_ketuakelas extends AppCompatActivity {
         recyclerView.setAdapter(adapter);
 
         proses();
+        setResult(RESULT_OK);
+
     }
 
 
@@ -140,15 +149,21 @@ public class ubah_ketuakelas extends AppCompatActivity {
     private void showSelectedMatkul(Model_list_siswa list) {
         str_nis = list.nis;
         AlertDialog.Builder ab = new AlertDialog.Builder(activity);
+        String codee;
+        if (action.equals("1"))
+
+            codee = "Apakah anda yakin ingin menggantikan Ketua Kelas kepada " + list.nama;
+        else
+            codee = "Apakah anda yakin ingin menghapus " + list.nama+" dari kelas";
         ab
                 .setCancelable(false)
                 .setTitle("Informasi")
-                .setMessage("Apakah anda yakin ingin menggantikan Ketua Kelas kepada " + list.nama)
+                .setMessage(codee)
                 .setPositiveButton("Kirim", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
-                            kirim();
+                        kirim();
                     }
                 }).setNegativeButton("Batal", new DialogInterface.OnClickListener() {
             @Override
@@ -235,7 +250,13 @@ public class ubah_ketuakelas extends AppCompatActivity {
                 p.add(new BasicNameValuePair("parsing", gson.toJson(param)));
 
                 JsonParser jParser = new JsonParser();
-                json = jParser.getJSONFromUrl(key.url(325), p);
+                String url;
+                if (action.equals("1"))
+                    url = key.url(325);
+                else
+                    url = key.url(327);
+
+                json = jParser.getJSONFromUrl(url, p);
                 Log.e("ER___", json.toString(2));
                 code = json.getString("code");
 
@@ -259,12 +280,20 @@ public class ubah_ketuakelas extends AppCompatActivity {
                 ab
                         .setCancelable(false).setTitle("Informasi");
                 if (code.equals("OK4")) {
-                    ab.setMessage("Ketua Kelas sudah berhasil diganti").setPositiveButton("Tutup", new DialogInterface.OnClickListener() {
+
+                    if (action.equals("1"))
+
+                        code = "Ketua Kelas sudah berhasil diganti";
+                    else
+                        code = "Siswa berhasil dihapus dalam kelas";
+
+                    ab.setMessage(code).setPositiveButton("Tutup", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             dialog.dismiss();
-                            setResult(RESULT_OK);
-                            finish();
+                            if (action.equals("1")){
+                                finish();
+                            }
                         }
                     }).show();
                 } else if (code.equals("TOKEN2") || code.equals("TOKEN1")) {

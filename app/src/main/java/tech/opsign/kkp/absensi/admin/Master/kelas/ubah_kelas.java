@@ -17,11 +17,13 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -44,8 +46,10 @@ import tech.opsign.kkp.absensi.Login;
 import tech.opsign.kkp.absensi.R;
 import tech.opsign.kkp.absensi.admin.Master.kelas.Tool_list_siswa.Adapter_siswakelas;
 import tech.opsign.kkp.absensi.admin.Master.kelas.Tool_list_siswa.Model_siswakelas;
+import tech.opsign.kkp.absensi.admin.Master.kelas.edit_kelas.level_siswa;
 import tech.opsign.kkp.absensi.admin.Master.kelas.edit_kelas.lihat_walikelas;
 import tech.opsign.kkp.absensi.admin.Master.kelas.edit_kelas.nama_kelas;
+import tech.opsign.kkp.absensi.admin.Master.kelas.edit_kelas.tambah_siswakelas;
 import tech.opsign.kkp.absensi.admin.Master.kelas.edit_kelas.ubah_ketuakelas;
 
 public class ubah_kelas extends AppCompatActivity {
@@ -111,6 +115,8 @@ public class ubah_kelas extends AppCompatActivity {
         int id = item.getItemId();
         if (id == android.R.id.home)
             finish();
+        if (id == R.id.action_favorite)
+            awalan();
         return super.onOptionsItemSelected(item);
     }
 
@@ -329,20 +335,53 @@ public class ubah_kelas extends AppCompatActivity {
                         Intent inten = new Intent(activity, ubah_ketuakelas.class);
                         inten.putExtra("array_siswa", String.valueOf(list_siswa));
                         inten.putExtra("kode_kels", kode_kelas);
+                        inten.putExtra("action", "1");
                         startActivityForResult(inten, 0);
                     }
                 });
+                ((Button) findViewById(R.id.hapus_siswa)).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent inten = new Intent(activity, ubah_ketuakelas.class);
+                        inten.putExtra("array_siswa", String.valueOf(list_siswa));
+                        inten.putExtra("kode_kels", kode_kelas);
+                        inten.putExtra("action", "2");
+//
+                        startActivityForResult(inten, 0);
+                    }
+                });
+                ((Button) findViewById(R.id.tambah_siswa)).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent inten = new Intent(activity, tambah_siswakelas.class);
+                        inten.putExtra("kode_kels", kode_kelas);
+                        inten.putExtra("tahun", tahun_ajar);
+
+//
+                        startActivityForResult(inten, 0);
+                    }
+                });
+
+                Toast.makeText(activity, "Untuk Mengubah Level Siswa, klik pada row siswa", Toast.LENGTH_LONG).show();
             } catch (Exception e) {
                 Log.e("ER___", String.valueOf(e));
             }
         }
 
         private void showSelectedMatkul(Model_siswakelas hadir) {
-            Toast.makeText(activity, hadir.nama, Toast.LENGTH_SHORT).show();
-//            Intent myIntent = new Intent(activity, edit_siswa.class);
-//            myIntent.putExtra("nis_target", hadir.nis);
-//            startActivity(myIntent);
+            Intent inten = new Intent(activity, level_siswa.class);
+            inten.putExtra("kode_kels", kode_kelas);
+            inten.putExtra("nis", hadir.nis);
+            inten.putExtra("nama", hadir.nama);
+            startActivityForResult(inten, 0);
         }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.refres, menu);
+        return true;
     }
 
 

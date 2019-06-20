@@ -47,6 +47,7 @@ import java.util.List;
 import Tools.GenKey;
 import Tools.JsonParser;
 import Tools.Utilities;
+import tech.opsign.kkp.absensi.Login;
 import tech.opsign.kkp.absensi.R;
 
 public class edit_siswa extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
@@ -64,7 +65,8 @@ public class edit_siswa extends AppCompatActivity implements AdapterView.OnItemS
     private EditText nis, nisn, nama, tmp_lahir, nama_wali, alamat, no_ijazah, no_ujian;
     private String str_nis, str_nisn, str_nama, str_tmp_lahir, str_agama, str_nama_wali, str_alamat, str_no_ijazah, str_no_ujian;
 
-    String[] pilihan_agama = {"Islam","Kristen","Katolik","Hindu","Buddha","Kong Hu Cu"};
+    String[] pilihan_agama = {"Islam", "Kristen", "Katolik", "Hindu", "Buddha", "Kong Hu Cu"};
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -89,7 +91,7 @@ public class edit_siswa extends AppCompatActivity implements AdapterView.OnItemS
         spiner.setAdapter(null);
         ArrayList<String> jenis = new ArrayList<String>();
         int i;
-        for(i = 0; pilihan_agama.length>i; i++){
+        for (i = 0; pilihan_agama.length > i; i++) {
             jenis.add(pilihan_agama[i]);
         }
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(activity, R.layout.spiner_item, jenis);
@@ -271,6 +273,9 @@ public class edit_siswa extends AppCompatActivity implements AdapterView.OnItemS
 
             if (background) {
 
+
+                AlertDialog.Builder ab = new AlertDialog.Builder(activity);
+                ab.setCancelable(false).setTitle("Informasi");
                 if (code.equals("OK4")) {
                     try {
                         json = json.getJSONObject("data");
@@ -281,11 +286,11 @@ public class edit_siswa extends AppCompatActivity implements AdapterView.OnItemS
 
                         int i;
                         str_agama = json.getString("agama");
-                        for(i = 0; pilihan_agama.length>i; i++){
-                            if (pilihan_agama[i].equals(str_agama)){
+                        for (i = 0; pilihan_agama.length > i; i++) {
+                            if (pilihan_agama[i].equals(str_agama)) {
                                 spiner.setSelection(i);
                                 break;
-                            }else {
+                            } else {
                                 spiner.setSelection(0);
                             }
                         }
@@ -300,21 +305,30 @@ public class edit_siswa extends AppCompatActivity implements AdapterView.OnItemS
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
-
-                } else {
-                    AlertDialog.Builder ab = new AlertDialog.Builder(activity);
-                    ab
-                            .setCancelable(false).setTitle("Informasi")
-                            .setMessage(code)
+                } else if (code.equals("TOKEN2") || code.equals("TOKEN1")) {
+                    SharedPreferences.Editor editorr = sp.edit();
+                    editorr.putString("username", "");
+                    editorr.putString("token", "");
+                    editorr.commit();
+                    ab.setMessage(GenKey.pesan(code))
                             .setPositiveButton("Tutup", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
 
                                     dialog.dismiss();
+                                    Intent login = new Intent(activity, Login.class);
+                                    login.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                    startActivity(login);
                                     finish();
                                 }
-                            })
-                            .show();
+                            }).show();
+                } else {
+                    ab.setMessage(code).setPositiveButton("Tutup", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    }).show();
                 }
 
 
@@ -326,7 +340,7 @@ public class edit_siswa extends AppCompatActivity implements AdapterView.OnItemS
 
     }
 
-        private void kirim() {
+    private void kirim() {
         Log.e("ER", "start");
         start = new kirim_siswa().execute();
         handler.postDelayed(new Runnable() {
@@ -356,6 +370,7 @@ public class edit_siswa extends AppCompatActivity implements AdapterView.OnItemS
             }
         }, Utilities.rto());
     }
+
     private class kirim_siswa extends AsyncTask<Void, Void, Void> {
 
         private String code;
@@ -429,20 +444,39 @@ public class edit_siswa extends AppCompatActivity implements AdapterView.OnItemS
             if (background) {
 
                 AlertDialog.Builder ab = new AlertDialog.Builder(activity);
-                ab
-                        .setCancelable(false).setTitle("Informasi")
-                        .setPositiveButton("Tutup", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-
-                                dialog.dismiss();
-                                finish();
-                            }
-                        });
+                ab.setCancelable(false).setTitle("Informasi");
                 if (code.equals("OK4")) {
-                    ab.setMessage("Data sudah berhasil diubah").show();
+                    ab.setMessage("Data sudah berhasil diubah").setPositiveButton("Tutup", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                            finish();
+                        }
+                    }).show();
+                } else if (code.equals("TOKEN2") || code.equals("TOKEN1")) {
+                    SharedPreferences.Editor editorr = sp.edit();
+                    editorr.putString("username", "");
+                    editorr.putString("token", "");
+                    editorr.commit();
+                    ab.setMessage(GenKey.pesan(code))
+                            .setPositiveButton("Tutup", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+
+                                    dialog.dismiss();
+                                    Intent login = new Intent(activity, Login.class);
+                                    login.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                    startActivity(login);
+                                    finish();
+                                }
+                            }).show();
                 } else {
-                    ab.setMessage(code).show();
+                    ab.setMessage(code).setPositiveButton("Tutup", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    }).show();
                 }
 
 
@@ -494,8 +528,6 @@ public class edit_siswa extends AppCompatActivity implements AdapterView.OnItemS
 
 
         }
-
-
 
 
     }

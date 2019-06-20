@@ -78,7 +78,7 @@ public class nama_kelas extends AppCompatActivity {
         }
         Intent inten = getIntent();
         nama_kelas = (EditText) findViewById(R.id.ubah_nama_kelas);
-        nama_kelas.setText(inten.getStringExtra("nama_kelas"));
+        nama_kelas.setText(inten.getStringExtra("nis"));
         kd_kelas = inten.getStringExtra("kode_kels");
 
         Button tombol = findViewById(R.id.kirimubah_nama);

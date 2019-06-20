@@ -269,7 +269,7 @@ public class SplashScreen extends AppCompatActivity {
                                                 Log.d("yeyy", "1");
                                                 homeIntent = new Intent(activity, MainAdmin.class);
 //                                                homeIntent = new Intent(activity, test_layout.class);
-                                                homeIntent = new Intent(activity, ubah_kelas.class);
+//                                                homeIntent = new Intent(activity, ubah_kelas.class);
 //                                                homeIntent = new Intent(activity, ubah_kelas.class);
                                             } else {
                                                 Log.d("yeyy", "2");
@@ -293,7 +293,7 @@ public class SplashScreen extends AppCompatActivity {
                         ab
                                 .setCancelable(false).setTitle("Informasi")
                                 .setMessage(code)
-                                .setPositiveButton("okay", new DialogInterface.OnClickListener() {
+                                .setPositiveButton("Oke", new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
                                         dialog.dismiss();

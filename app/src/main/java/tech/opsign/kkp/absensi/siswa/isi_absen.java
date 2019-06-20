@@ -2,6 +2,7 @@ package tech.opsign.kkp.absensi.siswa;
 
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -41,6 +42,7 @@ import Tools.GenKey;
 import Tools.JsonParser;
 import Tools.Utilities;
 import me.dm7.barcodescanner.zxing.ZXingScannerView;
+import tech.opsign.kkp.absensi.Login;
 import tech.opsign.kkp.absensi.R;
 
 import static android.Manifest.permission_group.CAMERA;
@@ -262,23 +264,42 @@ public class isi_absen extends AppCompatActivity implements ZXingScannerView.Res
 
             if (background) {
 
+                AlertDialog.Builder ab = new AlertDialog.Builder(activity);
+                ab.setCancelable(false).setTitle("Informasi");
                 if (code.equals("OK4")) {
-//                if (true) {
-                    AlertDialog.Builder ab = new AlertDialog.Builder(activity);
-                    ab
-                            .setCancelable(false).setTitle("Informasi")
-                            .setMessage("Berhasil")
+                    ab.setMessage("Berhasil").setPositiveButton("Tutup", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                            finish();
+                        }
+                    }).show();
+                } else if (code.equals("TOKEN2") || code.equals("TOKEN1")) {
+                    SharedPreferences.Editor editorr = sp.edit();
+                    editorr.putString("username", "");
+                    editorr.putString("token", "");
+                    editorr.commit();
+                    ab.setMessage(GenKey.pesan(code))
                             .setPositiveButton("Tutup", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
+
                                     dialog.dismiss();
+                                    Intent login = new Intent(activity, Login.class);
+                                    login.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                    startActivity(login);
                                     finish();
                                 }
-                            })
-                            .show();
+                            }).show();
                 } else {
-                    generate_pesan(code);
+                    ab.setMessage(code).setPositiveButton("Tutup", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    }).show();
                 }
+
 
             } else {
                 Utilities.codeerror(activity, "ER0211");

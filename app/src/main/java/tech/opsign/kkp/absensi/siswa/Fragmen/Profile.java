@@ -2,6 +2,7 @@ package tech.opsign.kkp.absensi.siswa.Fragmen;
 
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -33,6 +34,7 @@ import java.util.List;
 import Tools.GenKey;
 import Tools.JsonParser;
 import Tools.Utilities;
+import tech.opsign.kkp.absensi.Login;
 import tech.opsign.kkp.absensi.R;
 import tech.opsign.kkp.absensi.siswa.Fragmen.ToolProfile.Adapter;
 import tech.opsign.kkp.absensi.siswa.Fragmen.ToolProfile.Model;
@@ -162,21 +164,40 @@ public class Profile extends Fragment {
 
             if (background) {
 
+
+
+
+                AlertDialog.Builder ab = new AlertDialog.Builder(v.getContext());
+                ab
+                        .setCancelable(false).setTitle("Informasi");
                 if (code.equals("OK4")) {
                     proses();
-                } else {
-                    AlertDialog.Builder ab = new AlertDialog.Builder(v.getContext());
-                    ab
-                            .setCancelable(false).setTitle("Informasi")
-                            .setMessage(code)
+                } else if (code.equals("TOKEN2") || code.equals("TOKEN1")) {
+                    SharedPreferences.Editor editorr = sp.edit();
+                    editorr.putString("username", "");
+                    editorr.putString("token", "");
+                    editorr.commit();
+                    ab.setMessage(GenKey.pesan(code))
                             .setPositiveButton("Tutup", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
+
                                     dialog.dismiss();
+                                    Intent login = new Intent(v.getContext(), Login.class);
+                                    login.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                    startActivity(login);
+                                    getActivity().finish();
                                 }
-                            })
-                            .show();
+                            }).show();
+                } else {
+                    ab.setMessage(code).setPositiveButton("Tutup", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    }).show();
                 }
+
 
 
             } else {
