@@ -67,7 +67,7 @@ public class Cari_staf extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.a_siswa_cari);
+        setContentView(R.layout.a_staf_cari);
 
         this.activity = this;
         key = new GenKey();
@@ -199,9 +199,9 @@ public class Cari_staf extends AppCompatActivity {
                 p.add(new BasicNameValuePair("parsing", gson.toJson(param)));
 
                 JsonParser jParser = new JsonParser();
-                json = jParser.getJSONFromUrl(key.url(307), p);
+                json = jParser.getJSONFromUrl(key.url(336), p);
                 Log.e("isi json login", json.toString(2));
-                Log.e("isi json login", gson.toJson(param));
+//                Log.e("isi json login", gson.toJson(param));
                 code = json.getString("code");
 
             } catch (Exception e) {
@@ -269,9 +269,9 @@ public class Cari_staf extends AppCompatActivity {
                         json = aray.getJSONObject(i);
                         // type true akan menghilangkan row kelas
                         row = new Model_list_staf(
-                                json.getString("nis"),
-                                json.getString("nama_siswa"),
-                                json.getString("nama_siswa")
+                                json.getString("nip"),
+                                json.getString("nama_staf"),
+                                json.getString("level")
 
                         );
                         modelList.add(row);
@@ -297,7 +297,7 @@ public class Cari_staf extends AppCompatActivity {
         }
 
         private void showSelectedMatkul(Model_list_staf hadir) {
-//            Toast.makeText(activity, hadir.nis, Toast.LENGTH_SHORT).show();
+//            Toast.makeText(activity, hadir.nip, Toast.LENGTH_SHORT).show();
             Intent myIntent = new Intent(activity, edit_siswa.class);
             myIntent.putExtra("nis_target", hadir.nip);
             startActivity(myIntent);
@@ -319,147 +319,147 @@ public class Cari_staf extends AppCompatActivity {
 
         }
     }
-
-    private void hapus() {
-        Log.e("ER", "start");
-        start = new call_hapus().execute();
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                if (dialog.isShowing()) {
-                    dialog.dismiss();
-                    start.cancel(true);
-                    new AlertDialog.Builder(activity)
-                            .setTitle("Informasi")
-                            .setMessage("Telah Terjadi Kesalahan Pada Koneksi Anda.")
-                            .setCancelable(false)
-                            .setPositiveButton("Coba Lagi", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    dialog.dismiss();
-                                    hapus();
-                                }
-                            }).setNegativeButton("kembali", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.dismiss();
-                            finish();
-                        }
-                    }).show();
-                }
-            }
-        }, Utilities.rto());
-    }
-
-    private class call_hapus extends AsyncTask<Void, Void, Void> {
-
-        private String code;
-        private JSONObject json;
-        private boolean background;
-
-        class Param {
-            String x1d, type, key, token, id_kelas, p4ss;
-        }
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            background = true;
-            dialog = new ProgressDialog(activity);
-            dialog.setMessage("Sedang memproses data. Harap tunggu sejenak.");
-            dialog.setCancelable(false);
-            dialog.show();
-
-        }
-
-        @Override
-        protected Void doInBackground(Void... voids) {
-            try {
-                StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-                StrictMode.setThreadPolicy(policy);
-
-
-                Param param = new Param();
-                param.x1d = sp.getString("username", "");
-                param.type = "mmm";
-                param.key = Utilities.imei(activity);
-                param.token = sp.getString("token", "");
-                param.id_kelas = kd_kelas;
-                param.p4ss = xpass;
-
-                Gson gson = new Gson();
-                List<NameValuePair> p = new ArrayList<NameValuePair>();
-                p.add(new BasicNameValuePair("parsing", gson.toJson(param)));
-
-                JsonParser jParser = new JsonParser();
-                json = jParser.getJSONFromUrl(key.url(329), p);
-                Log.e("isi json login", json.toString(2));
-                Log.e("isi json login", gson.toJson(param));
-                code = json.getString("code");
-
-            } catch (Exception e) {
-                background = false;
-            }
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Void result) {
-            super.onPostExecute(result);
-
-            if (dialog.isShowing()) {
-                dialog.dismiss();
-            }
-            handler.removeCallbacksAndMessages(null);
-
-            if (background) {
-
-                AlertDialog.Builder ab = new AlertDialog.Builder(activity);
-                ab
-                        .setCancelable(false).setTitle("Informasi");
-                if (code.equals("OK4")) {
-                    ab.setMessage("Siswa telah berhasil dihapus").setPositiveButton("Tutup", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.dismiss();
-                            kirim();
-                        }
-                    }).show();
-                } else if (code.equals("TOKEN2") || code.equals("TOKEN1")) {
-                    SharedPreferences.Editor editorr = sp.edit();
-                    editorr.putString("username", "");
-                    editorr.putString("token", "");
-                    editorr.commit();
-                    ab.setMessage(GenKey.pesan(code))
-                            .setPositiveButton("Tutup", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-
-                                    dialog.dismiss();
-                                    Intent login = new Intent(activity, Login.class);
-                                    login.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                                    startActivity(login);
-                                    finish();
-                                }
-                            }).show();
-                } else {
-                    ab.setMessage(code).setPositiveButton("Tutup", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.dismiss();
-                        }
-                    }).show();
-                }
-
-
-
-            } else {
-                Utilities.codeerror(activity, "ER0211");
-            }
-        }
-
-
-    }
+//
+//    private void hapus() {
+//        Log.e("ER", "start");
+//        start = new call_hapus().execute();
+//        handler.postDelayed(new Runnable() {
+//            @Override
+//            public void run() {
+//                if (dialog.isShowing()) {
+//                    dialog.dismiss();
+//                    start.cancel(true);
+//                    new AlertDialog.Builder(activity)
+//                            .setTitle("Informasi")
+//                            .setMessage("Telah Terjadi Kesalahan Pada Koneksi Anda.")
+//                            .setCancelable(false)
+//                            .setPositiveButton("Coba Lagi", new DialogInterface.OnClickListener() {
+//                                @Override
+//                                public void onClick(DialogInterface dialog, int which) {
+//                                    dialog.dismiss();
+//                                    hapus();
+//                                }
+//                            }).setNegativeButton("kembali", new DialogInterface.OnClickListener() {
+//                        @Override
+//                        public void onClick(DialogInterface dialog, int which) {
+//                            dialog.dismiss();
+//                            finish();
+//                        }
+//                    }).show();
+//                }
+//            }
+//        }, Utilities.rto());
+//    }
+//
+//    private class call_hapus extends AsyncTask<Void, Void, Void> {
+//
+//        private String code;
+//        private JSONObject json;
+//        private boolean background;
+//
+//        class Param {
+//            String x1d, type, key, token, id_kelas, p4ss;
+//        }
+//
+//        @Override
+//        protected void onPreExecute() {
+//            super.onPreExecute();
+//            background = true;
+//            dialog = new ProgressDialog(activity);
+//            dialog.setMessage("Sedang memproses data. Harap tunggu sejenak.");
+//            dialog.setCancelable(false);
+//            dialog.show();
+//
+//        }
+//
+//        @Override
+//        protected Void doInBackground(Void... voids) {
+//            try {
+//                StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+//                StrictMode.setThreadPolicy(policy);
+//
+//
+//                Param param = new Param();
+//                param.x1d = sp.getString("username", "");
+//                param.type = "mmm";
+//                param.key = Utilities.imei(activity);
+//                param.token = sp.getString("token", "");
+////                param.id_kelas = kd_kelas;
+////                param.p4ss = xpass;
+//
+//                Gson gson = new Gson();
+//                List<NameValuePair> p = new ArrayList<NameValuePair>();
+//                p.add(new BasicNameValuePair("parsing", gson.toJson(param)));
+//
+//                JsonParser jParser = new JsonParser();
+//                json = jParser.getJSONFromUrl(key.url(329), p);
+//                Log.e("isi json login", json.toString(2));
+//                Log.e("isi json login", gson.toJson(param));
+//                code = json.getString("code");
+//
+//            } catch (Exception e) {
+//                background = false;
+//            }
+//            return null;
+//        }
+//
+//        @Override
+//        protected void onPostExecute(Void result) {
+//            super.onPostExecute(result);
+//
+//            if (dialog.isShowing()) {
+//                dialog.dismiss();
+//            }
+//            handler.removeCallbacksAndMessages(null);
+//
+//            if (background) {
+//
+//                AlertDialog.Builder ab = new AlertDialog.Builder(activity);
+//                ab
+//                        .setCancelable(false).setTitle("Informasi");
+//                if (code.equals("OK4")) {
+//                    ab.setMessage("Siswa telah berhasil dihapus").setPositiveButton("Tutup", new DialogInterface.OnClickListener() {
+//                        @Override
+//                        public void onClick(DialogInterface dialog, int which) {
+//                            dialog.dismiss();
+//                            kirim();
+//                        }
+//                    }).show();
+//                } else if (code.equals("TOKEN2") || code.equals("TOKEN1")) {
+//                    SharedPreferences.Editor editorr = sp.edit();
+//                    editorr.putString("username", "");
+//                    editorr.putString("token", "");
+//                    editorr.commit();
+//                    ab.setMessage(GenKey.pesan(code))
+//                            .setPositiveButton("Tutup", new DialogInterface.OnClickListener() {
+//                                @Override
+//                                public void onClick(DialogInterface dialog, int which) {
+//
+//                                    dialog.dismiss();
+//                                    Intent login = new Intent(activity, Login.class);
+//                                    login.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+//                                    startActivity(login);
+//                                    finish();
+//                                }
+//                            }).show();
+//                } else {
+//                    ab.setMessage(code).setPositiveButton("Tutup", new DialogInterface.OnClickListener() {
+//                        @Override
+//                        public void onClick(DialogInterface dialog, int which) {
+//                            dialog.dismiss();
+//                        }
+//                    }).show();
+//                }
+//
+//
+//
+//            } else {
+//                Utilities.codeerror(activity, "ER0211");
+//            }
+//        }
+//
+//
+//    }
 
 
 }

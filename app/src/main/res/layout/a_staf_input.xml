@@ -36,8 +36,9 @@
                     android:textColor="#000"
                     android:textSize="18sp" />
 
+
                 <EditText
-                    android:id="@+id/nip"
+                    android:id="@+id/nip_staf"
                     android:inputType="number"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -48,7 +49,6 @@
 
 
             </TableRow>
-
 
             <TableRow>
 
@@ -67,7 +67,7 @@
                     android:textSize="18sp" />
 
                 <EditText
-                    android:id="@+id/nama"
+                    android:id="@+id/namna_staf"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -77,7 +77,6 @@
 
 
             </TableRow>
-
 
             <TableRow
                 android:paddingTop="8dp"
@@ -97,21 +96,29 @@
                     android:textColor="#000"
                     android:textSize="18sp" />
                 <LinearLayout
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:background="@drawable/spiner_agama">
 
                     <Spinner
-                        android:id="@+id/level"
+
+                        android:id="@+id/level_staff"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent" />
                 </LinearLayout>
 
+                <!--<EditText-->
+                <!--android:id="@+id/agama"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_weight="1"-->
+                <!--android:maxLength="100"-->
+                <!--android:textColor="#000"-->
+                <!--android:textSize="18sp" />-->
+
+
             </TableRow>
-
-
-
 
         </TableLayout>
 

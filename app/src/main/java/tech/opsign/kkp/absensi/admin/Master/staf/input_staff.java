@@ -30,7 +30,6 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
-import android.widget.TextView;
 
 import com.google.gson.Gson;
 
@@ -58,16 +57,14 @@ public class input_staff extends AppCompatActivity implements AdapterView.OnItem
     private ProgressDialog dialog;
     private GenKey key;
 
-    @SuppressLint("StaticFieldLeak")
-    private static TextView tgl;
     private static String str_level = "";
-    private EditText nis, nisn, nama, tmp_lahir, nama_wali, alamat, no_ijazah, no_ujian;
+    private EditText nip, nama;
     private String str_nip, str_nama;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.a_siswa_input);
+        setContentView(R.layout.a_staf_input);
 
         this.activity = this;
         key = new GenKey();
@@ -84,7 +81,7 @@ public class input_staff extends AppCompatActivity implements AdapterView.OnItem
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
-        Spinner spiner = findViewById(R.id.level);
+        Spinner spiner = findViewById(R.id.level_staff);
         spiner.setAdapter(null);
         ArrayList<String> jenis = new ArrayList<String>();
         jenis.add("Guru Wali Kelas");
@@ -94,44 +91,25 @@ public class input_staff extends AppCompatActivity implements AdapterView.OnItem
         spiner.setAdapter(adapter);
         spiner.setOnItemSelectedListener(this);
 
-        tgl = (TextView) findViewById(R.id.inpt_tgl);
-//        nisn, nama, tmp_lahir,nama_wali, alamat, no_ijazah, no_ujian;
-        nis = (EditText) findViewById(R.id.nis);
-        nisn = (EditText) findViewById(R.id.nisn);
-        nama = (EditText) findViewById(R.id.namna);
-        tmp_lahir = (EditText) findViewById(R.id.tmp_lahir);
-        nama_wali = (EditText) findViewById(R.id.orang_tua);
-        alamat = (EditText) findViewById(R.id.alamat);
-        no_ijazah = (EditText) findViewById(R.id.no_ijazah);
-        no_ujian = (EditText) findViewById(R.id.no_ujian);
-        LinearLayout date_pick = (LinearLayout) findViewById(R.id.pilih_tgl);
-        date_pick.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                closekeyboard();
-                DialogFragment dialogfragment = new tanggalmulai();
-                dialogfragment.show(getFragmentManager(), "Tanggal Mulai");
-            }
-        });
+//        nisn, nama, level,nama_wali, alamat, no_ijazah, no_ujian;
+        nip = (EditText) findViewById(R.id.nip_staf);
+        nama = (EditText) findViewById(R.id.namna_staf);
 
         Button tombol = findViewById(R.id.kirimtanggal);
         tombol.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 closekeyboard();
-                nis.setError(null);
+                nip.setError(null);
                 nama.setError(null);
-                tmp_lahir.setError(null);
-                nama_wali.setError(null);
-                alamat.setError(null);
-                str_nip = nis.getText().toString().trim();
+                str_nip = nip.getText().toString().trim();
                 str_nama = nama.getText().toString().trim();
 
 
                 if (str_nip.equals("")) {
-                    nis.setError("Wajib diisi");
-                } else if (str_nip.length() != 6) {
-                    nis.setError("Harus 6 Digit Angka");
+                    nip.setError("Wajib diisi");
+                } else if (str_nip.length() < 6) {
+                    nip.setError("Mimal 6 Digit Angka");
                 } else if (nama.getText().toString().trim().equals("")) {
                     nama.setError("Wajib diisi");
                 } else if (str_level.equals("")) {
@@ -188,7 +166,7 @@ public class input_staff extends AppCompatActivity implements AdapterView.OnItem
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         Log.e("agamanya", parent.getItemAtPosition(position).toString());
-        str_level = parent.getItemAtPosition(position).toString();
+        str_level = String.valueOf(position);
     }
 
     @Override
@@ -204,8 +182,7 @@ public class input_staff extends AppCompatActivity implements AdapterView.OnItem
 
         class Param {
             String x1d, type, key, token;
-            String nis, nisn, nama_siswa, tgl_lhr, alamat, tmpt_lhr, agama,
-                    orangtua, no_ijazah, no_ujiansmp;
+            String nip, nama_staf, level;
         }
 
         @Override
@@ -231,16 +208,16 @@ public class input_staff extends AppCompatActivity implements AdapterView.OnItem
                 param.type = "mmm";
                 param.key = Utilities.imei(activity);
                 param.token = sp.getString("token", "");
-                param.nis = str_nip;
-                param.nama_siswa = str_nama;
-                param.tgl_lhr = str_level;
+                param.nip = str_nip;
+                param.nama_staf = str_nama;
+                param.level = str_level;
 
                 Gson gson = new Gson();
                 List<NameValuePair> p = new ArrayList<NameValuePair>();
                 p.add(new BasicNameValuePair("parsing", gson.toJson(param)));
 
                 JsonParser jParser = new JsonParser();
-                json = jParser.getJSONFromUrl(key.url(308), p);
+                json = jParser.getJSONFromUrl(key.url(335), p);
 //                Log.e("isi json login", json.toString(2));
                 code = json.getString("code");
 
@@ -310,48 +287,6 @@ public class input_staff extends AppCompatActivity implements AdapterView.OnItem
     }
 
 
-    public static class tanggalmulai extends DialogFragment implements DatePickerDialog.OnDateSetListener {
-
-        @Override
-        public Dialog onCreateDialog(Bundle savedInstanceState) {
-            final Calendar calendar = Calendar.getInstance();
-            int year = calendar.get(Calendar.YEAR);
-            int month = calendar.get(Calendar.MONTH);
-            int day = calendar.get(Calendar.DAY_OF_MONTH);
-
-            return new DatePickerDialog(getActivity(),
-                    AlertDialog.THEME_DEVICE_DEFAULT_LIGHT, this, year, month, day);
-        }
-
-        @SuppressLint("SetTextI18n")
-        public void onDateSet(DatePicker view, int year, int month, int day) {
-            @SuppressLint("SimpleDateFormat")
-            SimpleDateFormat
-                    date = new SimpleDateFormat("yyyy-MM-dd");
-            String strin = String.valueOf(year) + "-" + ubahan(month + 1) + "-" + ubahan(day);
-
-            try {
-                Date tanggalpilihan, tanggalskrng;
-                tanggalskrng = date.parse(sp.getString("tanggal", ""));
-                tanggalpilihan = date.parse(strin);
-                if ((tanggalpilihan.before(tanggalskrng) || tanggalpilihan.equals(tanggalskrng))) {
-                    str_level = strin;
-                    tgl.setText(Utilities.gettgl_lahir(strin));
-                } else {
-                    str_level = "";
-                    pesan("Pilihan Tanggal Tidak Boleh Sesudah " + Utilities.gettgl_lahir(sp.getString("tanggal", "")), getActivity());
-                    tgl.setText("Pilih Tanggal");
-
-                }
-            } catch (Exception e) {
-//                e.printStackTrace();
-            }
-
-
-        }
-
-    }
-
     private static void pesan(String pesannya, Context context) {
         AlertDialog.Builder ab = new AlertDialog.Builder(context);
         ab
@@ -380,13 +315,5 @@ public class input_staff extends AppCompatActivity implements AdapterView.OnItem
         }
     }
 
-    public static String ubahan(int a) {
-        String x = String.valueOf(a);
-        if (x.length() == 1) {
-            return "0" + x;
-        } else {
-            return x;
-        }
-    }
 
 }

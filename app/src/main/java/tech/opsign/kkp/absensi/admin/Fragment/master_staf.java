@@ -11,6 +11,8 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import tech.opsign.kkp.absensi.R;
+import tech.opsign.kkp.absensi.admin.Master.staf.Cari_staf;
+import tech.opsign.kkp.absensi.admin.Master.staf.input_staff;
 import tech.opsign.kkp.absensi.admin.Master.tanggal.input_tanggal;
 
 public class master_staf extends Fragment {
@@ -28,11 +30,21 @@ public class master_staf extends Fragment {
             @Override
             public void onClick(View v) {
 
-//                startActivity(new Intent(getContext(), input_tanggal.class));
+                startActivity(new Intent(getContext(), input_staff.class));
             }
         });
-        Button cari = (Button) v.findViewById(R.id.caristaf);
+        Button cari = (Button) v.findViewById(R.id.lihat);
         cari.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent myIntent = new Intent(getContext(), Cari_staf.class);
+                myIntent.putExtra("next_action", "111");
+                startActivity(myIntent);
+            }
+        });
+        Button ubah = (Button) v.findViewById(R.id.ubahstaf);
+        ubah.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 //                startActivity(new Intent(getContext(), Cari_siswa.class));

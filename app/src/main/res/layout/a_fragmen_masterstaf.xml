@@ -21,12 +21,21 @@
             android:textAllCaps="false"
             android:background="@drawable/button_master"/>
         <Button
-            android:id="@+id/caristaf"
+            android:id="@+id/lihat"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="7dp"
             android:textSize="16sp"
-            android:text="Cari dan Ubah data Staf"
+            android:text="Cari dan Lihat data Staf"
+            android:textAllCaps="false"
+            android:background="@drawable/button_master"/>
+        <Button
+            android:id="@+id/ubahstaf"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="7dp"
+            android:textSize="16sp"
+            android:text="Ubah data Staf"
             android:textAllCaps="false"
             android:background="@drawable/button_master"/>
         <Button
