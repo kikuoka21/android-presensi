@@ -191,7 +191,7 @@ public class ubah_kelas extends AppCompatActivity {
                 param.key = Utilities.imei(activity);
                 param.token = sp.getString("token", "");
                 kode_kelas = intent.getStringExtra("kd_kelas");
-                kode_kelas = "A00002";
+//                kode_kelas = "A00002";
                 param.kd_kelas = kode_kelas;
 
 

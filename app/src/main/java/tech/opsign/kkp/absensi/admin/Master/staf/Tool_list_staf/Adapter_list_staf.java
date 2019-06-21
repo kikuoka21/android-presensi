@@ -19,7 +19,7 @@ public class Adapter_list_staf extends RecyclerView.Adapter<Adapter_list_staf.My
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
-        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.a_row_nis_nama, parent, false);
+        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.a_row_nip_namalevel, parent, false);
         return new MyViewHolder(itemView);
     }
 
@@ -28,6 +28,10 @@ public class Adapter_list_staf extends RecyclerView.Adapter<Adapter_list_staf.My
         Model_list_staf b = arrayListData.get(position);
         holder.nis.setText(b.nip);
         holder.nama.setText(b.nama);
+        if(b.level.equals("0"))
+        holder.level.setText("Guru Kelas");
+        else
+        holder.level.setText("Guru Piket");
         if (position % 2 == 1) {
             holder.bg.setBackgroundColor(0xffe68a00);
 //            holder.bg.setBackgroundColor(0xffE8526D);
@@ -39,13 +43,14 @@ public class Adapter_list_staf extends RecyclerView.Adapter<Adapter_list_staf.My
 
 
     class MyViewHolder extends RecyclerView.ViewHolder {
-        TextView nis, nama;
+        TextView nis, nama,level;
         TableLayout bg;
 
         MyViewHolder(View v) {
             super(v);
             nis = (TextView) v.findViewById(R.id.row_nis);
             nama = (TextView) v.findViewById(R.id.row_nama);
+            level = (TextView) v.findViewById(R.id.level);
             bg = (TableLayout) v.findViewById(R.id.latar);
 
         }

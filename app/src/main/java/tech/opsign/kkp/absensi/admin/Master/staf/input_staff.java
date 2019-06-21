@@ -112,8 +112,6 @@ public class input_staff extends AppCompatActivity implements AdapterView.OnItem
                     nip.setError("Mimal 6 Digit Angka");
                 } else if (nama.getText().toString().trim().equals("")) {
                     nama.setError("Wajib diisi");
-                } else if (str_level.equals("")) {
-                    pesan("Tanggal Lahir Wajib Diisi", activity);
                 } else {
                     Log.e("ER__", "KIRM BOIIIII");
                     kirim();

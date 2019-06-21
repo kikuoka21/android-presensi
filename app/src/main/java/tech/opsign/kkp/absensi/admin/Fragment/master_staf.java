@@ -22,7 +22,7 @@ public class master_staf extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        getActivity().setTitle("List Menu Master Tanggal");
+        getActivity().setTitle("List Menu Master Staf");
         v = inflater.inflate(R.layout.a_fragmen_masterstaf, container, false);
 
         Button input = (Button) v.findViewById(R.id.inputstaf);
@@ -47,14 +47,18 @@ public class master_staf extends Fragment {
         ubah.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                startActivity(new Intent(getContext(), Cari_siswa.class));
+                Intent myIntent = new Intent(getContext(), Cari_staf.class);
+                myIntent.putExtra("next_action", "222");
+                startActivity(myIntent);
             }
         });
         Button hapus = (Button) v.findViewById(R.id.hapusstaf);
         hapus.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                startActivity(new Intent(getContext(), hapus_siswa.class));
+                Intent myIntent = new Intent(getContext(), Cari_staf.class);
+                myIntent.putExtra("next_action", "333");
+                startActivity(myIntent);
             }
         });
 

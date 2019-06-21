@@ -346,9 +346,9 @@ public class cari_kelas extends AppCompatActivity {
         }
         private void showSelectedMatkul(Model_kelas_list kelas) {
 //            Toast.makeText(activity, kelas.kd_kelas, Toast.LENGTH_SHORT).show();
+            kd_kelas =kelas.kd_kelas;
             Intent intent = getIntent();
             String next_action = intent.getStringExtra("next_action");
-            kd_kelas =kelas.kd_kelas;
             if(next_action.equals("333")){
 
                 AlertDialog.Builder builder = new AlertDialog.Builder(activity);

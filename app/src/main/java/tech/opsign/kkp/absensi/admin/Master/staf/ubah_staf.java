@@ -1,38 +1,34 @@
-package tech.opsign.kkp.absensi.siswa;
+package tech.opsign.kkp.absensi.admin.Master.staf;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.StrictMode;
 import android.support.annotation.Nullable;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.ImageView;
-import android.widget.Toast;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Spinner;
 
 import com.google.gson.Gson;
-import com.google.zxing.BarcodeFormat;
-import com.google.zxing.MultiFormatWriter;
-import com.google.zxing.Result;
-import com.google.zxing.common.BitMatrix;
-import com.journeyapps.barcodescanner.BarcodeEncoder;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -41,115 +37,79 @@ import java.util.List;
 import Tools.GenKey;
 import Tools.JsonParser;
 import Tools.Utilities;
-import me.dm7.barcodescanner.zxing.ZXingScannerView;
 import tech.opsign.kkp.absensi.Login;
 import tech.opsign.kkp.absensi.R;
 
-import static android.Manifest.permission_group.CAMERA;
-
-public class isi_absen extends AppCompatActivity implements ZXingScannerView.ResultHandler {
-    private SharedPreferences sp;
-    private isi_absen activity;
+public class ubah_staf extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
+    private static SharedPreferences sp;
+    private ubah_staf activity;
     private Handler handler;
     private AsyncTask start;
     private ProgressDialog dialog;
     private GenKey key;
-    private JSONObject qrcode;
 
-
-    private ZXingScannerView mScannerView;
-    private Result rawResult;
+    private static String str_level = "";
+    private EditText nip, nama;
+    private String str_nip, str_nama;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        setContentView(R.layout.s_generate_qr);
+        setContentView(R.layout.a_staf_input);
 
-//        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
         this.activity = this;
-
-
         key = new GenKey();
         sp = activity.getSharedPreferences("shared", 0x0000);
         handler = new Handler();
-        setTitle("QR Code Kelas");
+        setTitle("Input Siswa");
         if (Build.VERSION.SDK_INT >= 21) {
             Window window = this.getWindow();
             window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
             window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
             window.setStatusBarColor(this.getResources().getColor(R.color.colorPrimary));
         }
-//
-//        mulai();
+
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
-        mScannerView = new ZXingScannerView(activity);
-        setContentView(mScannerView);
+        Spinner spiner = findViewById(R.id.level_staff);
+        spiner.setAdapter(null);
+        ArrayList<String> jenis = new ArrayList<String>();
+        jenis.add("Guru Wali Kelas");
+        jenis.add("Guru Piket");
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(activity, R.layout.spiner_item, jenis);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spiner.setAdapter(adapter);
+        spiner.setOnItemSelectedListener(this);
 
-    }
+//        nisn, nama, level,nama_wali, alamat, no_ijazah, no_ujian;
+        nip = (EditText) findViewById(R.id.nip_staf);
+        nama = (EditText) findViewById(R.id.namna_staf);
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        mScannerView.setResultHandler(this);
-        mScannerView.startCamera();
-    }
+        Button tombol = findViewById(R.id.kirimtanggal);
+        tombol.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                closekeyboard();
+                nip.setError(null);
+                nama.setError(null);
+                str_nip = nip.getText().toString().trim();
+                str_nama = nama.getText().toString().trim();
 
 
-    @Override
-    public void onPause() {
-        super.onPause();
-        mScannerView.stopCamera();
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        mScannerView.stopCamera();
-    }
-
-    @Override
-    public void handleResult(Result rawResult) {
-        Log.e("TAG22", String.valueOf(Utilities.checkjson(rawResult.getText())));
-
-        if (Utilities.checkjson(rawResult.getText())) {
-//            onPause();
-            Log.e("TAG", rawResult.getText()); // Prints scan results
-
-            try {
-                qrcode = new JSONObject(rawResult.getText());
-                onPause();
-                Log.e("ER", "st11111art");
-                Log.e("ER", qrcode.getString("id_kelas"));
-                Log.e("ER", sp.getString("kd_kelas", ""));
-//                Log.e("TAG222", String.valueOf(qrcode.getString("kd_kls").equals(sp.getString("kd_kelas", ""))));
-                if (qrcode.getString("id_kelas").equals(sp.getString("kd_kelas", ""))) {
-
-                    if (qrcode.getString("tanggal").equals(sp.getString("tanggal", ""))) {
-                        mulai();
-                    } else {
-
-                        generate_pesan("QR code Sudah Kedaluwarsa.");
-                    }
+                if (str_nip.equals("")) {
+                    nip.setError("Wajib diisi");
+                } else if (str_nip.length() < 6) {
+                    nip.setError("Mimal 6 Digit Angka");
+                } else if (nama.getText().toString().trim().equals("")) {
+                    nama.setError("Wajib diisi");
                 } else {
-//                onPause();
-                    Log.e("ER", "st11111asdawdaart");
-
-                    generate_pesan("QR Code Tersebut Bukan Untuk Kelas Anda.");
+                    Log.e("ER__", "KIRM BOIIIII");
+                    kirim();
                 }
-                Log.e("ER", "stardawdw1t");
-//                mulai();
-            } catch (Exception e) {
-                e.printStackTrace();
-                onResume();
             }
+        });
 
-
-//            onResume();
-        } else
-            Log.e("TAGbnawah", rawResult.getText()); // Prints scan results
-//        mScannerView.resumeCameraPreview(this);
     }
 
 
@@ -161,10 +121,9 @@ public class isi_absen extends AppCompatActivity implements ZXingScannerView.Res
         return super.onOptionsItemSelected(item);
     }
 
-    private void mulai() {
-
-
-        start = new callAPI().execute();
+    private void kirim() {
+        Log.e("ER", "start");
+        start = new kirim_siswa().execute();
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -179,7 +138,7 @@ public class isi_absen extends AppCompatActivity implements ZXingScannerView.Res
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     dialog.dismiss();
-                                    mulai();
+                                    kirim();
                                 }
                             }).setNegativeButton("kembali", new DialogInterface.OnClickListener() {
                         @Override
@@ -191,21 +150,29 @@ public class isi_absen extends AppCompatActivity implements ZXingScannerView.Res
                 }
             }
         }, Utilities.rto());
+    }
+
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        Log.e("agamanya", parent.getItemAtPosition(position).toString());
+        str_level = String.valueOf(position);
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
 
     }
 
-
-
-    private class Param {
-        String x1d, type, key, token, kd_kls, token_absen, tanggal;
-    }
-
-    private class callAPI extends AsyncTask<Void, Void, Void> {
+    private class kirim_siswa extends AsyncTask<Void, Void, Void> {
 
         private String code;
         private JSONObject json;
         private boolean background;
 
+        class Param {
+            String x1d, type, key, token;
+            String nip, nama_staf, level;
+        }
 
         @Override
         protected void onPreExecute() {
@@ -215,7 +182,6 @@ public class isi_absen extends AppCompatActivity implements ZXingScannerView.Res
             dialog.setMessage("Sedang memproses data. Harap tunggu sejenak.");
             dialog.setCancelable(false);
             dialog.show();
-            onPause();
 
         }
 
@@ -231,20 +197,17 @@ public class isi_absen extends AppCompatActivity implements ZXingScannerView.Res
                 param.type = "mmm";
                 param.key = Utilities.imei(activity);
                 param.token = sp.getString("token", "");
-//                param.kd_kls = sp.getString("token", "");
-                param.kd_kls = sp.getString("kd_kelas", "");
-                param.token_absen = qrcode.getString("token");
-                param.tanggal = qrcode.getString("tanggal");
-
+                param.nip = str_nip;
+                param.nama_staf = str_nama;
+                param.level = str_level;
 
                 Gson gson = new Gson();
                 List<NameValuePair> p = new ArrayList<NameValuePair>();
                 p.add(new BasicNameValuePair("parsing", gson.toJson(param)));
 
                 JsonParser jParser = new JsonParser();
-                json = jParser.getJSONFromUrl(key.url(102), p);
-                Log.e("param login ", gson.toJson(param));
-                Log.e("isi json login", json.toString(2));
+                json = jParser.getJSONFromUrl(key.url(335), p);
+//                Log.e("isi json login", json.toString(2));
                 code = json.getString("code");
 
             } catch (Exception e) {
@@ -264,10 +227,12 @@ public class isi_absen extends AppCompatActivity implements ZXingScannerView.Res
 
             if (background) {
 
+
                 AlertDialog.Builder ab = new AlertDialog.Builder(activity);
-                ab.setCancelable(false).setTitle("Informasi");
+                ab
+                        .setCancelable(false).setTitle("Informasi");
                 if (code.equals("OK4")) {
-                    ab.setMessage("Berhasil").setPositiveButton("Tutup", new DialogInterface.OnClickListener() {
+                    ab.setMessage("Penginputan Siswa Berhasil.\nUsername \'" + str_nip + "\'\nPassword 'admin'").setPositiveButton("Tutup", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             dialog.dismiss();
@@ -301,38 +266,43 @@ public class isi_absen extends AppCompatActivity implements ZXingScannerView.Res
                 }
 
 
+
             } else {
                 Utilities.codeerror(activity, "ER0211");
             }
         }
 
-        private void proses() {
-            try {
 
-            } catch (Exception e) {
-                Log.e("ER___", String.valueOf(e));
-            }
-        }
     }
 
-    private void generate_pesan(String pesan) {
-        AlertDialog.Builder ab = new AlertDialog.Builder(activity);
+
+    private static void pesan(String pesannya, Context context) {
+        AlertDialog.Builder ab = new AlertDialog.Builder(context);
         ab
                 .setCancelable(false).setTitle("Informasi")
-                .setMessage(pesan)
+                .setMessage(pesannya)
                 .setPositiveButton("Tutup", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
 
-//                                    onResume();
+                        dialog.dismiss();
                     }
-                }).setOnDismissListener(new DialogInterface.OnDismissListener() {
-            @Override
-            public void onDismiss(DialogInterface dialog) {
-                onResume();
-            }
-        })
+                })
                 .show();
     }
+
+    private void closekeyboard() {
+        try {
+            View view = activity.getCurrentFocus();
+            if (view != null) {
+                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                assert imm != null;
+                imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+            }
+        } catch (Exception e) {
+
+        }
+    }
+
+
 }

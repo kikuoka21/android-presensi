@@ -2,7 +2,6 @@ package tech.opsign.kkp.absensi.siswa;
 
 import android.app.AlertDialog;
 import android.app.FragmentManager;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -22,11 +21,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
 import Tools.GenKey;
-import Tools.Utilities;
 import tech.opsign.kkp.absensi.GantiPass;
 import tech.opsign.kkp.absensi.Login;
 import tech.opsign.kkp.absensi.R;
@@ -126,7 +123,7 @@ public class MainSiswa extends AppCompatActivity implements NavigationView.OnNav
         int id = item.getItemId();
 
         if (id == R.id.scanqr) {
-            Intent intent = new Intent(activity, isi_absen.class);
+            Intent intent = new Intent(activity, scan_qr_code.class);
             startActivity(intent);
         }
         return super.onOptionsItemSelected(item);
