@@ -29,7 +29,9 @@ public class master_tanggal extends Fragment {
             @Override
             public void onClick(View v) {
 
-                startActivity(new Intent(getContext(), input_tanggal.class));
+                Intent myIntent = new Intent(getContext(), input_tanggal.class);
+                myIntent.putExtra("next_action", "111");
+                startActivity(myIntent);
             }
         });
         Button cari = (Button) v.findViewById(R.id.lihat_tanggal);
@@ -39,11 +41,23 @@ public class master_tanggal extends Fragment {
 //                startActivity(new Intent(getContext(), Cari_siswa.class));
             }
         });
+        Button ubah = (Button) v.findViewById(R.id.ubah_tanggal);
+        ubah.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent myIntent = new Intent(getContext(), input_tanggal.class);
+                myIntent.putExtra("next_action", "222");
+                startActivity(myIntent);
+            }
+        });
         Button hapus = (Button) v.findViewById(R.id.hapus_tanggal);
         hapus.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                startActivity(new Intent(getContext(), hapus_siswa.class));
+                Intent myIntent = new Intent(getContext(), input_tanggal.class);
+                myIntent.putExtra("next_action", "333");
+                startActivity(myIntent);
             }
         });
 

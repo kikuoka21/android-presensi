@@ -350,7 +350,6 @@ public class lihat_walikelas extends AppCompatActivity {
                 StrictMode.setThreadPolicy(policy);
 
 
-                Intent intent = getIntent();
                 Param param = new Param();
                 param.x1d = sp.getString("username", "");
                 param.type = "mmm";

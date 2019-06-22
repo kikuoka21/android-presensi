@@ -32,6 +32,16 @@
             android:textSize="16sp" />
 
         <Button
+            android:id="@+id/ubah_tanggal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="7dp"
+            android:background="@drawable/button_master"
+            android:text="Ubah Keterangan Tanggal"
+            android:textAllCaps="false"
+            android:textSize="16sp" />
+
+        <Button
             android:id="@+id/hapus_tanggal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

@@ -58,6 +58,10 @@ public class GenKey {
                 return head + "/api/admin/master/tanggal/input";
             case 311:
                 return head + "/api/admin/master/tanggal/history";
+            case 312:
+                return head + "/api/admin/master/tanggal/ubah";
+            case 313:
+                return head + "/api/admin/master/tanggal/hapus";
 
 //                kelas
             case 320:
@@ -90,10 +94,10 @@ public class GenKey {
                 return head + "/api/admin/master/staf/input";
             case 336:
                 return head + "/api/admin/master/staf/list";
-//            case 337:
-//                return head + "/api/admin/master/staf/list";
+            case 337:
+                return head + "/api/admin/master/staf/data-staf";
             case 338:
-                return head + "/api/admin/master/staf/hapus";
+                return head + "/api/admin/master/staf/ubah";
             case 339:
                 return head + "/api/admin/master/staf/hapus";
 

@@ -74,7 +74,7 @@ public class Cari_staf extends AppCompatActivity {
         key = new GenKey();
         sp = activity.getSharedPreferences("shared", 0x0000);
         handler = new Handler();
-        setTitle("Cari Siswa");
+        setTitle("Cari Staf");
         if (Build.VERSION.SDK_INT >= 21) {
             Window window = this.getWindow();
             window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
@@ -103,12 +103,12 @@ public class Cari_staf extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 closekeyboard();
-
+                nama.setError(null);
                 str_nama = nama.getText().toString().trim();
                 if (str_nama.equals("")) {
-                    Utilities.showMessageBox(activity, "Warning", "Kolom cari tidak boleh kosng");
+                    nama.setError("Kolom cari tidak boleh kosng");
                 } else if (str_nama.length() <= 2) {
-                    Utilities.showMessageBox(activity, "Warning", "Minimal 3 huruf");
+                    nama.setError("Minimal 3 huruf");
                 } else {
 //                    Log.e("ER__", "KIRM BOIIIII");
                     kirim();
@@ -332,7 +332,9 @@ public class Cari_staf extends AppCompatActivity {
             } else {
                 Intent myIntent;
                     myIntent = new Intent(activity, ubah_staf.class);
-                myIntent.putExtra("nip",target );
+                myIntent.putExtra("nip",target);
+                //111 -> lihat
+                //222 -> ubah
                 if (next_action.equals("111")) {
                     myIntent.putExtra("akses","111" );
                 } else {

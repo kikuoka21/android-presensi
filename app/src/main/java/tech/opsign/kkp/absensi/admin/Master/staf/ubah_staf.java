@@ -13,6 +13,9 @@ import android.os.Handler;
 import android.os.StrictMode;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -23,12 +26,15 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.google.gson.Gson;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -39,6 +45,8 @@ import Tools.JsonParser;
 import Tools.Utilities;
 import tech.opsign.kkp.absensi.Login;
 import tech.opsign.kkp.absensi.R;
+import tech.opsign.kkp.absensi.siswa.Fragmen.ToolProfile.Adapter;
+import tech.opsign.kkp.absensi.siswa.Fragmen.ToolProfile.Model;
 
 public class ubah_staf extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
     private static SharedPreferences sp;
@@ -51,6 +59,9 @@ public class ubah_staf extends AppCompatActivity implements AdapterView.OnItemSe
     private static String str_level = "";
     private EditText nip, nama;
     private String str_nip, str_nama;
+    private RecyclerView recyclerView;
+    private List<Model> modelList = new ArrayList<>();
+    private Adapter adapter;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -61,7 +72,6 @@ public class ubah_staf extends AppCompatActivity implements AdapterView.OnItemSe
         key = new GenKey();
         sp = activity.getSharedPreferences("shared", 0x0000);
         handler = new Handler();
-        setTitle("Input Siswa");
         if (Build.VERSION.SDK_INT >= 21) {
             Window window = this.getWindow();
             window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
@@ -77,16 +87,46 @@ public class ubah_staf extends AppCompatActivity implements AdapterView.OnItemSe
         ArrayList<String> jenis = new ArrayList<String>();
         jenis.add("Guru Wali Kelas");
         jenis.add("Guru Piket");
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(activity, R.layout.spiner_item, jenis);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spiner.setAdapter(adapter);
+        ArrayAdapter<String> pilihan = new ArrayAdapter<String>(activity, R.layout.spiner_item, jenis);
+        pilihan.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spiner.setAdapter(pilihan);
         spiner.setOnItemSelectedListener(this);
 
 //        nisn, nama, level,nama_wali, alamat, no_ijazah, no_ujian;
-        nip = (EditText) findViewById(R.id.nip_staf);
-        nama = (EditText) findViewById(R.id.namna_staf);
 
         Button tombol = findViewById(R.id.kirimtanggal);
+        nip = (EditText) findViewById(R.id.nip_staf);
+        nama = (EditText) findViewById(R.id.namna_staf);
+        Intent intent = getIntent();
+        String akses = intent.getStringExtra("akses");
+        nip.setEnabled(false);
+        if (akses.equals("222")) {
+            ((LinearLayout) findViewById(R.id.linerecy)).setVisibility(View.GONE);
+            tombol.setVisibility(View.VISIBLE);
+            setTitle("Ubah Data Staf");
+            spiner.setEnabled(true);
+            nama.setEnabled(true);
+        } else {
+            setTitle("Lihat Data Staff");
+            tombol.setVisibility(View.GONE);
+            ((LinearLayout) findViewById(R.id.linerecy)).setVisibility(View.VISIBLE);
+            spiner.setEnabled(false);
+            nama.setEnabled(false);
+
+        }
+        str_nip = intent.getStringExtra("nip");
+        adapter = new Adapter(modelList);
+        recyclerView = (RecyclerView) findViewById(R.id.profil_kelas);
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(activity);
+        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setNestedScrollingEnabled(false);
+
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        recyclerView.setAdapter(adapter);
+
+        awalan();
+
+
         tombol.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -96,12 +136,7 @@ public class ubah_staf extends AppCompatActivity implements AdapterView.OnItemSe
                 str_nip = nip.getText().toString().trim();
                 str_nama = nama.getText().toString().trim();
 
-
-                if (str_nip.equals("")) {
-                    nip.setError("Wajib diisi");
-                } else if (str_nip.length() < 6) {
-                    nip.setError("Mimal 6 Digit Angka");
-                } else if (nama.getText().toString().trim().equals("")) {
+                if (nama.getText().toString().trim().equals("")) {
                     nama.setError("Wajib diisi");
                 } else {
                     Log.e("ER__", "KIRM BOIIIII");
@@ -121,9 +156,185 @@ public class ubah_staf extends AppCompatActivity implements AdapterView.OnItemSe
         return super.onOptionsItemSelected(item);
     }
 
+
+    private void awalan() {
+        Log.e("ER", "start");
+        start = new awalan_data().execute();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                if (dialog.isShowing()) {
+                    dialog.dismiss();
+                    start.cancel(true);
+                    new AlertDialog.Builder(activity)
+                            .setTitle("Informasi")
+                            .setMessage("Telah Terjadi Kesalahan Pada Koneksi Anda.")
+                            .setCancelable(false)
+                            .setPositiveButton("Coba Lagi", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                    awalan();
+                                }
+                            }).setNegativeButton("kembali", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                            finish();
+                        }
+                    }).show();
+                }
+            }
+        }, Utilities.rto());
+    }
+
+    private class awalan_data extends AsyncTask<Void, Void, Void> {
+
+        private String code;
+        private JSONObject json;
+        private boolean background;
+
+        class Param {
+            String x1d, type, key, token;
+            String nip;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            background = true;
+            dialog = new ProgressDialog(activity);
+            dialog.setMessage("Sedang memproses data. Harap tunggu sejenak.");
+            dialog.setCancelable(false);
+            dialog.show();
+
+        }
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            try {
+                StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+                StrictMode.setThreadPolicy(policy);
+
+
+                Param param = new Param();
+                param.x1d = sp.getString("username", "");
+                param.type = "mmm";
+                param.key = Utilities.imei(activity);
+                param.token = sp.getString("token", "");
+                param.nip = str_nip;
+
+                Gson gson = new Gson();
+                List<NameValuePair> p = new ArrayList<NameValuePair>();
+                p.add(new BasicNameValuePair("parsing", gson.toJson(param)));
+
+                JsonParser jParser = new JsonParser();
+                json = jParser.getJSONFromUrl(key.url(337), p);
+                Log.e("isi json login", json.toString(2));
+                code = json.getString("code");
+
+            } catch (Exception e) {
+                background = false;
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void result) {
+            super.onPostExecute(result);
+
+            if (dialog.isShowing()) {
+                dialog.dismiss();
+            }
+            handler.removeCallbacksAndMessages(null);
+
+            if (background) {
+
+
+                AlertDialog.Builder ab = new AlertDialog.Builder(activity);
+                ab
+                        .setCancelable(false).setTitle("Informasi");
+                if (code.equals("OK4")) {
+                    proses();
+                } else if (code.equals("TOKEN2") || code.equals("TOKEN1")) {
+                    SharedPreferences.Editor editorr = sp.edit();
+                    editorr.putString("username", "");
+                    editorr.putString("token", "");
+                    editorr.commit();
+                    ab.setMessage(GenKey.pesan(code))
+                            .setPositiveButton("Tutup", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+
+                                    dialog.dismiss();
+                                    Intent login = new Intent(activity, Login.class);
+                                    login.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                    startActivity(login);
+                                    finish();
+                                }
+                            }).show();
+                } else {
+                    ab.setMessage(code).setPositiveButton("Tutup", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    }).show();
+                }
+
+
+            } else {
+                Utilities.codeerror(activity, "ER0211");
+            }
+        }
+
+        private void proses() {
+            try {
+                Spinner spiner = findViewById(R.id.level_staff);
+                JSONObject data = json.getJSONObject("data");
+                nama.setText(data.getString("nama_staf"));
+                nip.setText(data.getString("nip"));
+                if (data.getString("level").equals("1")) {
+                    spiner.setSelection(1);
+                } else {
+                    spiner.setSelection(0);
+
+                }
+
+                Model row;
+                JSONArray aray = json.getJSONArray("kelas");
+                if (aray != null && aray.length() > 0) {
+                    ((TextView) findViewById(R.id.headriwayat)).setText("Riwayat Wali Kelas");
+                    for (int i = 0; i < aray.length(); i++) {
+//               for(int i =0; i<1;i++){
+                        data = aray.getJSONObject(i);
+                        // type true akan menghilangkan row kelas
+                        row = new Model(
+                                "",
+                                data.getString("nama_kelas"),
+                                data.getString("tahun_ajar").substring(0, 4) + "/" +
+                                        data.getString("tahun_ajar").substring(4)
+
+                        );
+                        modelList.add(row);
+                    }
+                } else
+                    ((TextView) findViewById(R.id.headriwayat)).setText("Tidak Ada Riwayat Wali Kelas");
+
+                adapter.notifyDataSetChanged();
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+
+    }
+
+
     private void kirim() {
         Log.e("ER", "start");
-        start = new kirim_siswa().execute();
+        start = new ubah_data().execute();
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -163,7 +374,7 @@ public class ubah_staf extends AppCompatActivity implements AdapterView.OnItemSe
 
     }
 
-    private class kirim_siswa extends AsyncTask<Void, Void, Void> {
+    private class ubah_data extends AsyncTask<Void, Void, Void> {
 
         private String code;
         private JSONObject json;
@@ -171,7 +382,7 @@ public class ubah_staf extends AppCompatActivity implements AdapterView.OnItemSe
 
         class Param {
             String x1d, type, key, token;
-            String nip, nama_staf, level;
+            String nip, nama, level;
         }
 
         @Override
@@ -198,7 +409,7 @@ public class ubah_staf extends AppCompatActivity implements AdapterView.OnItemSe
                 param.key = Utilities.imei(activity);
                 param.token = sp.getString("token", "");
                 param.nip = str_nip;
-                param.nama_staf = str_nama;
+                param.nama = str_nama;
                 param.level = str_level;
 
                 Gson gson = new Gson();
@@ -206,7 +417,7 @@ public class ubah_staf extends AppCompatActivity implements AdapterView.OnItemSe
                 p.add(new BasicNameValuePair("parsing", gson.toJson(param)));
 
                 JsonParser jParser = new JsonParser();
-                json = jParser.getJSONFromUrl(key.url(335), p);
+                json = jParser.getJSONFromUrl(key.url(338), p);
 //                Log.e("isi json login", json.toString(2));
                 code = json.getString("code");
 
@@ -232,7 +443,7 @@ public class ubah_staf extends AppCompatActivity implements AdapterView.OnItemSe
                 ab
                         .setCancelable(false).setTitle("Informasi");
                 if (code.equals("OK4")) {
-                    ab.setMessage("Penginputan Siswa Berhasil.\nUsername \'" + str_nip + "\'\nPassword 'admin'").setPositiveButton("Tutup", new DialogInterface.OnClickListener() {
+                    ab.setMessage("Data Staf Behasil Diubah").setPositiveButton("Tutup", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             dialog.dismiss();
@@ -266,7 +477,6 @@ public class ubah_staf extends AppCompatActivity implements AdapterView.OnItemSe
                 }
 
 
-
             } else {
                 Utilities.codeerror(activity, "ER0211");
             }
@@ -275,21 +485,6 @@ public class ubah_staf extends AppCompatActivity implements AdapterView.OnItemSe
 
     }
 
-
-    private static void pesan(String pesannya, Context context) {
-        AlertDialog.Builder ab = new AlertDialog.Builder(context);
-        ab
-                .setCancelable(false).setTitle("Informasi")
-                .setMessage(pesannya)
-                .setPositiveButton("Tutup", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-
-                        dialog.dismiss();
-                    }
-                })
-                .show();
-    }
 
     private void closekeyboard() {
         try {

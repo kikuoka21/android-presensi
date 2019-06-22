@@ -63,9 +63,10 @@ public class edit_siswa extends AppCompatActivity implements AdapterView.OnItemS
     private static TextView tgl;
     private static String str_tgl_lahir = "";
     private EditText nis, nisn, nama, tmp_lahir, nama_wali, alamat, no_ijazah, no_ujian;
-    private String str_nis, str_nisn, str_nama, str_tmp_lahir, str_agama, str_nama_wali, str_alamat, str_no_ijazah, str_no_ujian;
+    private String str_nis, str_nisn, str_nama, str_jenkel, str_tmp_lahir, str_agama, str_nama_wali, str_alamat, str_no_ijazah, str_no_ujian;
 
-    String[] pilihan_agama = {"Islam", "Kristen", "Katolik", "Hindu", "Buddha", "Kong Hu Cu"};
+    String[] pilihan_agama = {"Islam", "Kristen", "Katolik", "Hindu", "Buddha", "Kong Hu Cu"},
+            pilihan_jenkel = {"Laki-Laki", "Perempuan"};
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -86,6 +87,7 @@ public class edit_siswa extends AppCompatActivity implements AdapterView.OnItemS
 
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         }
         spiner = findViewById(R.id.agama);
         spiner.setAdapter(null);
@@ -97,6 +99,17 @@ public class edit_siswa extends AppCompatActivity implements AdapterView.OnItemS
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(activity, R.layout.spiner_item, jenis);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spiner.setAdapter(adapter);
+        spiner.setOnItemSelectedListener(this);
+
+
+        spiner = findViewById(R.id.jenkel);
+        spiner.setAdapter(null);
+        ArrayList<String> mont = new ArrayList<String>();
+        mont.add("Laki-Laki");
+        mont.add("Perempuan");
+        ArrayAdapter<String> adapterbln = new ArrayAdapter<String>(this.activity, android.R.layout.simple_spinner_item, mont);
+        adapterbln.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spiner.setAdapter(adapterbln);
         spiner.setOnItemSelectedListener(this);
 
         tgl = (TextView) findViewById(R.id.inpt_tgl);
@@ -202,7 +215,12 @@ public class edit_siswa extends AppCompatActivity implements AdapterView.OnItemS
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         Log.e("agamanya", parent.getItemAtPosition(position).toString());
-        str_agama = parent.getItemAtPosition(position).toString();
+        if (parent == findViewById(R.id.agama)) {
+            str_agama = parent.getItemAtPosition(position).toString();
+        }
+        if (parent == findViewById(R.id.jenkel)) {
+            str_jenkel = parent.getItemAtPosition(position).toString().substring(0, 1);
+        }
     }
 
     @Override
@@ -284,6 +302,7 @@ public class edit_siswa extends AppCompatActivity implements AdapterView.OnItemS
                         nama.setText(json.getString("nama_siswa"));
                         tmp_lahir.setText(json.getString("tmp_lahir"));
 
+                        spiner = findViewById(R.id.agama);
                         int i;
                         str_agama = json.getString("agama");
                         for (i = 0; pilihan_agama.length > i; i++) {
@@ -293,6 +312,13 @@ public class edit_siswa extends AppCompatActivity implements AdapterView.OnItemS
                             } else {
                                 spiner.setSelection(0);
                             }
+                        }
+                        str_jenkel = json.getString("jenkel");
+                        spiner = findViewById(R.id.jenkel);
+                        if (str_jenkel.equals("L")) {
+                            spiner.setSelection(0);
+                        } else {
+                            spiner.setSelection(1);
                         }
                         nama_wali.setText(json.getString("orang_tua"));
                         alamat.setText(json.getString("alamat"));

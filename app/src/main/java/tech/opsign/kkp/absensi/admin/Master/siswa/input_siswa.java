@@ -62,7 +62,7 @@ public class input_siswa extends AppCompatActivity implements AdapterView.OnItem
     private static TextView tgl;
     private static String str_tgl_lahir = "";
     private EditText nis, nisn, nama, tmp_lahir, nama_wali, alamat, no_ijazah, no_ujian;
-    private String str_nis, str_nisn, str_nama, str_tmp_lahir,str_agama, str_nama_wali, str_alamat, str_no_ijazah, str_no_ujian;
+    private String str_nis, str_nisn, str_nama, str_jenkel, str_tmp_lahir, str_agama, str_nama_wali, str_alamat, str_no_ijazah, str_no_ujian;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -96,6 +96,17 @@ public class input_siswa extends AppCompatActivity implements AdapterView.OnItem
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(activity, R.layout.spiner_item, jenis);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spiner.setAdapter(adapter);
+        spiner.setOnItemSelectedListener(this);
+
+
+        spiner = findViewById(R.id.jenkel);
+        spiner.setAdapter(null);
+        ArrayList<String> mont = new ArrayList<String>();
+        mont.add("Laki-Laki");
+        mont.add("Perempuan");
+        ArrayAdapter<String> adapterbln = new ArrayAdapter<String>(this.activity, android.R.layout.simple_spinner_item, mont);
+        adapterbln.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spiner.setAdapter(adapterbln);
         spiner.setOnItemSelectedListener(this);
 
         tgl = (TextView) findViewById(R.id.inpt_tgl);
@@ -201,8 +212,15 @@ public class input_siswa extends AppCompatActivity implements AdapterView.OnItem
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        Log.e("agamanya", parent.getItemAtPosition(position).toString());
-        str_agama = parent.getItemAtPosition(position).toString();
+//        Log.e("agamanya", parent.getItemAtPosition(position).toString());
+
+        if (parent == findViewById(R.id.agama)) {
+            str_agama = parent.getItemAtPosition(position).toString();
+        }
+        if (parent == findViewById(R.id.jenkel)) {
+            str_jenkel = parent.getItemAtPosition(position).toString().substring(0, 1);
+        }
+
     }
 
     @Override
@@ -218,7 +236,7 @@ public class input_siswa extends AppCompatActivity implements AdapterView.OnItem
 
         class Param {
             String x1d, type, key, token;
-            String nis, nisn, nama_siswa, tgl_lhr, alamat, tmpt_lhr, agama,
+            String nis, nisn, nama_siswa, tgl_lhr, alamat, tmpt_lhr, agama, jenkel,
                     orangtua, no_ijazah, no_ujiansmp;
         }
 
@@ -248,6 +266,7 @@ public class input_siswa extends AppCompatActivity implements AdapterView.OnItem
                 param.nis = str_nis;
                 param.nisn = str_nisn;
                 param.nama_siswa = str_nama;
+                param.jenkel = str_jenkel;
                 param.tmpt_lhr = str_tmp_lahir;
                 param.alamat = str_alamat;
                 param.agama = str_agama;
@@ -288,7 +307,7 @@ public class input_siswa extends AppCompatActivity implements AdapterView.OnItem
                 ab
                         .setCancelable(false).setTitle("Informasi");
                 if (code.equals("OK4")) {
-                    ab.setMessage("Penginputan Siswa Berhasil.\nUsername \'"+str_nis+"\'\nPassword 'admin'").setPositiveButton("Tutup", new DialogInterface.OnClickListener() {
+                    ab.setMessage("Penginputan Siswa Berhasil.\nUsername \'" + str_nis + "\'\nPassword 'admin'").setPositiveButton("Tutup", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             dialog.dismiss();

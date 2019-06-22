@@ -1,4 +1,4 @@
-package tech.opsign.kkp.absensi.admin.Master.staf;
+package tech.opsign.kkp.absensi.admin.Master.tanggal;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
@@ -17,24 +17,28 @@ import android.os.Handler;
 import android.os.StrictMode;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.text.InputType;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.Spinner;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
@@ -46,73 +50,65 @@ import java.util.List;
 import Tools.GenKey;
 import Tools.JsonParser;
 import Tools.Utilities;
+import tech.opsign.kkp.absensi.Listener.ItemClickSupport;
 import tech.opsign.kkp.absensi.Login;
 import tech.opsign.kkp.absensi.R;
+import tech.opsign.kkp.absensi.admin.Master.tanggal.Tool_Input_Tanggal.Adapter_tanggal;
+import tech.opsign.kkp.absensi.admin.Master.tanggal.Tool_Input_Tanggal.Model_tanggal;
 
-public class input_staff extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
+public class ubah_tanggal extends AppCompatActivity {
     private static SharedPreferences sp;
-    private input_staff activity;
+    private ubah_tanggal activity;
     private Handler handler;
     private AsyncTask start;
     private ProgressDialog dialog;
     private GenKey key;
 
-    private static String str_level = "";
-    private EditText nip, nama;
-    private String str_nip, str_nama;
+    private RecyclerView recyclerView;
+    private List<Model_tanggal> modelList = new ArrayList<>();
+    private Adapter_tanggal adapter;
+
+    private EditText ket;
+    private TextView tgl;
+    private String tgl_string = "";
+    private String ket_string;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.a_staf_input);
+        setContentView(R.layout.a_input_tanggal);
 
         this.activity = this;
         key = new GenKey();
         sp = activity.getSharedPreferences("shared", 0x0000);
         handler = new Handler();
-        setTitle("Input Siswa");
         if (Build.VERSION.SDK_INT >= 21) {
             Window window = this.getWindow();
             window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
             window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
             window.setStatusBarColor(this.getResources().getColor(R.color.colorPrimary));
         }
-
+        setTitle("Ubah Hari Libur");
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
-        Spinner spiner = findViewById(R.id.level_staff);
-        spiner.setAdapter(null);
-        ArrayList<String> jenis = new ArrayList<String>();
-        jenis.add("Guru Wali Kelas");
-        jenis.add("Guru Piket");
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(activity, R.layout.spiner_item, jenis);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spiner.setAdapter(adapter);
-        spiner.setOnItemSelectedListener(this);
-
-
-//        nisn, nama, level,nama_wali, alamat, no_ijazah, no_ujian;
-        nip = (EditText) findViewById(R.id.nip_staf);
-        nama = (EditText) findViewById(R.id.namna_staf);
+        Intent intent = getIntent();
+        tgl = (TextView) findViewById(R.id.inpt_tgl);
+        ket = (EditText) findViewById(R.id.ket);
+        tgl_string = intent.getStringExtra("tgl");
+        tgl.setText(Utilities.gettanggal(tgl_string));
+        ket.setText(intent.getStringExtra("ket"));
 
         Button tombol = findViewById(R.id.kirimtanggal);
+
         tombol.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 closekeyboard();
-                nip.setError(null);
-                nama.setError(null);
-                str_nip = nip.getText().toString().trim();
-                str_nama = nama.getText().toString().trim();
 
-
-                if (str_nip.equals("")) {
-                    nip.setError("Wajib diisi");
-                } else if (str_nip.length() < 6) {
-                    nip.setError("Mimal 6 Digit Angka");
-                } else if (nama.getText().toString().trim().equals("")) {
-                    nama.setError("Wajib diisi");
+                ket_string = ket.getText().toString().trim();
+                if (ket.getText().toString().trim().equals("")) {
+                    Utilities.showMessageBox(activity, "Informasi", "Keterangan Tidak Boleh Kosong");
                 } else {
                     Log.e("ER__", "KIRM BOIIIII");
                     kirim();
@@ -133,7 +129,7 @@ public class input_staff extends AppCompatActivity implements AdapterView.OnItem
 
     private void kirim() {
         Log.e("ER", "start");
-        start = new kirim_siswa().execute();
+        start = new kirim_tgl().execute();
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -162,26 +158,14 @@ public class input_staff extends AppCompatActivity implements AdapterView.OnItem
         }, Utilities.rto());
     }
 
-    @Override
-    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        Log.e("agamanya", parent.getItemAtPosition(position).toString());
-        str_level = String.valueOf(position);
-    }
-
-    @Override
-    public void onNothingSelected(AdapterView<?> parent) {
-
-    }
-
-    private class kirim_siswa extends AsyncTask<Void, Void, Void> {
+    private class kirim_tgl extends AsyncTask<Void, Void, Void> {
 
         private String code;
         private JSONObject json;
         private boolean background;
 
         class Param {
-            String x1d, type, key, token;
-            String nip, nama_staf, level;
+            String x1d, type, key, token, tanggal, ket;
         }
 
         @Override
@@ -207,16 +191,15 @@ public class input_staff extends AppCompatActivity implements AdapterView.OnItem
                 param.type = "mmm";
                 param.key = Utilities.imei(activity);
                 param.token = sp.getString("token", "");
-                param.nip = str_nip;
-                param.nama_staf = str_nama;
-                param.level = str_level;
+                param.tanggal = tgl_string;
+                param.ket = ket_string;
 
                 Gson gson = new Gson();
                 List<NameValuePair> p = new ArrayList<NameValuePair>();
                 p.add(new BasicNameValuePair("parsing", gson.toJson(param)));
 
                 JsonParser jParser = new JsonParser();
-                json = jParser.getJSONFromUrl(key.url(335), p);
+                json = jParser.getJSONFromUrl(key.url(312), p);
 //                Log.e("isi json login", json.toString(2));
                 code = json.getString("code");
 
@@ -237,15 +220,15 @@ public class input_staff extends AppCompatActivity implements AdapterView.OnItem
 
             if (background) {
 
-
                 AlertDialog.Builder ab = new AlertDialog.Builder(activity);
                 ab
                         .setCancelable(false).setTitle("Informasi");
                 if (code.equals("OK4")) {
-                    ab.setMessage("Penginputan Siswa Berhasil.\nUsername \'" + str_nip + "\'\nPassword 'admin'").setPositiveButton("Tutup", new DialogInterface.OnClickListener() {
+                    ab.setMessage("P Tanggal Berhasil").setPositiveButton("Tutup", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             dialog.dismiss();
+                            setResult(RESULT_OK);
                             finish();
                         }
                     }).show();
@@ -276,7 +259,6 @@ public class input_staff extends AppCompatActivity implements AdapterView.OnItem
                 }
 
 
-
             } else {
                 Utilities.codeerror(activity, "ER0211");
             }
@@ -285,21 +267,6 @@ public class input_staff extends AppCompatActivity implements AdapterView.OnItem
 
     }
 
-
-    private static void pesan(String pesannya, Context context) {
-        AlertDialog.Builder ab = new AlertDialog.Builder(context);
-        ab
-                .setCancelable(false).setTitle("Informasi")
-                .setMessage(pesannya)
-                .setPositiveButton("Tutup", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-
-                        dialog.dismiss();
-                    }
-                })
-                .show();
-    }
 
     private void closekeyboard() {
         try {
@@ -313,6 +280,7 @@ public class input_staff extends AppCompatActivity implements AdapterView.OnItem
 
         }
     }
+
 
 
 }
