@@ -50,6 +50,7 @@ import tech.opsign.kkp.absensi.Login;
 import tech.opsign.kkp.absensi.R;
 import tech.opsign.kkp.absensi.admin.Master.kelas.Tool_list_kelas.Adapter_kelas_list;
 import tech.opsign.kkp.absensi.admin.Master.kelas.Tool_list_kelas.Model_kelas_list;
+import tech.opsign.kkp.absensi.admin.Presensi.kelas_ubah_absen;
 
 public class cari_kelas extends AppCompatActivity {
     private static SharedPreferences sp;
@@ -64,7 +65,8 @@ public class cari_kelas extends AppCompatActivity {
     private EditText thn_ajar;
     private String str_thn;
     //untuk hapus
-    private String kd_kelas , xpass; EditText pass;
+    private String kd_kelas, xpass;
+    EditText pass;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -344,12 +346,13 @@ public class cari_kelas extends AppCompatActivity {
                 Log.e("ER___", String.valueOf(e));
             }
         }
+
         private void showSelectedMatkul(Model_kelas_list kelas) {
 //            Toast.makeText(activity, kelas.kd_kelas, Toast.LENGTH_SHORT).show();
-            kd_kelas =kelas.kd_kelas;
+            kd_kelas = kelas.kd_kelas;
             Intent intent = getIntent();
             String next_action = intent.getStringExtra("next_action");
-            if(next_action.equals("333")){
+            if (next_action.equals("333")) {
 
                 AlertDialog.Builder builder = new AlertDialog.Builder(activity);
                 builder.setTitle("Informasi");
@@ -377,18 +380,15 @@ public class cari_kelas extends AppCompatActivity {
                 ad.show();
 
 
-
-
-            }else{
+            } else {
                 Intent myIntent;
-                if(next_action.equals("111")){
+                if (next_action.equals("111")) {
                     myIntent = new Intent(activity, lihat_kelas.class);
-                    myIntent.putExtra("kd_kelas",kd_kelas );
-                }else {
+                } else {
                     myIntent = new Intent(activity, ubah_kelas.class);
-                    myIntent.putExtra("kd_kelas", kd_kelas);
                 }
 
+                myIntent.putExtra("kd_kelas", kd_kelas);
                 startActivity(myIntent);
             }
 
@@ -543,7 +543,6 @@ public class cari_kelas extends AppCompatActivity {
                         }
                     }).show();
                 }
-
 
 
             } else {

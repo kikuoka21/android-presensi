@@ -52,6 +52,15 @@ public class master_staf extends Fragment {
                 startActivity(myIntent);
             }
         });
+        Button pass = (Button) v.findViewById(R.id.gantipassstaf);
+        pass.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent myIntent = new Intent(getContext(), Cari_staf.class);
+                myIntent.putExtra("next_action", "444");
+                startActivity(myIntent);
+            }
+        });
         Button hapus = (Button) v.findViewById(R.id.hapusstaf);
         hapus.setOnClickListener(new View.OnClickListener() {
             @Override

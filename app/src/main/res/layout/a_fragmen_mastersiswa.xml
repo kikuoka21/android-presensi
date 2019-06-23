@@ -26,7 +26,25 @@
             android:layout_height="wrap_content"
             android:layout_margin="7dp"
             android:textSize="16sp"
-            android:text="Cari dan Ubah data siswa"
+            android:text="Lihat data siswa"
+            android:textAllCaps="false"
+            android:background="@drawable/button_master"/>
+        <Button
+            android:id="@+id/ubahsiswa"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="7dp"
+            android:textSize="16sp"
+            android:text="Ubah data siswa"
+            android:textAllCaps="false"
+            android:background="@drawable/button_master"/>
+        <Button
+            android:id="@+id/ubahpasssiswa"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="7dp"
+            android:textSize="16sp"
+            android:text="Ubah Password Siswa"
             android:textAllCaps="false"
             android:background="@drawable/button_master"/>
         <Button

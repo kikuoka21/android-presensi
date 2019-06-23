@@ -81,8 +81,8 @@ public class MainAdmin extends AppCompatActivity implements NavigationView.OnNav
 
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_containter,
-//                    new DashboardFragmentAdmin()).commit();
-                    new master_tanggal()).commit();
+                    new DashboardFragmentAdmin()).commit();
+//                    new master_tanggal()).commit();
         }
         navHeaderView = navigationView.inflateHeaderView(R.layout.nav_header);
 

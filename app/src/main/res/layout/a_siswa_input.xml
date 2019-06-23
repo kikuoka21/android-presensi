@@ -302,6 +302,7 @@
                 <TextView
                     android:layout_marginStart="0dp"
                     android:layout_marginEnd="2dp"
+                    android:layout_gravity="center_vertical"
                     android:text="Alamat"
                     android:textColor="#000"
                     android:textSize="16sp" />
@@ -310,13 +311,16 @@
                     android:paddingStart="2dp"
                     android:paddingEnd="2dp"
                     android:text=":"
+                    android:layout_gravity="center_vertical"
                     android:textColor="#000"
                     android:textSize="18sp" />
 
                 <android.support.design.widget.TextInputLayout
                     android:layout_weight="1"
+                    android:id="@+id/alamatcounter"
                     android:paddingStart="0dp"
                     android:paddingEnd="5dp"
+                    android:gravity="top"
                     app:counterEnabled="true"
                     app:counterMaxLength="255">
 
@@ -324,7 +328,7 @@
                         android:id="@+id/alamat"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
+                        android:layout_gravity="center_vertical"
                         android:maxLength="255"
                         android:textColor="#000"
                         android:textSize="18sp" />

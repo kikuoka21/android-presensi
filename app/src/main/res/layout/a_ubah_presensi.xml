@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#aaa"
+    android:orientation="vertical"
+    android:scrollbarSize="5dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#fff"
+        android:orientation="vertical">
+
+        <TableLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingStart="16dp"
+            android:paddingTop="20dp"
+            android:paddingEnd="16dp">
+
+            <TableRow>
+
+                <TextView
+                    android:layout_marginStart="0dp"
+                    android:layout_marginEnd="2dp"
+                    android:text="Nama kelas"
+                    android:textColor="#000"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:paddingStart="2dp"
+                    android:paddingEnd="2dp"
+                    android:text=":"
+                    android:textColor="#000"
+                    android:textSize="18sp" />
+
+
+                <TextView
+                    android:id="@+id/nama_kelas"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:inputType="number"
+                    android:maxLength="6"
+                    android:textColor="#000"
+                    android:textSize="18sp" />
+
+
+            </TableRow>
+
+            <TableRow
+                android:paddingTop="8dp"
+                android:paddingBottom="7dp">
+
+                <TextView
+                    android:layout_marginStart="0dp"
+                    android:layout_marginEnd="2dp"
+                    android:text="Status"
+                    android:textColor="#000"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:paddingStart="2dp"
+                    android:paddingEnd="6dp"
+                    android:text=":"
+                    android:textColor="#000"
+                    android:textSize="18sp" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@drawable/spiner_agama">
+
+                    <Spinner
+
+                        android:id="@+id/hadir_stat"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent" />
+                </LinearLayout>
+
+                <!--<EditText-->
+                <!--android:id="@+id/agama"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_weight="1"-->
+                <!--android:maxLength="100"-->
+                <!--android:textColor="#000"-->
+                <!--android:textSize="18sp" />-->
+
+
+            </TableRow>
+
+            <TableRow>
+
+                <TextView
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="0dp"
+                    android:layout_marginEnd="2dp"
+                    android:text="Ket"
+                    android:textColor="#000"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:layout_gravity="center_vertical"
+                    android:paddingStart="2dp"
+                    android:paddingEnd="2dp"
+                    android:text=":"
+                    android:textColor="#000"
+                    android:textSize="18sp" />
+
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/alamatcounter"
+                    android:layout_weight="1"
+                    android:gravity="top"
+                    android:paddingStart="0dp"
+                    android:paddingEnd="5dp"
+                    app:counterEnabled="true"
+                    app:counterMaxLength="125">
+
+                    <EditText
+                        android:id="@+id/hadir_ket"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_gravity="center_vertical"
+                        android:maxLength="125"
+                        android:textColor="#000"
+                        android:textSize="18sp" />
+                </android.support.design.widget.TextInputLayout>
+
+
+            </TableRow>
+
+
+        </TableLayout>
+
+
+        <android.support.v7.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp"
+            app:cardCornerRadius="20dp">
+
+            <Button
+                android:id="@+id/kirimtanggal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#80bfff"
+                android:text="Ubah" />
+        </android.support.v7.widget.CardView>
+    </LinearLayout>
+
+
+</ScrollView>

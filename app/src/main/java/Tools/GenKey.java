@@ -12,10 +12,8 @@ public class GenKey {
         switch (str) {
             case 1:
                 return head + "/api/auth/login";
-
             case 2:
                 return head + "/api/auth/check-token";
-
             case 3:
                 return head + "/api/auth/ganti-pswd";
 

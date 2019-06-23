@@ -210,8 +210,17 @@ public class Profile extends Fragment {
                 json = json.getJSONObject("data");
                 JSONObject data = json.getJSONObject("profil");
                 ((TextView) v.findViewById(R.id.nis)).setText(data.getString("nis"));
-                ((TextView) v.findViewById(R.id.nama)).setText(data.getString("nama"));
+                ((TextView) v.findViewById(R.id.nama)).setText(data.getString("nama_siswa"));
                 ((TextView) v.findViewById(R.id.nisn)).setText(data.getString("nisn"));
+                String jeniskelamin ;
+                if(data.getString("jenkel").equals("L")){
+                    jeniskelamin ="Laki-Laki";
+                }else if(data.getString("jenkel").equals("P")){
+                    jeniskelamin = "Perempuan";
+                }else {
+                    jeniskelamin="-";
+                }
+                ((TextView) v.findViewById(R.id.jenkel)).setText(jeniskelamin);
                 ((TextView) v.findViewById(R.id.tmp_tgl_lahir)).setText(data.getString("tmp_lahir").toUpperCase() + ", " + Utilities.gettgl_lahir(data.getString("tgl_lahir")));
                 ((TextView) v.findViewById(R.id.agama)).setText(data.getString("agama"));
                 ((TextView) v.findViewById(R.id.orangtua)).setText(data.getString("orang_tua"));

@@ -16,6 +16,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.StrictMode;
 import android.support.annotation.Nullable;
+import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.MenuItem;
@@ -57,7 +58,7 @@ public class edit_siswa extends AppCompatActivity implements AdapterView.OnItemS
     private AsyncTask start;
     private ProgressDialog dialog;
     private GenKey key;
-    private Spinner spiner;
+    private Spinner spiner_agama, spin_jenkel;
 
     @SuppressLint("StaticFieldLeak")
     private static TextView tgl;
@@ -77,7 +78,6 @@ public class edit_siswa extends AppCompatActivity implements AdapterView.OnItemS
         key = new GenKey();
         sp = activity.getSharedPreferences("shared", 0x0000);
         handler = new Handler();
-        setTitle("Input Siswa");
         if (Build.VERSION.SDK_INT >= 21) {
             Window window = this.getWindow();
             window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
@@ -89,8 +89,8 @@ public class edit_siswa extends AppCompatActivity implements AdapterView.OnItemS
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         }
-        spiner = findViewById(R.id.agama);
-        spiner.setAdapter(null);
+        spiner_agama = findViewById(R.id.agama);
+        spiner_agama.setAdapter(null);
         ArrayList<String> jenis = new ArrayList<String>();
         int i;
         for (i = 0; pilihan_agama.length > i; i++) {
@@ -98,19 +98,19 @@ public class edit_siswa extends AppCompatActivity implements AdapterView.OnItemS
         }
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(activity, R.layout.spiner_item, jenis);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spiner.setAdapter(adapter);
-        spiner.setOnItemSelectedListener(this);
+        spiner_agama.setAdapter(adapter);
+        spiner_agama.setOnItemSelectedListener(this);
 
 
-        spiner = findViewById(R.id.jenkel);
-        spiner.setAdapter(null);
+        spin_jenkel = findViewById(R.id.jenkel);
+        spin_jenkel.setAdapter(null);
         ArrayList<String> mont = new ArrayList<String>();
         mont.add("Laki-Laki");
         mont.add("Perempuan");
         ArrayAdapter<String> adapterbln = new ArrayAdapter<String>(this.activity, android.R.layout.simple_spinner_item, mont);
         adapterbln.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spiner.setAdapter(adapterbln);
-        spiner.setOnItemSelectedListener(this);
+        spin_jenkel.setAdapter(adapterbln);
+        spin_jenkel.setOnItemSelectedListener(this);
 
         tgl = (TextView) findViewById(R.id.inpt_tgl);
 //        nisn, nama, tmp_lahir,nama_wali, alamat, no_ijazah, no_ujian;
@@ -123,16 +123,35 @@ public class edit_siswa extends AppCompatActivity implements AdapterView.OnItemS
         no_ijazah = (EditText) findViewById(R.id.no_ijazah);
         no_ujian = (EditText) findViewById(R.id.no_ujian);
         LinearLayout date_pick = (LinearLayout) findViewById(R.id.pilih_tgl);
-        date_pick.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                closekeyboard();
-                DialogFragment dialogfragment = new tanggalmulai();
-                dialogfragment.show(getFragmentManager(), "Tanggal Mulai");
-            }
-        });
 
+//111 lihat
+        //222 ubah
         Button tombol = findViewById(R.id.kirimtanggal);
+        Intent intent = getIntent();
+        if (intent.getStringExtra("next_action").equals("111")){
+            setTitle("Data Siswa");
+            ((TextInputLayout)findViewById(R.id.alamatcounter)).setCounterEnabled(false);
+
+            tombol.setVisibility(View.GONE);
+            nisn.setEnabled(false);
+            nama.setEnabled(false);
+            tmp_lahir.setEnabled(false);
+            nama_wali .setEnabled(false);
+            alamat.setEnabled(false);
+            no_ijazah .setEnabled(false);
+            no_ujian .setEnabled(false);
+        }else{
+            setTitle("Ubah Data Siswa");
+            date_pick.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    closekeyboard();
+                    DialogFragment dialogfragment = new tanggalmulai();
+                    dialogfragment.show(getFragmentManager(), "Tanggal Mulai");
+                }
+            });
+        }
+
         tombol.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -302,23 +321,21 @@ public class edit_siswa extends AppCompatActivity implements AdapterView.OnItemS
                         nama.setText(json.getString("nama_siswa"));
                         tmp_lahir.setText(json.getString("tmp_lahir"));
 
-                        spiner = findViewById(R.id.agama);
                         int i;
                         str_agama = json.getString("agama");
                         for (i = 0; pilihan_agama.length > i; i++) {
                             if (pilihan_agama[i].equals(str_agama)) {
-                                spiner.setSelection(i);
+                                spiner_agama.setSelection(i);
                                 break;
                             } else {
-                                spiner.setSelection(0);
+                                spiner_agama.setSelection(0);
                             }
                         }
                         str_jenkel = json.getString("jenkel");
-                        spiner = findViewById(R.id.jenkel);
                         if (str_jenkel.equals("L")) {
-                            spiner.setSelection(0);
+                            spin_jenkel.setSelection(0);
                         } else {
-                            spiner.setSelection(1);
+                            spin_jenkel.setSelection(1);
                         }
                         nama_wali.setText(json.getString("orang_tua"));
                         alamat.setText(json.getString("alamat"));

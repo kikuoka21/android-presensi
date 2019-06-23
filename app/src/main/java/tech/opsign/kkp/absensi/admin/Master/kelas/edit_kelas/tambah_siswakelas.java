@@ -55,8 +55,8 @@ public class tambah_siswakelas extends AppCompatActivity {
     private RecyclerView recyclerView;
     private List<Model_list_siswa> modelList = new ArrayList<>();
     private Adapter_list_siswa adapter;
-    private String thn, str_thnlahir, str_nis, str_KDkelas;
-    private EditText thn_ajar;
+    private String thn, str_thnlahir,str_nama, str_nis, str_KDkelas;
+    private EditText thn_ajar, namaa;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -95,6 +95,7 @@ public class tambah_siswakelas extends AppCompatActivity {
         recyclerView.setAdapter(adapter);
 
         thn_ajar = (EditText) findViewById(R.id.thn_ajar);
+        namaa = (EditText) findViewById(R.id.namacari);
         Button tombol = findViewById(R.id.carisiswa);
         tombol.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -104,6 +105,7 @@ public class tambah_siswakelas extends AppCompatActivity {
                 thn_ajar.setError(null);
 
                 str_thnlahir = thn_ajar.getText().toString();
+                str_nama = namaa.getText().toString().trim();
                 if (str_thnlahir.equals("")) {
                     thn_ajar.setError("Tidak boleh kosong");
                 } else if (str_thnlahir.length() != 4) {
@@ -181,7 +183,7 @@ public class tambah_siswakelas extends AppCompatActivity {
 
         class Param {
             String x1d, type, key, token;
-            String thn, thn_lahir;
+            String thn, thn_lahir, nama;
         }
 
         @Override
@@ -209,6 +211,7 @@ public class tambah_siswakelas extends AppCompatActivity {
                 param.token = sp.getString("token", "");
                 param.thn = thn;
                 param.thn_lahir = str_thnlahir;
+                param.nama = str_nama;
 //                param.kd_kelas ="A00001";
 
 

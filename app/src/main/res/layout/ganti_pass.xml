@@ -5,66 +5,72 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="#ecfeff">
+    android:background="#999">
 
     <LinearLayout
-        android:paddingTop="50dp"
-        android:paddingStart="14dp"
-        android:paddingEnd="14dp"
         android:paddingBottom="30dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
-
-        <TextView
+        <LinearLayout
+            android:paddingTop="18dp"
+            android:paddingStart="14dp"
+            android:paddingEnd="14dp"
+            android:paddingBottom="10dp"
+            android:background="#ecfeff"
+            android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Password Lama"
-            android:textColor="#000"
-            android:textSize="20sp" />
+            android:layout_height="wrap_content">
 
-        <EditText
-            android:id="@+id/password_lama"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:inputType="textPassword"
-            android:textSize="18sp" />
+            <TextView
+                android:id="@+id/judulpasss"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Password Lama"
+                android:textColor="#000"
+                android:textSize="20sp" />
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Password Baru"
-            android:textColor="#000"
-            android:textSize="20sp" />
+            <EditText
+                android:id="@+id/password_lama"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPassword"
+                android:textSize="18sp" />
 
-        <EditText
-            android:id="@+id/password_baru1"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="textPassword"
-            android:textSize="18sp" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Password Baru"
+                android:textColor="#000"
+                android:textSize="20sp" />
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Ulangi Password Baru"
-            android:textColor="#000"
-            android:textSize="20sp" />
+            <EditText
+                android:id="@+id/password_baru1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPassword"
+                android:textSize="18sp" />
 
-        <EditText
-            android:id="@+id/password_baru2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:inputType="textPassword"
-            android:textSize="18sp" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Ulangi Password Baru"
+                android:textColor="#000"
+                android:textSize="20sp" />
+
+            <EditText
+                android:id="@+id/password_baru2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPassword"
+                android:textSize="18sp" />
+        </LinearLayout>
         <Button
             android:id="@+id/tombol_ubah"
             android:layout_width="300dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="15dp"
             android:enabled="false"
             android:background="@drawable/button_deny"
             android:text="Ubah"

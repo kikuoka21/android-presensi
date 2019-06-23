@@ -45,6 +45,7 @@ import Tools.Utilities;
 import tech.opsign.kkp.absensi.Listener.ItemClickSupport;
 import tech.opsign.kkp.absensi.Login;
 import tech.opsign.kkp.absensi.R;
+import tech.opsign.kkp.absensi.admin.Master.GantiPass_User;
 import tech.opsign.kkp.absensi.admin.Master.siswa.Tool_list_siswa.Adapter_list_siswa;
 import tech.opsign.kkp.absensi.admin.Master.siswa.edit_siswa;
 import tech.opsign.kkp.absensi.admin.Master.staf.Tool_list_staf.Adapter_list_staf;
@@ -330,18 +331,27 @@ public class Cari_staf extends AppCompatActivity {
 
 
             } else {
-                Intent myIntent;
-                    myIntent = new Intent(activity, ubah_staf.class);
-                myIntent.putExtra("nip",target);
-                //111 -> lihat
-                //222 -> ubah
-                if (next_action.equals("111")) {
-                    myIntent.putExtra("akses","111" );
-                } else {
-                    myIntent.putExtra("akses","222" );
-                }
 
-                startActivity(myIntent);
+                Intent myIntent;
+                if (next_action.equals("444")) {
+
+                    myIntent = new Intent(activity, GantiPass_User.class);
+                    myIntent.putExtra("username", hadir.nip);
+                    startActivity(myIntent);
+                    finish();
+                } else {
+                    myIntent = new Intent(activity, ubah_staf.class);
+                    myIntent.putExtra("nip", target);
+                    //111 -> lihat
+                    //222 -> ubah
+                    if (next_action.equals("111")) {
+                        myIntent.putExtra("akses", "111");
+                    } else {
+                        myIntent.putExtra("akses", "222");
+                    }
+
+                    startActivity(myIntent);
+                }
             }
         }
 

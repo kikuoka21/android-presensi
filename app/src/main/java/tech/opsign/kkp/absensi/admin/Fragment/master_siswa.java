@@ -63,7 +63,28 @@ public class master_siswa extends Fragment {
         cari.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getContext(), Cari_siswa.class));
+
+                Intent myIntent = new Intent(getContext(), Cari_siswa.class);
+                myIntent.putExtra("next_action", "111");
+                startActivity(myIntent);
+            }
+        });
+        Button ubah = (Button) v.findViewById(R.id.ubahsiswa);
+        ubah.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent myIntent = new Intent(getContext(), Cari_siswa.class);
+                myIntent.putExtra("next_action", "222");
+                startActivity(myIntent);
+            }
+        });
+        Button pass = (Button) v.findViewById(R.id.ubahpasssiswa);
+        pass.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent myIntent = new Intent(getContext(), Cari_siswa.class);
+                myIntent.putExtra("next_action", "333");
+                startActivity(myIntent);
             }
         });
         Button hapus = (Button) v.findViewById(R.id.hapussiswa);
