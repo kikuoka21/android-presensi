@@ -64,6 +64,10 @@
             android:name=".admin.Presensi.laporan_semester"
             android:configChanges="orientation|screenSize"
             android:windowSoftInputMode="stateAlwaysHidden"/>
+        <activity
+            android:name=".admin.Presensi.Carikelas_tanggal"
+            android:configChanges="orientation|screenSize"
+            android:windowSoftInputMode="stateAlwaysHidden"/>
 
 
 

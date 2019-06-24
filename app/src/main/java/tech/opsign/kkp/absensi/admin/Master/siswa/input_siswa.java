@@ -210,24 +210,6 @@ public class input_siswa extends AppCompatActivity implements AdapterView.OnItem
         }, Utilities.rto());
     }
 
-    @Override
-    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-//        Log.e("agamanya", parent.getItemAtPosition(position).toString());
-
-        if (parent == findViewById(R.id.agama)) {
-            str_agama = parent.getItemAtPosition(position).toString();
-        }
-        if (parent == findViewById(R.id.jenkel)) {
-            str_jenkel = parent.getItemAtPosition(position).toString().substring(0, 1);
-        }
-
-    }
-
-    @Override
-    public void onNothingSelected(AdapterView<?> parent) {
-
-    }
-
     private class kirim_siswa extends AsyncTask<Void, Void, Void> {
 
         private String code;
@@ -346,6 +328,24 @@ public class input_siswa extends AppCompatActivity implements AdapterView.OnItem
             }
         }
 
+
+    }
+
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+//        Log.e("agamanya", parent.getItemAtPosition(position).toString());
+
+        if (parent == findViewById(R.id.agama)) {
+            str_agama = parent.getItemAtPosition(position).toString();
+        }
+        if (parent == findViewById(R.id.jenkel)) {
+            str_jenkel = parent.getItemAtPosition(position).toString().substring(0, 1);
+        }
+
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
 
     }
 

@@ -97,7 +97,7 @@
 
                 <Spinner
 
-                    android:id="@+id/agama"
+                    android:id="@+id/bulan"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent" />
             </LinearLayout>

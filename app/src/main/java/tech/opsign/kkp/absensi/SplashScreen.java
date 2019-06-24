@@ -34,6 +34,8 @@ import Tools.InetConnection;
 import Tools.JsonParser;
 import Tools.Utilities;
 import tech.opsign.kkp.absensi.admin.MainAdmin;
+import tech.opsign.kkp.absensi.admin.Presensi.Carikelas_tanggal;
+import tech.opsign.kkp.absensi.admin.Presensi.cari_kelas_smester;
 import tech.opsign.kkp.absensi.siswa.MainSiswa;
 
 public class SplashScreen extends AppCompatActivity {
@@ -265,7 +267,7 @@ public class SplashScreen extends AppCompatActivity {
                                                 Log.d("yeyy", "1");
                                                 homeIntent = new Intent(activity, MainAdmin.class);
 //                                                homeIntent = new Intent(activity, test_layout.class);
-//                                                homeIntent = new Intent(activity, cari_kelas_smester.class);
+                                                homeIntent = new Intent(activity, Carikelas_tanggal.class);
 //                                                homeIntent = new Intent(activity, ubah_kelas.class);
                                             } else {
                                                 Log.d("yeyy", "2");

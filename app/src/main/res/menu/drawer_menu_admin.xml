@@ -6,6 +6,7 @@
         <menu>
             <item
                 android:id="@+id/homedashboard"
+                android:icon="@drawable/ic_layout"
                 android:title="Dashboard" />
 
         </menu>
@@ -16,27 +17,36 @@
         <menu>
             <item
                 android:id="@+id/input_siswa"
+                android:icon="@drawable/ic_classmates"
                 android:title="Siswa" />
             <item
-                android:id="@+id/input_tanggal"
-                android:title="Tanggal" />
-            <item
                 android:id="@+id/input_staff"
+                android:icon="@drawable/ic_id_card"
                 android:title="Staff" />
             <item
                 android:id="@+id/input_kelas"
+                android:icon="@drawable/ic_presentation"
                 android:title="Kelas" />
+            <item
+                android:id="@+id/input_tanggal"
+                android:icon="@drawable/ic_appointment"
+                android:title="Tanggal" />
 
         </menu>
     </item>
 
 
     <group>
-        <item android:title="Informasi">
+        <item android:title="Presensi">
             <menu>
                 <item
-                    android:id="@+id/absensi"
-                    android:title="Absensi " />
+                    android:id="@+id/ubahpresensi"
+                    android:icon="@drawable/ic_analytics"
+                    android:title="Ubah Presensi" />
+                <item
+                    android:id="@+id/laporan"
+                    android:icon="@drawable/ic_research"
+                    android:title="Laporan Presensi" />
             </menu>
         </item>
     </group>
@@ -45,6 +55,7 @@
         <menu>
             <item
                 android:id="@+id/ganti_pswd"
+                android:icon="@drawable/ic_protection"
                 android:title="Ganti Password" />
             <item
                 android:id="@+id/nav_out"

@@ -33,6 +33,7 @@ import tech.opsign.kkp.absensi.admin.Fragment.master_kelas;
 import tech.opsign.kkp.absensi.admin.Fragment.master_siswa;
 import tech.opsign.kkp.absensi.admin.Fragment.master_staf;
 import tech.opsign.kkp.absensi.admin.Fragment.master_tanggal;
+import tech.opsign.kkp.absensi.admin.Fragment.presensi;
 import tech.opsign.kkp.absensi.admin.Presensi.cari_kelas_smester;
 
 public class MainAdmin extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -85,6 +86,7 @@ public class MainAdmin extends AppCompatActivity implements NavigationView.OnNav
 //                    new master_tanggal()).commit();
         }
         navHeaderView = navigationView.inflateHeaderView(R.layout.nav_header);
+        navigationView.setItemIconTintList(null);
 
         mHandler = new Handler();
         String level = sp.getString("level", "");
@@ -93,6 +95,7 @@ public class MainAdmin extends AppCompatActivity implements NavigationView.OnNav
             menu.findItem(R.id.master).setVisible(true);
         } else {
             menu.findItem(R.id.master).setVisible(false);
+            menu.findItem(R.id.ubahpresensi).setVisible(false);
         }
         ((TextView) navHeaderView.findViewById(R.id.nama_nav)).setText(sp.getString("nama", ""));
         ((TextView) navHeaderView.findViewById(R.id.nip_nav)).setText(sp.getString("username", ""));
@@ -143,9 +146,9 @@ public class MainAdmin extends AppCompatActivity implements NavigationView.OnNav
 //            Intent intent = new Intent(activity, DataDiri.class);
 //            startActivity(intent);
 //        }
-        if (id == R.id.absensi) {
-            Intent intent = new Intent(activity, cari_kelas_smester.class);
-            startActivity(intent);
+        if (id == R.id.laporan) {
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_containter
+                    , new presensi()).commit();
         }
 //
         if (id == R.id.homedashboard) {

@@ -81,6 +81,7 @@ public class MainSiswa extends AppCompatActivity implements NavigationView.OnNav
 //                    new GantiPass()).commit();
         }
         navHeaderView = navigationView.inflateHeaderView(R.layout.nav_header);
+        navigationView.setItemIconTintList(null);
 
         String level = sp.getString("level", "");
         Log.e("ER_", level);
