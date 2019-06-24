@@ -56,6 +56,14 @@
             android:name=".admin.Presensi.kelas_ubah_absen"
             android:configChanges="orientation|screenSize"
             android:windowSoftInputMode="stateAlwaysHidden"/>
+        <activity
+            android:name=".admin.Presensi.cari_kelas_smester"
+            android:configChanges="orientation|screenSize"
+            android:windowSoftInputMode="stateAlwaysHidden"/>
+        <activity
+            android:name=".admin.Presensi.laporan_semester"
+            android:configChanges="orientation|screenSize"
+            android:windowSoftInputMode="stateAlwaysHidden"/>
 
 
 

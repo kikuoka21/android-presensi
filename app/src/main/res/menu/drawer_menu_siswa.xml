@@ -15,7 +15,7 @@
     <item
         android:id="@+id/pengurus"
         android:title="Presensi Kelas"
-        android:visible="false">
+        android:visible="true">
         <menu>
             <item
                 android:id="@+id/buatqr"

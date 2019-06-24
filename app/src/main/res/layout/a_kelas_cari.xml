@@ -61,6 +61,43 @@
 
             </TableRow>
 
+            <TableRow
+                android:id="@+id/spin_smester"
+                android:visibility="gone">
+
+
+                <TextView
+                    android:layout_marginStart="0dp"
+                    android:layout_marginEnd="10dp"
+                    android:text="Smester"
+                    android:textColor="#000"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:paddingStart="2dp"
+                    android:paddingEnd="6dp"
+                    android:text=":"
+                    android:textColor="#000"
+                    android:textSize="18sp" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@drawable/spiner_agama"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginEnd="0dp">
+
+                    <Spinner
+
+                        android:id="@+id/smester"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent" />
+                </LinearLayout>
+
+
+            </TableRow>
+
         </TableLayout>
 
 

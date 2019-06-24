@@ -33,7 +33,7 @@ import tech.opsign.kkp.absensi.admin.Fragment.master_kelas;
 import tech.opsign.kkp.absensi.admin.Fragment.master_siswa;
 import tech.opsign.kkp.absensi.admin.Fragment.master_staf;
 import tech.opsign.kkp.absensi.admin.Fragment.master_tanggal;
-import tech.opsign.kkp.absensi.admin.Master.tanggal.input_tanggal;
+import tech.opsign.kkp.absensi.admin.Presensi.cari_kelas_smester;
 
 public class MainAdmin extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     private SharedPreferences sp;
@@ -143,10 +143,10 @@ public class MainAdmin extends AppCompatActivity implements NavigationView.OnNav
 //            Intent intent = new Intent(activity, DataDiri.class);
 //            startActivity(intent);
 //        }
-//        if (id == R.id.riwayatpgw) {
-//            Intent intent = new Intent(activity, RiwayatPekerjaan.class);
-//            startActivity(intent);
-//        }
+        if (id == R.id.absensi) {
+            Intent intent = new Intent(activity, cari_kelas_smester.class);
+            startActivity(intent);
+        }
 //
         if (id == R.id.homedashboard) {
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_containter
