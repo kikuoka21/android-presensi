@@ -245,7 +245,7 @@ public class laporan_bulan extends AppCompatActivity {
                         int telat = 0;
                         for (int a = 0; a < detil.length(); a++) {
                             isidetil = detil.getJSONObject(a);
-                            String ket = isidetil.getString("ket");
+                            String ket = isidetil.getString("stat");
                             if (ket.equals("A")) {
                                 alpha++;
                             } else if (ket.equals("I")) {
@@ -274,7 +274,7 @@ public class laporan_bulan extends AppCompatActivity {
 
                 }
                 data = json.getJSONObject("data");
-                ((TextView) findViewById(R.id.thn_ajar)).setText(Utilities.bln_thn(tgl.substring(0, 7)));
+                ((TextView) findViewById(R.id.thn_ajar)).setText("Bulan "+Utilities.bln_thn(tgl.substring(0, 7)));
                 ((TextView) findViewById(R.id.periode)).setText("Tahun Ajar " + ubahan_thn_ajrn(data.getString("thn_ajar").substring(0, 4)));
                 ((TextView) findViewById(R.id.nama_kelas)).setText(data.getString("nama_kelas"));
                 ((TextView) findViewById(R.id.walikelas)).setText(data.getString("wali"));
