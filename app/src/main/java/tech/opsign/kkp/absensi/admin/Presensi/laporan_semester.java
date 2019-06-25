@@ -239,7 +239,7 @@ public class laporan_semester extends AppCompatActivity {
                                 data.getString("sakit"),
                                 data.getString("izin"),
                                 data.getString("alpha"),
-                                data.getString("hadir")
+                                data.getString("telat")
 
                         );
                         modelList.add(row);

@@ -239,10 +239,21 @@ public class laporan_bulan extends AppCompatActivity {
                         data = aray.getJSONObject(i);
                         str_detil = "";
                         detil = data.getJSONArray("kehadiran");
-
+                        int alpha = 0;
+                        int sakit = 0;
+                        int izin = 0;
+                        int telat = 0;
                         for (int a = 0; a < detil.length(); a++) {
                             isidetil = detil.getJSONObject(a);
-
+                            String ket = isidetil.getString("ket");
+                            if (ket.equals("A")) {
+                                alpha++;
+                            } else if (ket.equals("I")) {
+                                izin++;
+                            } else if (ket.equals("S")) {
+                                sakit++;
+                            } else if (ket.equals("T"))
+                                telat++;
                             str_detil = str_detil + "Tanggal : " + Utilities.tgl_bulan(isidetil.getString("tanggal")) +
                                     "\nStatus Kehadiran : "+Utilities.status_kehadiran(isidetil.getString("stat")) +
                                     "\nKeterangan : "+isidetil.getString("ket")+ "\n\n";
@@ -250,10 +261,10 @@ public class laporan_bulan extends AppCompatActivity {
                         row = new Model_laporan_bulan(
                                 data.getString("nis"),
                                 data.getString("nama"),
-                                "0",
-                                "0",
-                                "0",
-                                "0",
+                                String.valueOf(sakit),
+                                String.valueOf(izin),
+                                String.valueOf(alpha),
+                                String.valueOf(telat),
                                 str_detil
                         );
                         modelList.add(row);
