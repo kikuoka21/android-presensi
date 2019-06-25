@@ -26,24 +26,6 @@ public class presensi extends Fragment {
         getActivity().setTitle("List Menu Laporan");
         v = inflater.inflate(R.layout.a_fragmen_presensi, container, false);
 
-//        Button input = (Button) v.findViewById(R.id.inputstaf);
-//        input.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//
-//                startActivity(new Intent(getContext(), input_staff.class));
-//            }
-//        });
-//        Button cari = (Button) v.findViewById(R.id.lihat);
-//        cari.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//
-//                Intent myIntent = new Intent(getContext(), Cari_staf.class);
-//                myIntent.putExtra("next_action", "111");
-//                startActivity(myIntent);
-//            }
-//        });
         Button perhari = (Button) v.findViewById(R.id.perhari);
         perhari.setOnClickListener(new View.OnClickListener() {
             @Override

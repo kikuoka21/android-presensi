@@ -170,7 +170,7 @@ public class Utilities {
             Date date = df.parse(tanggal);
             Calendar c = Calendar.getInstance();
             c.setTime(date);
-            kedua = new SimpleDateFormat("EEE");
+            kedua = new SimpleDateFormat("EEEE");
 //           Log.e("ER_asdj,awd", df.format(c.getTime()));
             String balikan = hari_ini(kedua.format(c.getTime())) + ", ";
             kedua = new SimpleDateFormat("dd");
@@ -210,10 +210,75 @@ public class Utilities {
             return "tidak diketahui";
         }
     }
+     public static String tgl_bulan(String tanggal) {
+        try {
+            DateFormat kedua, df = new SimpleDateFormat("yyyy-MM-dd");
+
+
+            Date date = df.parse(tanggal);
+            Calendar c = Calendar.getInstance();
+            c.setTime(date);
+//           Log.e("ER_asdj,awd", df.format(c.getTime()));
+            kedua = new SimpleDateFormat("dd");
+            String balikan = kedua.format(c.getTime()) + " ";
+            kedua = new SimpleDateFormat("MMMM");
+            balikan = balikan + bulan(kedua.format(c.getTime()));
+
+            return balikan;
+
+        } catch (Exception e) {
+            return "tidak diketahui";
+        }
+    }
+     public static String bln_thn(String tanggal) {
+        try {
+            DateFormat kedua, df = new SimpleDateFormat("yyyy-MM");
+
+
+            Date date = df.parse(tanggal);
+            Calendar c = Calendar.getInstance();
+            c.setTime(date);
+//           Log.e("ER_asdj,awd", df.format(c.getTime()));
+            kedua = new SimpleDateFormat("MMMM");
+            String balikan =  bulan(kedua.format(c.getTime())) + " - ";
+
+            kedua = new SimpleDateFormat("yyyy");
+            balikan = balikan + kedua.format(c.getTime());
+
+            return balikan;
+
+        } catch (Exception e) {
+            return "tidak diketahui";
+        }
+    }
+
+    public static String status_kehadiran(String stat) {
+        switch (stat.substring(0,1)) {
+            case "L":
+                return "Libur";
+
+            case "A":
+                return "Alpha";
+
+            case "I":
+                return "Izin";
+
+            case "S":
+                return "Sakit";
+
+            case "H":
+                return "Hadir";
+            case "T":
+                return "Telat";
+
+            default:
+                return stat;
+        }
+    }
 
 
     private static String hari_ini(String hari) {
-        switch (hari) {
+        switch (hari.substring(0,3)) {
             case "Sun":
                 return "Minggu";
 
@@ -236,7 +301,7 @@ public class Utilities {
                 return "Sabtu";
 
             default:
-                return "Tidak di ketahui";
+                return hari;
         }
     }
 

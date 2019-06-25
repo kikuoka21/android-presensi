@@ -20,13 +20,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.LinearLayout;
-import android.widget.Spinner;
-import android.widget.TableRow;
-import android.widget.Toast;
+import android.widget.TextView;
 
 import com.google.gson.Gson;
 
@@ -44,34 +39,33 @@ import Tools.Utilities;
 import tech.opsign.kkp.absensi.Listener.ItemClickSupport;
 import tech.opsign.kkp.absensi.Login;
 import tech.opsign.kkp.absensi.R;
-import tech.opsign.kkp.absensi.admin.Master.kelas.Tool_list_kelas.Adapter_kelas_list;
-import tech.opsign.kkp.absensi.admin.Master.kelas.Tool_list_kelas.Model_kelas_list;
-import tech.opsign.kkp.absensi.admin.Master.kelas.cari_kelas;
+import tech.opsign.kkp.absensi.admin.Presensi.tool_lap_bulan.Adapter_laporan_bulan;
+import tech.opsign.kkp.absensi.admin.Presensi.tool_lap_bulan.Model_laporan_bulan;
+import tech.opsign.kkp.absensi.admin.Presensi.tool_semester.Adapter_laporan_smes;
+import tech.opsign.kkp.absensi.admin.Presensi.tool_semester.Model_laporan_smes;
 
-public class Carikelas_tanggal extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
-    private SharedPreferences sp;
-    private Carikelas_tanggal activity;
+public class laporan_bulan extends AppCompatActivity {
+    private static SharedPreferences sp;
+    private laporan_bulan activity;
     private Handler handler;
     private AsyncTask start;
     private ProgressDialog dialog;
     private GenKey key;
+    private List<Model_laporan_bulan> modelList = new ArrayList<>();
+    private Adapter_laporan_bulan adapter;
     private RecyclerView recyclerView;
-    private List<Model_kelas_list> modelList = new ArrayList<>();
-    private Adapter_kelas_list adapter;
-    private String action = "", strtahun = "", strbulan = "", strtanggal;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.a_kelas_laporan);
 
         this.activity = this;
         key = new GenKey();
         sp = activity.getSharedPreferences("shared", 0x0000);
         handler = new Handler();
-
-
+        setTitle("Laporan Presensi perSemester");
+        setContentView(R.layout.a_laporan_semester);
         if (Build.VERSION.SDK_INT >= 21) {
             Window window = this.getWindow();
             window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
@@ -82,77 +76,25 @@ public class Carikelas_tanggal extends AppCompatActivity implements AdapterView.
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
-        Intent intent = getIntent();
-        action = intent.getStringExtra("next_action");
-        if (action.equals("111")) {
-            setTitle("Cari Kelas - Laporan Hari");
-            ((TableRow) findViewById(R.id.bulan_tahun)).setVisibility(View.GONE);
-            ((TableRow) findViewById(R.id.tanggal)).setVisibility(View.VISIBLE);
-        } else {
-            setTitle("Cari Kelas - Laporan Bulan");
+//        ((TableRow) findViewById(R.id.spin_smester)).setVisibility(View.VISIBLE);
 
-            ((TableRow) findViewById(R.id.bulan_tahun)).setVisibility(View.VISIBLE);
-            ((TableRow) findViewById(R.id.tanggal)).setVisibility(View.GONE);
-        }
-
-        adapter = new Adapter_kelas_list(modelList);
-        recyclerView = (RecyclerView) findViewById(R.id.list_kelas);
+        adapter = new Adapter_laporan_bulan(modelList);
+        recyclerView = (RecyclerView) findViewById(R.id.list_lap_siswa);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(activity);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setNestedScrollingEnabled(false);
 
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(adapter);
-
-        Spinner spiner = findViewById(R.id.tahn);
-        spiner.setAdapter(null);
-        ArrayList<String> jenis = new ArrayList<String>();
-        for (int i = Integer.parseInt(sp.getString("tanggal", "").substring(0, 4)); i > 2013; i--) {
-
-            jenis.add(String.valueOf(i));
-        }
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(activity, R.layout.spiner_item, jenis);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spiner.setAdapter(adapter);
-        spiner.setOnItemSelectedListener(this);
-
-        Spinner spinerthn = findViewById(R.id.bulan);
-        spinerthn.setAdapter(null);
-        ArrayList<String> mont = new ArrayList<String>();
-        mont.add("Januari");
-        mont.add("Februari");
-        mont.add("Maret");
-        mont.add("April");
-        mont.add("Mei");
-        mont.add("Juni");
-        mont.add("Juli");
-        mont.add("Agustus");
-        mont.add("September");
-        mont.add("Oktober");
-        mont.add("November");
-        mont.add("Desember");
-        ArrayAdapter<String> adapterbln = new ArrayAdapter<String>(this.activity, R.layout.spiner_item, mont);
-        adapterbln.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinerthn.setAdapter(adapterbln);
-        spinerthn.setOnItemSelectedListener(this);
-        spinerthn.setSelection(Integer.parseInt(sp.getString("tanggal", "").substring(5, 7)) - 1);
-
-        Button button = findViewById(R.id.carikelas);
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                kirim();
-            }
-        });
-
-
+        kirim();
     }
+
 
     private void kirim() {
         modelList.clear();
         adapter.notifyDataSetChanged();
         Log.e("ER", "start");
-        start = new kirim_siswa().execute();
+        start = new kirim_kelas().execute();
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -181,15 +123,15 @@ public class Carikelas_tanggal extends AppCompatActivity implements AdapterView.
         }, Utilities.rto());
     }
 
-    private class kirim_siswa extends AsyncTask<Void, Void, Void> {
 
-        private String code;
+    private class kirim_kelas extends AsyncTask<Void, Void, Void> {
+
+        private String code, tgl;
         private JSONObject json;
         private boolean background;
 
         class Param {
-            String x1d, type, key, token;
-            String tgl;
+            String x1d, type, key, token, tgl, id_kelas;
         }
 
         @Override
@@ -208,14 +150,15 @@ public class Carikelas_tanggal extends AppCompatActivity implements AdapterView.
             try {
                 StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
                 StrictMode.setThreadPolicy(policy);
-
-
                 Param param = new Param();
                 param.x1d = sp.getString("username", "");
                 param.type = "mmm";
                 param.key = Utilities.imei(activity);
                 param.token = sp.getString("token", "");
-                param.tgl = strtanggal;
+                Intent intent = getIntent();
+                param.id_kelas = intent.getStringExtra("id_kelas");
+                tgl = intent.getStringExtra("tgl");
+                param.tgl = tgl;
 
 
                 Gson gson = new Gson();
@@ -223,8 +166,9 @@ public class Carikelas_tanggal extends AppCompatActivity implements AdapterView.
                 p.add(new BasicNameValuePair("parsing", gson.toJson(param)));
 
                 JsonParser jParser = new JsonParser();
-                json = jParser.getJSONFromUrl(key.url(341), p);
-                Log.e("isi json login", json.toString(2));
+                json = jParser.getJSONFromUrl(key.url(342), p);
+                Log.e("ER___", gson.toJson(param));
+                Log.e("ER___", json.toString(2));
                 code = json.getString("code");
 
             } catch (Exception e) {
@@ -243,7 +187,6 @@ public class Carikelas_tanggal extends AppCompatActivity implements AdapterView.
             handler.removeCallbacksAndMessages(null);
 
             if (background) {
-
                 AlertDialog.Builder ab = new AlertDialog.Builder(activity);
                 ab
                         .setCancelable(false).setTitle("Informasi");
@@ -271,6 +214,7 @@ public class Carikelas_tanggal extends AppCompatActivity implements AdapterView.
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             dialog.dismiss();
+                            finish();
                         }
                     }).show();
                 }
@@ -283,68 +227,66 @@ public class Carikelas_tanggal extends AppCompatActivity implements AdapterView.
 
         private void proses() {
             try {
+                JSONObject data, isidetil;
+                String str_detil = "";
+                Model_laporan_bulan row;
+                JSONArray detil, aray = json.getJSONArray("presensi");
 
-                Model_kelas_list row;
-                JSONArray aray = json.getJSONArray("data");
                 if (aray != null && aray.length() > 0) {
                     ((LinearLayout) findViewById(R.id.nulldata)).setVisibility(View.GONE);
                     recyclerView.setVisibility(View.VISIBLE);
                     for (int i = 0; i < aray.length(); i++) {
-                        json = aray.getJSONObject(i);
-                        // type true akan menghilangkan row kelas
+                        data = aray.getJSONObject(i);
+                        str_detil = "";
+                        detil = data.getJSONArray("kehadiran");
 
+                        for (int a = 0; a < detil.length(); a++) {
+                            isidetil = detil.getJSONObject(a);
 
-                        row = new Model_kelas_list(
-                                json.getString("id"),
-                                json.getString("nama_kelas"),
-                                json.getString("wali"),
-                                json.getString("ketua")
-
+                            str_detil = str_detil + "Tanggal : " + Utilities.tgl_bulan(isidetil.getString("tanggal")) +
+                                    "\nStatus Kehadiran : "+Utilities.status_kehadiran(isidetil.getString("stat")) +
+                                    "\nKeterangan : "+isidetil.getString("ket")+ "\n\n";
+                        }
+                        row = new Model_laporan_bulan(
+                                data.getString("nis"),
+                                data.getString("nama"),
+                                "0",
+                                "0",
+                                "0",
+                                "0",
+                                str_detil
                         );
                         modelList.add(row);
                     }
                     adapter.notifyDataSetChanged();
-                    ItemClickSupport.addTo(recyclerView).setOnItemClickListener(new ItemClickSupport.OnItemClickListener() {
-                        @Override
-                        public void onItemClicked(RecyclerView recyclerView, int position, View v) {
-                            showSelectedMatkul(modelList.get(position));
-                        }
-                    });
-                } else {
-                    ((LinearLayout) findViewById(R.id.nulldata)).setVisibility(View.VISIBLE);
-                    recyclerView.setVisibility(View.GONE);
+
+
                 }
+                data = json.getJSONObject("data");
+                ((TextView) findViewById(R.id.thn_ajar)).setText(Utilities.bln_thn(tgl.substring(0, 7)));
+                ((TextView) findViewById(R.id.periode)).setText("Tahun Ajar " + ubahan_thn_ajrn(data.getString("thn_ajar").substring(0, 4)));
+                ((TextView) findViewById(R.id.nama_kelas)).setText(data.getString("nama_kelas"));
+                ((TextView) findViewById(R.id.walikelas)).setText(data.getString("wali"));
+                ItemClickSupport.addTo(recyclerView).setOnItemClickListener(new ItemClickSupport.OnItemClickListener() {
+                    @Override
+                    public void onItemClicked(RecyclerView recyclerView, int position, View v) {
+                        showSelectedMatkul(modelList.get(position));
+                    }
+                });
             } catch (Exception e) {
                 Log.e("ER___", String.valueOf(e));
             }
         }
 
-        private void showSelectedMatkul(Model_kelas_list kelas) {
-//            Toast.makeText(activity, kelas.kd_kelas, Toast.LENGTH_SHORT).show();
-            Intent pindah;
-            if (action.equals("111")) {
-                pindah = new Intent(activity, laporan_semester.class);
+        private void showSelectedMatkul(Model_laporan_bulan isi) {
 
-//                pindah;
-//                ((TableRow) findViewById(R.id.bulan_tahun)).setVisibility(View.GONE);
-//                ((TableRow) findViewById(R.id.tanggal)).setVisibility(View.VISIBLE);
-            } else {
-                pindah = new Intent(activity, laporan_bulan.class);
+            Utilities.showMessageBox(activity, "Siswa " + isi.nama, isi.detil);
 
-
-
-//                setTitle("Cari Kelas - Laporan Bulan");
-            }
-//            Intent pindah = new Intent(activity, laporan_semester.class);
-//            pindah.putExtra("smes", smester);
-            pindah.putExtra("id_kelas", kelas.kd_kelas);
-            pindah.putExtra("tgl", strtanggal);
-            startActivity(pindah);
-            finish();
 
         }
 
     }
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -354,24 +296,7 @@ public class Carikelas_tanggal extends AppCompatActivity implements AdapterView.
         return super.onOptionsItemSelected(item);
     }
 
-    @Override
-    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-
-        if (parent == findViewById(R.id.tahn)) {
-            strtahun = parent.getItemAtPosition(position).toString();
-        }
-        if (parent == findViewById(R.id.bulan)) {
-            strbulan = String.valueOf(position + 1);
-            if (strbulan.length() == 1) {
-                strbulan = "0" + strbulan;
-            }
-        }
-        strtanggal = strtahun + "-" + strbulan;
-        Log.e("ER", strtanggal);
-    }
-
-    @Override
-    public void onNothingSelected(AdapterView<?> parent) {
-
+    public static String ubahan_thn_ajrn(String a) {
+        return a + "/" + String.valueOf(Integer.parseInt(a) + 1);
     }
 }
