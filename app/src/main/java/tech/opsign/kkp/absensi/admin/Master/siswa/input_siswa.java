@@ -104,7 +104,7 @@ public class input_siswa extends AppCompatActivity implements AdapterView.OnItem
         ArrayList<String> mont = new ArrayList<String>();
         mont.add("Laki-Laki");
         mont.add("Perempuan");
-        ArrayAdapter<String> adapterbln = new ArrayAdapter<String>(this.activity, android.R.layout.simple_spinner_item, mont);
+        ArrayAdapter<String> adapterbln = new ArrayAdapter<String>(this.activity, R.layout.spiner_item, mont);
         adapterbln.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spiner.setAdapter(adapterbln);
         spiner.setOnItemSelectedListener(this);
@@ -379,7 +379,7 @@ public class input_siswa extends AppCompatActivity implements AdapterView.OnItem
                     tgl.setText(Utilities.gettgl_lahir(strin));
                 } else {
                     str_tgl_lahir = "";
-                    pesan("Pilihan Tanggal Tidak Boleh Sesudah " + Utilities.gettgl_lahir(sp.getString("tanggal", "")), getActivity());
+                    pesan("Pilihan Tanggal Tidak Boleh Setelah " + Utilities.gettgl_lahir(sp.getString("tanggal", "")), getActivity());
                     tgl.setText("Pilih Tanggal");
 
                 }

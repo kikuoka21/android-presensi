@@ -72,6 +72,10 @@
             android:name=".admin.Presensi.laporan_bulan"
             android:configChanges="orientation|screenSize"
             android:windowSoftInputMode="stateAlwaysHidden"/>
+        <activity
+            android:name=".admin.Presensi.lihat_harian"
+            android:configChanges="orientation|screenSize"
+            android:windowSoftInputMode="stateAlwaysHidden"/>
 
 
 

@@ -39,20 +39,18 @@ import Tools.Utilities;
 import tech.opsign.kkp.absensi.Listener.ItemClickSupport;
 import tech.opsign.kkp.absensi.Login;
 import tech.opsign.kkp.absensi.R;
-import tech.opsign.kkp.absensi.admin.Presensi.tool_lap_bulan.Adapter_laporan_bulan;
-import tech.opsign.kkp.absensi.admin.Presensi.tool_lap_bulan.Model_laporan_bulan;
-import tech.opsign.kkp.absensi.admin.Presensi.tool_semester.Adapter_laporan_smes;
-import tech.opsign.kkp.absensi.admin.Presensi.tool_semester.Model_laporan_smes;
+import tech.opsign.kkp.absensi.admin.Presensi.tool_harian.Adapter_lap_harian;
+import tech.opsign.kkp.absensi.admin.Presensi.tool_harian.Model_lap_harian;
 
-public class laporan_bulan extends AppCompatActivity {
+public class lihat_harian extends AppCompatActivity {
     private static SharedPreferences sp;
-    private laporan_bulan activity;
+    private lihat_harian activity;
     private Handler handler;
     private AsyncTask start;
     private ProgressDialog dialog;
     private GenKey key;
-    private List<Model_laporan_bulan> modelList = new ArrayList<>();
-    private Adapter_laporan_bulan adapter;
+    private List<Model_lap_harian> modelList = new ArrayList<>();
+    private Adapter_lap_harian adapter;
     private RecyclerView recyclerView;
 
     @Override
@@ -64,8 +62,8 @@ public class laporan_bulan extends AppCompatActivity {
         key = new GenKey();
         sp = activity.getSharedPreferences("shared", 0x0000);
         handler = new Handler();
-        setTitle("Laporan Presensi perSemester");
-        setContentView(R.layout.a_laporan_semester);
+        setTitle("Laporan Presensi perHari");
+        setContentView(R.layout.a_laporan_harian);
         if (Build.VERSION.SDK_INT >= 21) {
             Window window = this.getWindow();
             window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
@@ -78,7 +76,7 @@ public class laporan_bulan extends AppCompatActivity {
         }
 //        ((TableRow) findViewById(R.id.spin_smester)).setVisibility(View.VISIBLE);
 
-        adapter = new Adapter_laporan_bulan(modelList);
+        adapter = new Adapter_lap_harian(modelList);
         recyclerView = (RecyclerView) findViewById(R.id.list_lap_siswa);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(activity);
         recyclerView.setLayoutManager(layoutManager);
@@ -166,9 +164,9 @@ public class laporan_bulan extends AppCompatActivity {
                 p.add(new BasicNameValuePair("parsing", gson.toJson(param)));
 
                 JsonParser jParser = new JsonParser();
-                json = jParser.getJSONFromUrl(key.url(342), p);
-                Log.e("ER___", gson.toJson(param));
-                Log.e("ER___", json.toString(2));
+                json = jParser.getJSONFromUrl(key.url(343), p);
+//                Log.e("ER___", gson.toJson(param));
+//                Log.e("ER___", json.toString(2));
                 code = json.getString("code");
 
             } catch (Exception e) {
@@ -228,70 +226,50 @@ public class laporan_bulan extends AppCompatActivity {
         private void proses() {
             try {
                 JSONObject data, isidetil;
-                String str_detil ;
-                Model_laporan_bulan row;
-                JSONArray detil, aray = json.getJSONArray("presensi");
+                Model_lap_harian row;
+                JSONArray  aray = json.getJSONArray("presensi");
 
                 if (aray != null && aray.length() > 0) {
                     ((LinearLayout) findViewById(R.id.nulldata)).setVisibility(View.GONE);
                     recyclerView.setVisibility(View.VISIBLE);
                     for (int i = 0; i < aray.length(); i++) {
                         data = aray.getJSONObject(i);
-                        str_detil = "";
-                        detil = data.getJSONArray("kehadiran");
-                        int alpha = 0;
-                        int sakit = 0;
-                        int izin = 0;
-                        int telat = 0;
-                        for (int a = 0; a < detil.length(); a++) {
-                            isidetil = detil.getJSONObject(a);
-                            String ket = isidetil.getString("stat");
-                            if (ket.equals("A")) {
-                                alpha++;
-                            } else if (ket.equals("I")) {
-                                izin++;
-                            } else if (ket.equals("S")) {
-                                sakit++;
-                            } else if (ket.equals("T"))
-                                telat++;
-                            str_detil = str_detil + "Tanggal : " + Utilities.tgl_bulan(isidetil.getString("tanggal")) +
-                                    "\nStatus Kehadiran : "+Utilities.status_kehadiran(isidetil.getString("stat")) +
-                                    "\nKeterangan : "+isidetil.getString("ket")+ "\n\n";
-                        }
-                        row = new Model_laporan_bulan(
+                        isidetil = data.getJSONObject("kehadiran");
+                        row = new Model_lap_harian(
                                 data.getString("nis"),
                                 data.getString("nama"),
-                                String.valueOf(sakit),
-                                String.valueOf(izin),
-                                String.valueOf(alpha),
-                                String.valueOf(telat),
-                                str_detil
+                                Utilities.status_kehadiran(isidetil.getString("stat")),
+                                isidetil.getString("ket")
                         );
                         modelList.add(row);
+
                     }
+
                     adapter.notifyDataSetChanged();
 
 
                 }
-                data = json.getJSONObject("data");
-                ((TextView) findViewById(R.id.thn_ajar)).setText("Bulan "+Utilities.bln_thn(tgl.substring(0, 7)));
-                ((TextView) findViewById(R.id.periode)).setText("Tahun Ajar " + ubahan_thn_ajrn(data.getString("thn_ajar").substring(0, 4)));
-                ((TextView) findViewById(R.id.nama_kelas)).setText(data.getString("nama_kelas"));
+//                data = json.getJSONObject("data");
+                data = json.getJSONObject("datakelas");
+                ((TextView) findViewById(R.id.thn_ajar)).setText("Tanggal "+Utilities.gettgl_lahir(json.getString("tanggal")));
+//                ((TextView) findViewById(R.id.periode)).setText("Tahun Ajar " + ubahan_thn_ajrn(data.getString("thn_ajar").substring(0, 4)));
+                ((TextView) findViewById(R.id.periode)).setText("Tahun Ajar ");
+                ((TextView) findViewById(R.id.nama_kelas)).setText(data.getString("nama"));
                 ((TextView) findViewById(R.id.walikelas)).setText(data.getString("wali"));
-                ItemClickSupport.addTo(recyclerView).setOnItemClickListener(new ItemClickSupport.OnItemClickListener() {
-                    @Override
-                    public void onItemClicked(RecyclerView recyclerView, int position, View v) {
-                        showSelectedMatkul(modelList.get(position));
-                    }
-                });
+//                ItemClickSupport.addTo(recyclerView).setOnItemClickListener(new ItemClickSupport.OnItemClickListener() {
+//                    @Override
+//                    public void onItemClicked(RecyclerView recyclerView, int position, View v) {
+//                        showSelectedMatkul(modelList.get(position));
+//                    }
+//                });
             } catch (Exception e) {
                 Log.e("ER___", String.valueOf(e));
             }
         }
 
-        private void showSelectedMatkul(Model_laporan_bulan isi) {
+        private void showSelectedMatkul(Model_lap_harian isi) {
 
-            Utilities.showMessageBox(activity, "Riwayat presensi " + isi.nama, isi.detil);
+            Utilities.showMessageBox(activity, "Riwayat presensi " + isi.nama, isi.nama);
         }
 
     }

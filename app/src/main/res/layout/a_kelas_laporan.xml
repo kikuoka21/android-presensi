@@ -22,7 +22,7 @@
 
         <TableRow
             android:id="@+id/tanggal"
-            android:visibility="gone">
+            android:visibility="visible">
 
             <TextView
                 android:layout_marginStart="0dp"
@@ -39,6 +39,7 @@
                 android:textSize="18sp" />
 
             <LinearLayout
+                android:id="@+id/pilih_tgl"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:background="#fff"

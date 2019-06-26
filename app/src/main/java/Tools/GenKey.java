@@ -5,9 +5,9 @@ import java.security.MessageDigest;
 public class GenKey {
     public String url(int str) {
         String web, port, head;
-        web = "192.168.0.17";
+//        web = "192.168.0.17";
 //        web = "192.168.0.18";
-//        web = "192.168.12.17";
+        web = "192.168.12.17";
         port = ":8000";
         head = "http://" + web + port;
         switch (str) {
@@ -108,6 +108,8 @@ public class GenKey {
                 return head + "/api/admin/lihat";
             case 342:
                 return head + "/api/admin/laporan-bulan";
+            case 343:
+                return head + "/api/admin/absen-ubah/getdata";
 
 
 

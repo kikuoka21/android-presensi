@@ -89,6 +89,7 @@ public class edit_siswa extends AppCompatActivity implements AdapterView.OnItemS
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         }
+
         spiner_agama = findViewById(R.id.agama);
         spiner_agama.setAdapter(null);
         ArrayList<String> jenis = new ArrayList<String>();
@@ -107,7 +108,7 @@ public class edit_siswa extends AppCompatActivity implements AdapterView.OnItemS
         ArrayList<String> mont = new ArrayList<String>();
         mont.add("Laki-Laki");
         mont.add("Perempuan");
-        ArrayAdapter<String> adapterbln = new ArrayAdapter<String>(this.activity, android.R.layout.simple_spinner_item, mont);
+        ArrayAdapter<String> adapterbln = new ArrayAdapter<String>(this.activity, R.layout.spiner_item, mont);
         adapterbln.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spin_jenkel.setAdapter(adapterbln);
         spin_jenkel.setOnItemSelectedListener(this);
@@ -128,19 +129,21 @@ public class edit_siswa extends AppCompatActivity implements AdapterView.OnItemS
         //222 ubah
         Button tombol = findViewById(R.id.kirimtanggal);
         Intent intent = getIntent();
-        if (intent.getStringExtra("next_action").equals("111")){
+        if (intent.getStringExtra("next_action").equals("111")) {
             setTitle("Data Siswa");
-            ((TextInputLayout)findViewById(R.id.alamatcounter)).setCounterEnabled(false);
+            ((TextInputLayout) findViewById(R.id.alamatcounter)).setCounterEnabled(false);
 
             tombol.setVisibility(View.GONE);
             nisn.setEnabled(false);
             nama.setEnabled(false);
             tmp_lahir.setEnabled(false);
-            nama_wali .setEnabled(false);
+            nama_wali.setEnabled(false);
             alamat.setEnabled(false);
-            no_ijazah .setEnabled(false);
-            no_ujian .setEnabled(false);
-        }else{
+            no_ijazah.setEnabled(false);
+            no_ujian.setEnabled(false);
+            spin_jenkel.setEnabled(false);
+            spiner_agama.setEnabled(false);
+        } else {
             setTitle("Ubah Data Siswa");
             date_pick.setOnClickListener(new View.OnClickListener() {
                 @Override

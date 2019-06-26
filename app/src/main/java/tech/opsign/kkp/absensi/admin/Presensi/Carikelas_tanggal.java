@@ -1,6 +1,10 @@
 package tech.opsign.kkp.absensi.admin.Presensi;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
+import android.app.DatePickerDialog;
+import android.app.Dialog;
+import android.app.DialogFragment;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -23,9 +27,11 @@ import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TableRow;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
@@ -35,7 +41,10 @@ import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import Tools.GenKey;
@@ -49,7 +58,7 @@ import tech.opsign.kkp.absensi.admin.Master.kelas.Tool_list_kelas.Model_kelas_li
 import tech.opsign.kkp.absensi.admin.Master.kelas.cari_kelas;
 
 public class Carikelas_tanggal extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
-    private SharedPreferences sp;
+    private static SharedPreferences sp;
     private Carikelas_tanggal activity;
     private Handler handler;
     private AsyncTask start;
@@ -58,7 +67,9 @@ public class Carikelas_tanggal extends AppCompatActivity implements AdapterView.
     private RecyclerView recyclerView;
     private List<Model_kelas_list> modelList = new ArrayList<>();
     private Adapter_kelas_list adapter;
-    private String action = "", strtahun = "", strbulan = "", strtanggal;
+    private String action = "", strtahun = "", strbulan = "";
+    private static String strtanggal;
+    private static TextView tgl;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -88,11 +99,55 @@ public class Carikelas_tanggal extends AppCompatActivity implements AdapterView.
             setTitle("Cari Kelas - Laporan Hari");
             ((TableRow) findViewById(R.id.bulan_tahun)).setVisibility(View.GONE);
             ((TableRow) findViewById(R.id.tanggal)).setVisibility(View.VISIBLE);
+            LinearLayout date_pick = (LinearLayout) findViewById(R.id.pilih_tgl);
+            date_pick.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    DialogFragment dialogfragment = new tanggalmulai();
+                    dialogfragment.show(getFragmentManager(), "Tanggal Mulai");
+                }
+            });
+            tgl = (TextView)findViewById(R.id.inpt_tgl);
+            strtanggal = sp.getString("tanggal", "");
+            tgl.setText(Utilities.gettgl_lahir(sp.getString("tanggal", "")));
         } else {
             setTitle("Cari Kelas - Laporan Bulan");
 
             ((TableRow) findViewById(R.id.bulan_tahun)).setVisibility(View.VISIBLE);
             ((TableRow) findViewById(R.id.tanggal)).setVisibility(View.GONE);
+
+            Spinner spiner = findViewById(R.id.tahn);
+            spiner.setAdapter(null);
+            ArrayList<String> jenis = new ArrayList<String>();
+            for (int i = Integer.parseInt(sp.getString("tanggal", "").substring(0, 4)); i > 2013; i--) {
+
+                jenis.add(String.valueOf(i));
+            }
+            ArrayAdapter<String> adapter = new ArrayAdapter<String>(activity, R.layout.spiner_item, jenis);
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            spiner.setAdapter(adapter);
+            spiner.setOnItemSelectedListener(this);
+
+            Spinner spinerthn = findViewById(R.id.bulan);
+            spinerthn.setAdapter(null);
+            ArrayList<String> mont = new ArrayList<String>();
+            mont.add("Januari");
+            mont.add("Februari");
+            mont.add("Maret");
+            mont.add("April");
+            mont.add("Mei");
+            mont.add("Juni");
+            mont.add("Juli");
+            mont.add("Agustus");
+            mont.add("September");
+            mont.add("Oktober");
+            mont.add("November");
+            mont.add("Desember");
+            ArrayAdapter<String> adapterbln = new ArrayAdapter<String>(this.activity, R.layout.spiner_item, mont);
+            adapterbln.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            spinerthn.setAdapter(adapterbln);
+            spinerthn.setOnItemSelectedListener(this);
+            spinerthn.setSelection(Integer.parseInt(sp.getString("tanggal", "").substring(5, 7)) - 1);
         }
 
         adapter = new Adapter_kelas_list(modelList);
@@ -104,38 +159,6 @@ public class Carikelas_tanggal extends AppCompatActivity implements AdapterView.
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(adapter);
 
-        Spinner spiner = findViewById(R.id.tahn);
-        spiner.setAdapter(null);
-        ArrayList<String> jenis = new ArrayList<String>();
-        for (int i = Integer.parseInt(sp.getString("tanggal", "").substring(0, 4)); i > 2013; i--) {
-
-            jenis.add(String.valueOf(i));
-        }
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(activity, R.layout.spiner_item, jenis);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spiner.setAdapter(adapter);
-        spiner.setOnItemSelectedListener(this);
-
-        Spinner spinerthn = findViewById(R.id.bulan);
-        spinerthn.setAdapter(null);
-        ArrayList<String> mont = new ArrayList<String>();
-        mont.add("Januari");
-        mont.add("Februari");
-        mont.add("Maret");
-        mont.add("April");
-        mont.add("Mei");
-        mont.add("Juni");
-        mont.add("Juli");
-        mont.add("Agustus");
-        mont.add("September");
-        mont.add("Oktober");
-        mont.add("November");
-        mont.add("Desember");
-        ArrayAdapter<String> adapterbln = new ArrayAdapter<String>(this.activity, R.layout.spiner_item, mont);
-        adapterbln.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinerthn.setAdapter(adapterbln);
-        spinerthn.setOnItemSelectedListener(this);
-        spinerthn.setSelection(Integer.parseInt(sp.getString("tanggal", "").substring(5, 7)) - 1);
 
         Button button = findViewById(R.id.carikelas);
         button.setOnClickListener(new View.OnClickListener() {
@@ -323,17 +346,11 @@ public class Carikelas_tanggal extends AppCompatActivity implements AdapterView.
 //            Toast.makeText(activity, kelas.kd_kelas, Toast.LENGTH_SHORT).show();
             Intent pindah;
             if (action.equals("111")) {
-                pindah = new Intent(activity, laporan_semester.class);
+                pindah = new Intent(activity, lihat_harian.class);
+                pindah.putExtra("action", "111");
 
-//                pindah;
-//                ((TableRow) findViewById(R.id.bulan_tahun)).setVisibility(View.GONE);
-//                ((TableRow) findViewById(R.id.tanggal)).setVisibility(View.VISIBLE);
             } else {
                 pindah = new Intent(activity, laporan_bulan.class);
-
-
-
-//                setTitle("Cari Kelas - Laporan Bulan");
             }
 //            Intent pindah = new Intent(activity, laporan_semester.class);
 //            pindah.putExtra("smes", smester);
@@ -346,6 +363,56 @@ public class Carikelas_tanggal extends AppCompatActivity implements AdapterView.
 
     }
 
+    public static class tanggalmulai extends DialogFragment implements DatePickerDialog.OnDateSetListener {
+
+        @Override
+        public Dialog onCreateDialog(Bundle savedInstanceState) {
+            final Calendar calendar = Calendar.getInstance();
+            int year = calendar.get(Calendar.YEAR);
+            int month = calendar.get(Calendar.MONTH);
+            int day = calendar.get(Calendar.DAY_OF_MONTH);
+
+            return new DatePickerDialog(getActivity(),
+                    AlertDialog.THEME_DEVICE_DEFAULT_LIGHT, this, year, month, day);
+        }
+
+        @SuppressLint("SetTextI18n")
+        public void onDateSet(DatePicker view, int year, int month, int day) {
+            @SuppressLint("SimpleDateFormat")
+            SimpleDateFormat
+                    date = new SimpleDateFormat("yyyy-MM-dd");
+            String strin = String.valueOf(year) + "-" + ubahan(month + 1) + "-" + ubahan(day);
+
+            try {
+                Date tanggalpilihan, tanggalskrng;
+                tanggalskrng = date.parse(sp.getString("tanggal", ""));
+                tanggalpilihan = date.parse(strin);
+                if ((tanggalpilihan.before(tanggalskrng) || tanggalpilihan.equals(tanggalskrng))) {
+                    strtanggal = strin;
+                    tgl.setText(Utilities.gettgl_lahir(strin));
+                } else {
+                    strtanggal = sp.getString("tanggal", "");
+                    tgl.setText(Utilities.gettgl_lahir(sp.getString("tanggal", "")));
+                    Utilities.showMessageBox(getActivity(), "Informasi", "Pilihan Tanggal Tidak Boleh Setelah " + Utilities.gettgl_lahir(sp.getString("tanggal", "")));
+//                    tgl.setText("Pilih Tanggal");
+
+                }
+            } catch (Exception e) {
+//                e.printStackTrace();
+            }
+
+
+        }
+
+    }
+    private static String ubahan(int a) {
+        String x = String.valueOf(a);
+        if (x.length() == 1) {
+            return "0" + x;
+        } else {
+            return x;
+        }
+    }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();

@@ -70,7 +70,7 @@ public class input_staff extends AppCompatActivity implements AdapterView.OnItem
         key = new GenKey();
         sp = activity.getSharedPreferences("shared", 0x0000);
         handler = new Handler();
-        setTitle("Input Siswa");
+        setTitle("Input Staf");
         if (Build.VERSION.SDK_INT >= 21) {
             Window window = this.getWindow();
             window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);

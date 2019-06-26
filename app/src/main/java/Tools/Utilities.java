@@ -146,7 +146,7 @@ public class Utilities {
 
 
     public static int rto() {
-        return 6000;
+        return 10000;
     }
 
     public static boolean checkjson(String test) {

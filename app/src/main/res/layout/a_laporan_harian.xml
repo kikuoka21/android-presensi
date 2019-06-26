@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#aaa"
+    android:orientation="vertical"
+    android:scrollbarSize="5dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TableLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#fff"
+            android:paddingStart="16dp"
+            android:paddingTop="10dp"
+            android:paddingEnd="16dp"
+            android:paddingBottom="10dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:layout_weight="1"
+                    android:textColor="#000"
+                    android:textSize="18sp"
+                    android:text="Rekap Presensi" />
+
+                <TextView
+                    android:id="@+id/thn_ajar"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:textColor="#000"
+                    android:textSize="18sp" />
+
+                <TextView
+                    android:id="@+id/periode"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:textColor="#000"
+                    android:textSize="18sp" />
+
+            </LinearLayout>
+
+            <TableRow android:paddingTop="5dp">
+
+                <TextView
+                    android:layout_marginStart="0dp"
+                    android:layout_marginEnd="2dp"
+                    android:text="Nama Kelas"
+                    android:textColor="#000"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:paddingStart="2dp"
+                    android:paddingEnd="2dp"
+                    android:text=":"
+                    android:textColor="#000"
+                    android:textSize="18sp" />
+
+                <TextView
+                    android:id="@+id/nama_kelas"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:textColor="#000"
+                    android:textSize="18sp" />
+
+
+            </TableRow>
+
+            <TableRow android:paddingTop="5dp">
+
+                <TextView
+                    android:layout_marginStart="0dp"
+                    android:layout_marginEnd="2dp"
+                    android:text="Wali Kelas"
+                    android:textColor="#000"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:paddingStart="2dp"
+                    android:paddingEnd="2dp"
+                    android:text=":"
+                    android:textColor="#000"
+                    android:textSize="18sp" />
+
+                <TextView
+                    android:id="@+id/walikelas"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:textColor="#000"
+                    android:textSize="18sp" />
+
+            </TableRow>
+
+            <android.support.v7.widget.CardView
+
+                android:layout_marginTop="10dp"
+                app:cardCornerRadius="20dp">
+                <Button
+
+                    android:text="ubah semua"
+                    android:id="@+id/ubahperkelas"
+                    android:background="#32cdcd"
+                    android:layout_height="match_parent"
+                    android:layout_width="match_parent" />
+            </android.support.v7.widget.CardView>
+
+
+        </TableLayout>
+
+
+        <android.support.v7.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#fff">
+
+            <LinearLayout
+                android:id="@+id/nulldata"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="#ccd9ff"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="10dp"
+                    android:text="Tidak Ditemukan"
+                    android:textAlignment="center"
+                    android:textColor="#000"
+                    android:textSize="16sp" />
+            </LinearLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="#aaa">
+
+                <LinearLayout
+                    android:padding="0.5dp"
+                    android:background="@color/hitam"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/list_lap_siswa"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingBottom="5dp"
+                        android:visibility="gone" />
+                </LinearLayout>
+            </RelativeLayout>
+
+        </android.support.v7.widget.CardView>
+    </LinearLayout>
+
+
+</ScrollView>
