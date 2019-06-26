@@ -49,13 +49,6 @@ public class Utilities {
 
     }
 
-    /**
-     * Memeriksa koneksi apakah hp android terkoneksi dengan internet atau tidak
-     * dan juga apakah dapat mengakses server budi luhur.
-     *
-     * @param context context
-     * @return boolean status koneksi
-     */
     public boolean inetOnline(Context context) {
         boolean connected = false;
         try {
@@ -77,15 +70,7 @@ public class Utilities {
         return connected;
     }
 
-    /**
-     * Menampilkan pesan dialog yang sudah di setting secara default
-     * akan menampilkan tombol "tutup" tanpa menutup aplikasi hanya
-     * menutup pesan dialog
-     *
-     * @param context activity context
-     * @param title   Judul pesan
-     * @param message pesan yang akan di tampilkan
-     */
+
     public static void showMessageBox(Context context, String title, String message) {
         try {
             AlertDialog alert = new AlertDialog.Builder(context).create();

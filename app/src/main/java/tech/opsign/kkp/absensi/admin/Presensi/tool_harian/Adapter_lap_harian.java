@@ -31,14 +31,28 @@ public class Adapter_lap_harian extends RecyclerView.Adapter<Adapter_lap_harian.
         holder.nama.setText(b.nama);
         holder.stat.setText(b.stat);
         holder.ket.setText(b.ket);
-        if(b.stat.substring(0,1).equals("H")){
+        if (b.ket.equals(""))
             holder.rowket.setVisibility(View.GONE);
-        }else if(b.stat.substring(0,1).equals("A")){
-            holder.bg.setBackgroundColor(0xffff8080);
-        }else {
-            holder.bg.setBackgroundColor(0xff809fff);
-        }
+         else
+            holder.rowket.setVisibility(View.VISIBLE);
 
+        switch (b.stat.substring(0, 1)) {
+            case "H":
+                holder.bg.setBackgroundColor(0xff4dff4d);
+                break;
+            case "A":
+                holder.bg.setBackgroundColor(0xffff8080);
+                break;
+            case "I":
+                holder.bg.setBackgroundColor(0xffe9f53d);
+                break;
+            case "S":
+                holder.bg.setBackgroundColor(0xff81b9e4);
+                break;
+            default:
+                holder.bg.setBackgroundColor(0xffcccccc);
+                break;
+        }
 
 
     }
@@ -48,6 +62,7 @@ public class Adapter_lap_harian extends RecyclerView.Adapter<Adapter_lap_harian.
         TextView nis, nama, stat, ket;
         TableRow rowket;
         TableLayout bg;
+
         MyViewHolder(View v) {
             super(v);
             nis = (TextView) v.findViewById(R.id.nis);
@@ -55,7 +70,7 @@ public class Adapter_lap_harian extends RecyclerView.Adapter<Adapter_lap_harian.
             stat = (TextView) v.findViewById(R.id.stat);
             ket = (TextView) v.findViewById(R.id.ket);
             rowket = (TableRow) v.findViewById(R.id.row_ket);
-            bg = (TableLayout)v.findViewById(R.id.bgroudnd_lap);
+            bg = (TableLayout) v.findViewById(R.id.bgroudnd_lap);
 
         }
 

@@ -76,6 +76,10 @@
             android:name=".admin.Presensi.lihat_harian"
             android:configChanges="orientation|screenSize"
             android:windowSoftInputMode="stateAlwaysHidden"/>
+        <activity
+            android:name=".admin.Presensi.ubah_Presensi"
+            android:configChanges="orientation|screenSize"
+            android:windowSoftInputMode="stateAlwaysHidden"/>
 
 
 

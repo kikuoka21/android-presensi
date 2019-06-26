@@ -107,7 +107,7 @@ public class Carikelas_tanggal extends AppCompatActivity implements AdapterView.
                     dialogfragment.show(getFragmentManager(), "Tanggal Mulai");
                 }
             });
-            tgl = (TextView)findViewById(R.id.inpt_tgl);
+            tgl = (TextView) findViewById(R.id.inpt_tgl);
             strtanggal = sp.getString("tanggal", "");
             tgl.setText(Utilities.gettgl_lahir(sp.getString("tanggal", "")));
         } else {
@@ -346,8 +346,9 @@ public class Carikelas_tanggal extends AppCompatActivity implements AdapterView.
 //            Toast.makeText(activity, kelas.kd_kelas, Toast.LENGTH_SHORT).show();
             Intent pindah;
             if (action.equals("111")) {
+                Intent ambil = getIntent();
                 pindah = new Intent(activity, lihat_harian.class);
-                pindah.putExtra("action", "111");
+                pindah.putExtra("action", ambil.getStringExtra("ubah"));
 
             } else {
                 pindah = new Intent(activity, laporan_bulan.class);
@@ -357,7 +358,6 @@ public class Carikelas_tanggal extends AppCompatActivity implements AdapterView.
             pindah.putExtra("id_kelas", kelas.kd_kelas);
             pindah.putExtra("tgl", strtanggal);
             startActivity(pindah);
-            finish();
 
         }
 
@@ -405,6 +405,7 @@ public class Carikelas_tanggal extends AppCompatActivity implements AdapterView.
         }
 
     }
+
     private static String ubahan(int a) {
         String x = String.valueOf(a);
         if (x.length() == 1) {
@@ -413,6 +414,7 @@ public class Carikelas_tanggal extends AppCompatActivity implements AdapterView.
             return x;
         }
     }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();

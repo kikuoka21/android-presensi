@@ -14,7 +14,7 @@
             android:id="@+id/bgroudnd_lap"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/putih"
+            android:background="#4dff4d"
             android:padding="5dp">
             <TableRow>
 

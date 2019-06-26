@@ -32,6 +32,7 @@ public class presensi extends Fragment {
             public void onClick(View v) {
                 Intent myIntent = new Intent(getContext(), Carikelas_tanggal.class);
                 myIntent.putExtra("next_action", "111");
+                myIntent.putExtra("ubah", "n");
                 startActivity(myIntent);
             }
         });

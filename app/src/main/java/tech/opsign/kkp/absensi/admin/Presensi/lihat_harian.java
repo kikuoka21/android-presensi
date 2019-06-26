@@ -1,5 +1,6 @@
 package tech.opsign.kkp.absensi.admin.Presensi;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
@@ -16,12 +17,15 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 
@@ -52,6 +56,7 @@ public class lihat_harian extends AppCompatActivity {
     private List<Model_lap_harian> modelList = new ArrayList<>();
     private Adapter_lap_harian adapter;
     private RecyclerView recyclerView;
+    private String kode_kelas = "", tanggal = "", namakelas = "", action;//y untuk hapus n untuk lihat saja
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -62,7 +67,6 @@ public class lihat_harian extends AppCompatActivity {
         key = new GenKey();
         sp = activity.getSharedPreferences("shared", 0x0000);
         handler = new Handler();
-        setTitle("Laporan Presensi perHari");
         setContentView(R.layout.a_laporan_harian);
         if (Build.VERSION.SDK_INT >= 21) {
             Window window = this.getWindow();
@@ -75,7 +79,35 @@ public class lihat_harian extends AppCompatActivity {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
 //        ((TableRow) findViewById(R.id.spin_smester)).setVisibility(View.VISIBLE);
+        Intent intent = getIntent();
+        action = intent.getStringExtra("action");
+        if (action.equals("y")) {
+            setTitle("Ubah Presensi");
 
+            ((Button) findViewById(R.id.ubahperkelas)).setVisibility(View.VISIBLE);
+            ((Button) findViewById(R.id.ubahperkelas)).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Log.e("ER", "ASDWADADA");
+
+                    Intent inten = new Intent(activity, ubah_Presensi.class);
+                    inten.putExtra("nama", "Form untuk mengganti presensi semua siswa pada kelas " + namakelas);
+
+                    inten.putExtra("kode", kode_kelas);
+                    inten.putExtra("tanggal", tanggal);
+
+                    inten.putExtra("perintah", "all");
+
+//
+                    startActivityForResult(inten, 0);
+                }
+            });
+
+        } else {
+            setTitle("Laporan Presensi perHari");
+            ((Button) findViewById(R.id.ubahperkelas)).setVisibility(View.GONE);
+
+        }
         adapter = new Adapter_lap_harian(modelList);
         recyclerView = (RecyclerView) findViewById(R.id.list_lap_siswa);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(activity);
@@ -87,6 +119,12 @@ public class lihat_harian extends AppCompatActivity {
         kirim();
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.refres, menu);
+        return true;
+    }
 
     private void kirim() {
         modelList.clear();
@@ -121,10 +159,19 @@ public class lihat_harian extends AppCompatActivity {
         }, Utilities.rto());
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (resultCode == RESULT_OK) {
+            kirim();
+        }
+
+    }
 
     private class kirim_kelas extends AsyncTask<Void, Void, Void> {
 
-        private String code, tgl;
+        private String code;
         private JSONObject json;
         private boolean background;
 
@@ -154,9 +201,10 @@ public class lihat_harian extends AppCompatActivity {
                 param.key = Utilities.imei(activity);
                 param.token = sp.getString("token", "");
                 Intent intent = getIntent();
-                param.id_kelas = intent.getStringExtra("id_kelas");
-                tgl = intent.getStringExtra("tgl");
-                param.tgl = tgl;
+                kode_kelas = intent.getStringExtra("id_kelas");
+                param.id_kelas = kode_kelas;
+                tanggal = intent.getStringExtra("tgl");
+                param.tgl = tanggal;
 
 
                 Gson gson = new Gson();
@@ -190,6 +238,10 @@ public class lihat_harian extends AppCompatActivity {
                         .setCancelable(false).setTitle("Informasi");
                 if (code.equals("OK4")) {
                     proses();
+                    if (action.equals("y")) {
+                        Toast.makeText(activity, "Tekan siswa dibawah untuk merubah presensi atau klik ubah semua", Toast.LENGTH_LONG).show();
+
+                    }
                 } else if (code.equals("TOKEN2") || code.equals("TOKEN1")) {
                     SharedPreferences.Editor editorr = sp.edit();
                     editorr.putString("username", "");
@@ -227,7 +279,7 @@ public class lihat_harian extends AppCompatActivity {
             try {
                 JSONObject data, isidetil;
                 Model_lap_harian row;
-                JSONArray  aray = json.getJSONArray("presensi");
+                JSONArray aray = json.getJSONArray("presensi");
 
                 if (aray != null && aray.length() > 0) {
                     ((LinearLayout) findViewById(R.id.nulldata)).setVisibility(View.GONE);
@@ -250,26 +302,40 @@ public class lihat_harian extends AppCompatActivity {
 
                 }
 //                data = json.getJSONObject("data");
-                data = json.getJSONObject("datakelas");
-                ((TextView) findViewById(R.id.thn_ajar)).setText("Tanggal "+Utilities.gettgl_lahir(json.getString("tanggal")));
+                data = json.getJSONObject("data");
+                ((TextView) findViewById(R.id.thn_ajar)).setText("Tanggal " + Utilities.gettgl_lahir(json.getString("tanggal")));
 //                ((TextView) findViewById(R.id.periode)).setText("Tahun Ajar " + ubahan_thn_ajrn(data.getString("thn_ajar").substring(0, 4)));
                 ((TextView) findViewById(R.id.periode)).setText("Tahun Ajar ");
-                ((TextView) findViewById(R.id.nama_kelas)).setText(data.getString("nama"));
+                namakelas = data.getString("nama");
+                ((TextView) findViewById(R.id.nama_kelas)).setText(namakelas);
                 ((TextView) findViewById(R.id.walikelas)).setText(data.getString("wali"));
-//                ItemClickSupport.addTo(recyclerView).setOnItemClickListener(new ItemClickSupport.OnItemClickListener() {
-//                    @Override
-//                    public void onItemClicked(RecyclerView recyclerView, int position, View v) {
-//                        showSelectedMatkul(modelList.get(position));
-//                    }
-//                });
+                ItemClickSupport.addTo(recyclerView).setOnItemClickListener(new ItemClickSupport.OnItemClickListener() {
+                    @Override
+                    public void onItemClicked(RecyclerView recyclerView, int position, View v) {
+                        showSelectedMatkul(modelList.get(position));
+                    }
+                });
             } catch (Exception e) {
                 Log.e("ER___", String.valueOf(e));
             }
         }
 
         private void showSelectedMatkul(Model_lap_harian isi) {
+            if (action.equals("y")) {
+//                Utilities.showMessageBox(activity, "Riwayat presensi " + isi.nama, isi.nama);
 
-            Utilities.showMessageBox(activity, "Riwayat presensi " + isi.nama, isi.nama);
+                Intent inten = new Intent(activity, ubah_Presensi.class);
+                inten.putExtra("nama", "Form untuk mengganti presensi  " + isi.nama);
+
+                inten.putExtra("kode", isi.nis);
+                inten.putExtra("tanggal", tanggal);
+
+                inten.putExtra("perintah", "one");
+
+//
+                startActivityForResult(inten, 0);
+            }
+
         }
 
     }
@@ -280,6 +346,8 @@ public class lihat_harian extends AppCompatActivity {
         int id = item.getItemId();
         if (id == android.R.id.home)
             finish();
+        if (id == R.id.action_favorite)
+            kirim();
         return super.onOptionsItemSelected(item);
     }
 

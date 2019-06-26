@@ -34,6 +34,7 @@ import tech.opsign.kkp.absensi.admin.Fragment.master_siswa;
 import tech.opsign.kkp.absensi.admin.Fragment.master_staf;
 import tech.opsign.kkp.absensi.admin.Fragment.master_tanggal;
 import tech.opsign.kkp.absensi.admin.Fragment.presensi;
+import tech.opsign.kkp.absensi.admin.Presensi.Carikelas_tanggal;
 import tech.opsign.kkp.absensi.admin.Presensi.cari_kelas_smester;
 
 public class MainAdmin extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -93,6 +94,7 @@ public class MainAdmin extends AppCompatActivity implements NavigationView.OnNav
         Menu menu = navigationView.getMenu();
         if (level.equals("1")) {
             menu.findItem(R.id.master).setVisible(true);
+            menu.findItem(R.id.ubahpresensi).setVisible(true);
         } else {
             menu.findItem(R.id.master).setVisible(false);
             menu.findItem(R.id.ubahpresensi).setVisible(false);
@@ -142,10 +144,12 @@ public class MainAdmin extends AppCompatActivity implements NavigationView.OnNav
         FragmentManager fragmentManager = getFragmentManager();
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
 
-//        if (id == R.id.home) {
-//            Intent intent = new Intent(activity, DataDiri.class);
-//            startActivity(intent);
-//        }
+        if (id == R.id.ubahpresensi) {
+            Intent myIntent = new Intent(activity, Carikelas_tanggal.class);
+            myIntent.putExtra("next_action", "111");
+            myIntent.putExtra("ubah", "y");
+            startActivity(myIntent);
+        }
         if (id == R.id.laporan) {
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_containter
                     , new presensi()).commit();
