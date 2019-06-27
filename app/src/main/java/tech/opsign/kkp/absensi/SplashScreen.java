@@ -77,83 +77,58 @@ public class SplashScreen extends AppCompatActivity {
         }
 
 //        loadIMEI();\
-        md5a("aa");
+        md5a("a");
+//        md5a("aa");
 //        check();
 
     }
-    private void check(){
-        for(int i=0;i<255; i++ ){
-            Log.e("ER__"+i, Integer.toHexString(i));
+
+    private void check() {
+        for (int i = 0; i < 255; i++) {
+            Log.e("ER__" + i, Integer.toHexString(i));
         }
     }
+
     private void md5a(String s) {
-        String MD5 = "MD5";
         try {
-            // Create MD5 Hash
-            MessageDigest digest = java.security.MessageDigest.getInstance(MD5);
-            digest.update(s.getBytes());
-
-
-
-            byte messageDigest[] = digest.digest();
-
-            // Create Hex String
-            StringBuilder hexString = new StringBuilder();
-
-            Log.e("MD5__b_", Arrays.toString(s.getBytes()));
-            Log.e("MD5__b_", String.valueOf(digest.digest()));
-            Log.e("MD5__b_", String.valueOf(messageDigest));
-            Log.e("MD5__b_", Arrays.toString(digest.digest()));
-            Log.e("MD5__b_", Arrays.toString(messageDigest));
-            int i = 0;
-            for (byte aMessageDigest : messageDigest) {
-
-                String h = Integer.toHexString(0xFF & aMessageDigest);
-                while (h.length() < 2)
-                    h = "0" + h;
-//                Log.e("MD5_ messageDigest ", String.valueOf(messageDigest[i]));
-//                Log.e("MD5_ aMessageDigest", String.valueOf( aMessageDigest));
-//                Log.e("MD5_ 0xFF & aMess", String.valueOf( 0xFF & aMessageDigest));
-//                Log.e("MD5_ 0xFF", String.valueOf( 0xFF));
-//                Log.e("MD5___h", h);
-                hexString.append(h);
-                i++;
-            }
-            Log.e("ER", String.valueOf(hexString));
-            Log.e("ER", hexString.toString());
-
-            Log.e("ER", toHexString(s.getBytes()));
+            Log.e("ER_", toHexString(computeMD5(s.getBytes())));
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
 
+    private static final int INIT_A = 0x67452301;
+    private static final int INIT_B = (int) 0xEFCDAB89L;
+    private static final int INIT_C = (int) 0x98BADCFEL;
+    private static final int INIT_D = 0x10325476;//angka hexa
+    private static final int[] SHIFT_AMTS = {7, 12, 17, 22, 5, 9, 14, 20, 4,
+            11, 16, 23, 6, 10, 15, 21};
+    private static final int[] TABLE_T = new int[64];
 
-
-    private static final int   INIT_A     = 0x67452301;
-    private static final int   INIT_B     = (int) 0xEFCDAB89L;
-    private static final int   INIT_C     = (int) 0x98BADCFEL;
-    private static final int   INIT_D     = 0x10325476;
-    private static final int[] SHIFT_AMTS = { 7, 12, 17, 22, 5, 9, 14, 20, 4,
-            11, 16, 23, 6, 10, 15, 21    };
-    private static final int[] TABLE_T    = new int[64];
-    static
-    {
+    static {
         for (int i = 0; i < 64; i++)
             TABLE_T[i] = (int) (long) ((1L << 32) * Math.abs(Math.sin(i + 1)));
     }
 
-    public static byte[] computeMD5(byte[] message)
-    {
+    public static byte[] computeMD5(byte[] message) {
         int messageLenBytes = message.length;
         int numBlocks = ((messageLenBytes + 8) >>> 6) + 1;
         int totalLen = numBlocks << 6;
         byte[] paddingBytes = new byte[totalLen - messageLenBytes];
+        Log.e("ER_ ", String.valueOf(totalLen - messageLenBytes) + " " + printBinaryform(totalLen - messageLenBytes));
+        Log.e("ER_ ", printBinaryform(INIT_A));
+        Log.e("ER_ a", printBinaryform(INIT_A << 1));
+        Log.e("ER_ a", printBinaryform(INIT_A << 2));
+        Log.e("ER_ a", printBinaryform(INIT_A << 3));
+        Log.e("ER_ a", printBinaryform(INIT_A << 4));
+        Log.e("ER_ a", printBinaryform(INIT_A << 5));
+        Log.e("ER_ a", printBinaryform(INIT_A << 6));
+        Log.e("ER_ a", printBinaryform(INIT_A << 7));
+        Log.e("ER_ a", printBinaryform(INIT_A << 8));
         paddingBytes[0] = (byte) 0x80;
         long messageLenBits = (long) messageLenBytes << 3;
-        for (int i = 0; i < 8; i++)
-        {
+        for (int i = 0; i < 8; i++) {
             paddingBytes[paddingBytes.length - 8 + i] = (byte) messageLenBits;
             messageLenBits >>>= 8;
         }
@@ -162,8 +137,7 @@ public class SplashScreen extends AppCompatActivity {
         int c = INIT_C;
         int d = INIT_D;
         int[] buffer = new int[16];
-        for (int i = 0; i < numBlocks; i++)
-        {
+        for (int i = 0; i < numBlocks; i++) {
             int index = i << 6;
             for (int j = 0; j < 64; j++, index++)
                 buffer[j >>> 2] = ((int) ((index < messageLenBytes) ? message[index]
@@ -173,13 +147,11 @@ public class SplashScreen extends AppCompatActivity {
             int originalB = b;
             int originalC = c;
             int originalD = d;
-            for (int j = 0; j < 64; j++)
-            {
+            for (int j = 0; j < 64; j++) {
                 int div16 = j >>> 4;
                 int f = 0;
                 int bufferIndex = j;
-                switch (div16)
-                {
+                switch (div16) {
                     case 0:
                         f = (b & c) | (~b & d);
                         break;
@@ -212,11 +184,9 @@ public class SplashScreen extends AppCompatActivity {
         }
         byte[] md5 = new byte[16];
         int count = 0;
-        for (int i = 0; i < 4; i++)
-        {
+        for (int i = 0; i < 4; i++) {
             int n = (i == 0) ? a : ((i == 1) ? b : ((i == 2) ? c : d));
-            for (int j = 0; j < 4; j++)
-            {
+            for (int j = 0; j < 4; j++) {
                 md5[count++] = (byte) n;
                 n >>>= 8;
             }
@@ -224,16 +194,18 @@ public class SplashScreen extends AppCompatActivity {
         return md5;
     }
 
-    public static String toHexString(byte[] b)
-    {
+    public static String toHexString(byte[] b) {
         StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < b.length; i++)
-        {
+        for (int i = 0; i < b.length; i++) {
             sb.append(String.format("%02X", b[i] & 0xFF));
         }
         return sb.toString();
     }
 
+    private static String printBinaryform(int number) {
+        return Integer.toString(number, 2);
+//        return String.valueOf(number);
+    }
 
 
     private void loadIMEI() {
@@ -244,15 +216,15 @@ public class SplashScreen extends AppCompatActivity {
                 android.Manifest.permission.CAMERA
         };
 
-        if(!hasPermissions(activity, PERMISSIONS)){
+        if (!hasPermissions(activity, PERMISSIONS)) {
             ActivityCompat.requestPermissions(activity, PERMISSIONS, PERMISSION_ALL);
-        }else{
+        } else {
             inten();
         }
 
 
-
     }
+
     public static boolean hasPermissions(Context context, String... permissions) {
         if (context != null && permissions != null) {
             for (String permission : permissions) {
@@ -473,7 +445,7 @@ public class SplashScreen extends AppCompatActivity {
         }
     }
 
-    private void inten_Login(){
+    private void inten_Login() {
         startActivity(new Intent(activity, Login.class));
         finish();
     }
