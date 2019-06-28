@@ -1,4 +1,4 @@
-package tech.opsign.kkp.absensi.admin.Master.tanggal;
+package tech.opsign.kkp.absensi.siswa;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
@@ -6,7 +6,6 @@ import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -20,19 +19,18 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.InputType;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.DatePicker;
-import android.widget.EditText;
-import android.widget.LinearLayout;
+import android.widget.Spinner;
+import android.widget.TableLayout;
+import android.widget.TableRow;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.gson.Gson;
 
@@ -50,86 +48,115 @@ import java.util.List;
 import Tools.GenKey;
 import Tools.JsonParser;
 import Tools.Utilities;
-import tech.opsign.kkp.absensi.Listener.ItemClickSupport;
 import tech.opsign.kkp.absensi.Login;
 import tech.opsign.kkp.absensi.R;
-import tech.opsign.kkp.absensi.admin.Master.tanggal.Tool_Input_Tanggal.Adapter_tanggal;
-import tech.opsign.kkp.absensi.admin.Master.tanggal.Tool_Input_Tanggal.Model_tanggal;
+import tech.opsign.kkp.absensi.siswa.tool_presensi.Adapter_presensi;
+import tech.opsign.kkp.absensi.siswa.tool_presensi.Model_presensi;
 
-public class ubah_tanggal extends AppCompatActivity {
+public class cari_presensi extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
     private static SharedPreferences sp;
-    private ubah_tanggal activity;
+    private cari_presensi activity;
     private Handler handler;
     private AsyncTask start;
     private ProgressDialog dialog;
     private GenKey key;
-
     private RecyclerView recyclerView;
-    private List<Model_tanggal> modelList = new ArrayList<>();
-    private Adapter_tanggal adapter;
-
-    private EditText ket;
-    private TextView tgl;
-    private String tgl_string = "";
-    private String ket_string;
+    private List<Model_presensi> modelList = new ArrayList<>();
+    private Adapter_presensi Adapter;
+    private String action = "", strtahun = "", strbulan = "";
+    private static String strtanggal;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.a_input_tanggal);
+
+        setContentView(R.layout.s_siswa_lihat);
 
         this.activity = this;
         key = new GenKey();
         sp = activity.getSharedPreferences("shared", 0x0000);
         handler = new Handler();
+
+
         if (Build.VERSION.SDK_INT >= 21) {
             Window window = this.getWindow();
             window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
             window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
             window.setStatusBarColor(this.getResources().getColor(R.color.colorPrimary));
         }
-        setTitle("Ubah Hari Libur");
+
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
         Intent intent = getIntent();
-        tgl = (TextView) findViewById(R.id.inpt_tgl);
-        ket = (EditText) findViewById(R.id.ket);
-        tgl_string = intent.getStringExtra("tgl");
-        tgl.setText(Utilities.gettanggal(tgl_string));
-        ket.setText(intent.getStringExtra("ket"));
+        action = intent.getStringExtra("next_action");
 
-        Button tombol = findViewById(R.id.kirimtanggal);
+        setTitle("Cari Kelas - Laporan Bulan");
 
-        tombol.setOnClickListener(new View.OnClickListener() {
+        ((TableRow) findViewById(R.id.bulan_tahun)).setVisibility(View.VISIBLE);
+
+        Spinner spiner = findViewById(R.id.tahn);
+        spiner.setAdapter(null);
+        ArrayList<String> jenis = new ArrayList<String>();
+        for (int i = Integer.parseInt(sp.getString("tanggal", "").substring(0, 4)); i > 2013; i--) {
+
+            jenis.add(String.valueOf(i));
+        }
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(activity, R.layout.spiner_item, jenis);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spiner.setAdapter(adapter);
+        spiner.setOnItemSelectedListener(this);
+
+        Spinner spinerthn = findViewById(R.id.bulan);
+        spinerthn.setAdapter(null);
+        ArrayList<String> mont = new ArrayList<String>();
+        mont.add("Januari");
+        mont.add("Februari");
+        mont.add("Maret");
+        mont.add("April");
+        mont.add("Mei");
+        mont.add("Juni");
+        mont.add("Juli");
+        mont.add("Agustus");
+        mont.add("September");
+        mont.add("Oktober");
+        mont.add("November");
+        mont.add("Desember");
+        ArrayAdapter<String> adapterbln = new ArrayAdapter<String>(this.activity, R.layout.spiner_item, mont);
+        adapterbln.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinerthn.setAdapter(adapterbln);
+        spinerthn.setOnItemSelectedListener(this);
+        spinerthn.setSelection(Integer.parseInt(sp.getString("tanggal", "").substring(5, 7)) - 1);
+
+
+        Button button = findViewById(R.id.carikelas);
+        button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                closekeyboard();
-
-                ket_string = ket.getText().toString().trim();
-                if (ket.getText().toString().trim().equals("")) {
-                    Utilities.showMessageBox(activity, "Informasi", "Keterangan Tidak Boleh Kosong");
-                } else {
-                    Log.e("ER__", "KIRM BOIIIII");
-                    kirim();
-                }
+                kirim();
             }
         });
 
-    }
+        Adapter = new Adapter_presensi(modelList);
+        recyclerView = (RecyclerView) findViewById(R.id.list_kelas);
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(activity);
+        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setNestedScrollingEnabled(false);
+
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        recyclerView.setAdapter(Adapter);
 
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-        if (id == android.R.id.home)
-            finish();
-        return super.onOptionsItemSelected(item);
+        ((TableLayout)findViewById(R.id.isian)).setVisibility(View.GONE);
     }
 
     private void kirim() {
+
+        ((TableLayout)findViewById(R.id.isian)).setVisibility(View.GONE);
+//        modelList.clear();
+//        Adapter.notifyDataSetChanged();
         Log.e("ER", "start");
-        start = new kirim_tgl().execute();
+        start = new kirim_siswa().execute();
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -158,14 +185,15 @@ public class ubah_tanggal extends AppCompatActivity {
         }, Utilities.rto());
     }
 
-    private class kirim_tgl extends AsyncTask<Void, Void, Void> {
+    private class kirim_siswa extends AsyncTask<Void, Void, Void> {
 
         private String code;
         private JSONObject json;
         private boolean background;
 
         class Param {
-            String x1d, type, key, token, tanggal, ket;
+            String x1d, type, key, token;
+            String tanggal;
         }
 
         @Override
@@ -191,16 +219,16 @@ public class ubah_tanggal extends AppCompatActivity {
                 param.type = "mmm";
                 param.key = Utilities.imei(activity);
                 param.token = sp.getString("token", "");
-                param.tanggal = tgl_string;
-                param.ket = ket_string;
+                param.tanggal = strtanggal;
+
 
                 Gson gson = new Gson();
                 List<NameValuePair> p = new ArrayList<NameValuePair>();
                 p.add(new BasicNameValuePair("parsing", gson.toJson(param)));
 
                 JsonParser jParser = new JsonParser();
-                json = jParser.getJSONFromUrl(key.url(312), p);
-//                Log.e("isi json login", json.toString(2));
+                json = jParser.getJSONFromUrl(key.url(104), p);
+                Log.e("isi json login", json.toString(2));
                 code = json.getString("code");
 
             } catch (Exception e) {
@@ -224,14 +252,8 @@ public class ubah_tanggal extends AppCompatActivity {
                 ab
                         .setCancelable(false).setTitle("Informasi");
                 if (code.equals("OK4")) {
-                    ab.setMessage("P Tanggal Berhasil").setPositiveButton("Tutup", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.dismiss();
-                            setResult(RESULT_OK);
-                            finish();
-                        }
-                    }).show();
+
+                    proses();
                 } else if (code.equals("TOKEN2") || code.equals("TOKEN1")) {
                     SharedPreferences.Editor editorr = sp.edit();
                     editorr.putString("username", "");
@@ -264,23 +286,53 @@ public class ubah_tanggal extends AppCompatActivity {
             }
         }
 
+        private void proses() {
+            try {
 
-    }
+//                Model_kelas_list row;
+//                JSONArray aray = json.getJSONArray("data");
 
+                ((TableLayout)findViewById(R.id.isian)).setVisibility(View.VISIBLE);
 
-    private void closekeyboard() {
-        try {
-            View view = activity.getCurrentFocus();
-            if (view != null) {
-                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                assert imm != null;
-                imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+            } catch (Exception e) {
+                Log.e("ER___", String.valueOf(e));
             }
-        } catch (Exception e) {
 
         }
+
+
+
     }
 
 
 
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (id == android.R.id.home)
+            finish();
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+        if (parent == findViewById(R.id.tahn)) {
+            strtahun = parent.getItemAtPosition(position).toString();
+        }
+        if (parent == findViewById(R.id.bulan)) {
+            strbulan = String.valueOf(position + 1);
+            if (strbulan.length() == 1) {
+                strbulan = "0" + strbulan;
+            }
+        }
+        strtanggal = strtahun + "-" + strbulan;
+        Log.e("ER", strtanggal);
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+
+    }
 }

@@ -19,12 +19,17 @@
         <menu>
             <item
                 android:id="@+id/buatqr"
-                android:title="Buat QR Code Abesn" />
+                android:icon="@drawable/ic_qr_code"
+                android:title="Buat QR Code Kehadiran" />
             <item
+                android:visible="false"
                 android:id="@+id/presensi_hari_ini"
+                android:icon="@drawable/ic_research"
                 android:title="Lihat Presensi Hari Ini" />
             <item
                 android:id="@+id/presensi_bulan"
+                android:visible="false"
+                android:icon="@drawable/ic_research"
                 android:title="Lihat Presensi Perbulan" />
 
         </menu>
@@ -33,7 +38,7 @@
         <menu>
             <item
                 android:id="@+id/presensi_saya"
-                android:title="presensi_saya" />
+                android:title="Lihat Presensi saya" />
 
         </menu>
     </item>
@@ -43,6 +48,7 @@
         <menu>
             <item
                 android:id="@+id/ganti_pswd"
+                android:icon="@drawable/ic_protection"
                 android:title="Ganti Password" />
             <item
                 android:id="@+id/nav_out"

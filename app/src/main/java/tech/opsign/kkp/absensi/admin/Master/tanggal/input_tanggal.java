@@ -491,12 +491,6 @@ public class input_tanggal extends AppCompatActivity {
                 });
                 AlertDialog ad = builder.create();
                 ad.show();
-            } else if (next_action.equals("222")) {
-                Intent myIntent;
-                myIntent = new Intent(activity, ubah_tanggal.class);
-                myIntent.putExtra("tgl", target_tgl);
-                myIntent.putExtra("ket", hadir.keterangan);
-                startActivityForResult(myIntent, 0);
             }
         }
     }

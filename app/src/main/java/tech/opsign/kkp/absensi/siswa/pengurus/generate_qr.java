@@ -14,8 +14,10 @@ import android.os.StrictMode;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.CardView;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
@@ -55,6 +57,7 @@ public class generate_qr extends AppCompatActivity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_SECURE, WindowManager.LayoutParams.FLAG_SECURE);
         this.activity = this;
+        ((CardView)findViewById(R.id.qrnya)).setVisibility(View.GONE);
         key = new GenKey();
         sp = activity.getSharedPreferences("shared", 0x0000);
         handler = new Handler();
@@ -181,6 +184,8 @@ public class generate_qr extends AppCompatActivity {
                 ab.setCancelable(false).setTitle("Informasi");
                 if (code.equals("OK4")) {
                     proses();
+
+                    ((CardView)findViewById(R.id.qrnya)).setVisibility(View.VISIBLE);
 
                 } else if (code.equals("TOKEN2") || code.equals("TOKEN1")) {
                     SharedPreferences.Editor editorr = sp.edit();

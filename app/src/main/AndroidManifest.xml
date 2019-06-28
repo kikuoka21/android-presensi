@@ -88,10 +88,6 @@
             android:name=".admin.Master.tanggal.input_tanggal"
             android:configChanges="orientation|screenSize"
             android:windowSoftInputMode="stateAlwaysHidden"/>
-        <activity
-            android:name=".admin.Master.tanggal.ubah_tanggal"
-            android:configChanges="orientation|screenSize"
-            android:windowSoftInputMode="stateAlwaysHidden"/>
 
         <!--mastersiswa-->
         <activity
@@ -170,6 +166,10 @@
             android:configChanges="orientation|screenSize"/>
         <activity
             android:name=".siswa.scan_qr_code"
+            android:configChanges="orientation|screenSize"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".siswa.cari_presensi"
             android:configChanges="orientation|screenSize"
             android:screenOrientation="portrait"/>
 

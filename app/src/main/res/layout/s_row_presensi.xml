@@ -21,7 +21,7 @@
                 <TextView
                     android:layout_marginStart="0dp"
                     android:layout_marginEnd="10dp"
-                    android:text="NIS"
+                    android:text="Tanggal"
                     android:textColor="#000"
                     android:textSize="16sp" />
 
@@ -33,7 +33,7 @@
                     android:textSize="18sp" />
 
                 <TextView
-                    android:id="@+id/nis"
+                    android:id="@+id/tgl"
                     android:layout_weight="1"
                     android:paddingStart="0dp"
                     android:paddingEnd="5dp"
@@ -49,37 +49,9 @@
                 <TextView
                     android:layout_marginStart="0dp"
                     android:layout_marginEnd="10dp"
-                    android:text="Nama"
-                    android:textColor="#000"
-                    android:textSize="16sp" />
-                <TextView
-                    android:paddingStart="2dp"
-                    android:paddingEnd="6dp"
-                    android:text=":"
-                    android:textColor="#000"
-                    android:textSize="18sp" />
-
-                <TextView
-                    android:id="@+id/nama"
-                    android:layout_weight="1"
-                    android:paddingStart="0dp"
-                    android:paddingEnd="5dp"
-                    android:text="kasnfkasnkald askdmakd kasmdiwaldmasdaw"
-                    android:textColor="#000"
-                    android:textSize="18sp" />
-
-            </TableRow>
-
-            <TableRow
-                android:id="@+id/row_kelas">
-
-                <TextView
-                    android:layout_marginStart="0dp"
-                    android:layout_marginEnd="10dp"
                     android:text="Status"
                     android:textColor="#000"
                     android:textSize="16sp" />
-
                 <TextView
                     android:paddingStart="2dp"
                     android:paddingEnd="6dp"
@@ -97,6 +69,7 @@
                     android:textSize="18sp" />
 
             </TableRow>
+
 
             <TableRow
                 android:id="@+id/row_ket">

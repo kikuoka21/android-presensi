@@ -14,8 +14,8 @@
                         <option name="values">
                           <map>
                             <entry key="assetSourceType" value="FILE" />
-                            <entry key="outputName" value="ic_protection" />
-                            <entry key="sourceFile" value="C:\Users\kikuo\api-qrcode\icon\protection.svg" />
+                            <entry key="outputName" value="ic_qr_code" />
+                            <entry key="sourceFile" value="C:\Users\user\api-qrcode\icon\smartphone.svg" />
                           </map>
                         </option>
                       </PersistentState>
