@@ -30,13 +30,16 @@ public class Adapter_presensi extends RecyclerView.Adapter<Adapter_presensi.MyVi
         holder.tgl.setText(b.tanggal);
         holder.stat.setText(b.stat);
         holder.ket.setText(b.ket);
-        if (b.ket.equals(""))
+        if (b.ket.equals("")&& b.stat.substring(0, 1).equals("H"))
             holder.rowket.setVisibility(View.GONE);
          else
             holder.rowket.setVisibility(View.VISIBLE);
 
         switch (b.stat.substring(0, 1)) {
             case "H":
+                holder.bg.setBackgroundColor(0xff4dff4d);
+                break;
+            case "L":
                 holder.bg.setBackgroundColor(0xff4dff4d);
                 break;
             case "A":

@@ -304,8 +304,8 @@ public class lihat_harian extends AppCompatActivity {
 //                data = json.getJSONObject("data");
                 data = json.getJSONObject("data");
                 ((TextView) findViewById(R.id.thn_ajar)).setText("Tanggal " + Utilities.gettgl_lahir(json.getString("tanggal")));
-//                ((TextView) findViewById(R.id.periode)).setText("Tahun Ajar " + ubahan_thn_ajrn(data.getString("thn_ajar").substring(0, 4)));
-                ((TextView) findViewById(R.id.periode)).setText("Tahun Ajar ");
+                ((TextView) findViewById(R.id.periode)).setText("Tahun Ajar " + Utilities.ubahan_thn_ajrn(data.getString("thn_ajar").substring(0, 4)));
+//                ((TextView) findViewById(R.id.periode)).setText("Tahun Ajar ");
                 namakelas = data.getString("nama");
                 ((TextView) findViewById(R.id.nama_kelas)).setText(namakelas);
                 ((TextView) findViewById(R.id.walikelas)).setText(data.getString("wali"));
@@ -351,7 +351,5 @@ public class lihat_harian extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public static String ubahan_thn_ajrn(String a) {
-        return a + "/" + String.valueOf(Integer.parseInt(a) + 1);
-    }
+
 }

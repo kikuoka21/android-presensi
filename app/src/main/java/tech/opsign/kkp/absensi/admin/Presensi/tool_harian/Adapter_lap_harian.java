@@ -40,6 +40,9 @@ public class Adapter_lap_harian extends RecyclerView.Adapter<Adapter_lap_harian.
             case "H":
                 holder.bg.setBackgroundColor(0xff4dff4d);
                 break;
+            case "L":
+                holder.bg.setBackgroundColor(0xff4dff4d);
+                break;
             case "A":
                 holder.bg.setBackgroundColor(0xffff8080);
                 break;

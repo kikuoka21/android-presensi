@@ -30,6 +30,7 @@ import tech.opsign.kkp.absensi.R;
 import tech.opsign.kkp.absensi.siswa.Fragmen.Dashboard;
 import tech.opsign.kkp.absensi.siswa.Fragmen.Profile;
 import tech.opsign.kkp.absensi.siswa.pengurus.generate_qr;
+import tech.opsign.kkp.absensi.siswa.pengurus.lihatpresensi_tanggal;
 
 public class MainSiswa extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     private SharedPreferences sp;
@@ -140,10 +141,14 @@ public class MainSiswa extends AppCompatActivity implements NavigationView.OnNav
         FragmentManager fragmentManager = getFragmentManager();
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
 
-//        if (id == R.id.home) {
-//            Intent intent = new Intent(activity, DataDiri.class);
-//            startActivity(intent);
-//        }
+        if (id == R.id.presensi_saya) {
+            Intent intent  = new Intent(activity, cari_presensi.class);
+            startActivity(intent);
+        }
+        if (id == R.id.lihat_presensi_hari) {
+            Intent intent  = new Intent(activity, lihatpresensi_tanggal.class);
+            startActivity(intent);
+        }
         if (id == R.id.homedashboard) {
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_containter
                     , new Dashboard()).commit();

@@ -1,4 +1,4 @@
-package tech.opsign.kkp.absensi.siswa;
+package tech.opsign.kkp.absensi.siswa.pengurus;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
@@ -24,12 +24,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.LinearLayout;
-import android.widget.Spinner;
-import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
@@ -51,27 +48,26 @@ import Tools.JsonParser;
 import Tools.Utilities;
 import tech.opsign.kkp.absensi.Login;
 import tech.opsign.kkp.absensi.R;
-import tech.opsign.kkp.absensi.siswa.tool_presensi.Adapter_presensi;
-import tech.opsign.kkp.absensi.siswa.tool_presensi.Model_presensi;
+import tech.opsign.kkp.absensi.admin.Presensi.tool_harian.Adapter_lap_harian;
+import tech.opsign.kkp.absensi.admin.Presensi.tool_harian.Model_lap_harian;
 
-public class cari_presensi extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
+public class lihatpresensi_tanggal extends AppCompatActivity{
     private static SharedPreferences sp;
-    private cari_presensi activity;
+    private lihatpresensi_tanggal activity;
     private Handler handler;
     private AsyncTask start;
     private ProgressDialog dialog;
     private GenKey key;
-    private RecyclerView recyclerView;
-    private List<Model_presensi> modelList = new ArrayList<>();
-    private Adapter_presensi Adapter;
-    private String action = "", strtahun = "", strbulan = "";
+    private List<Model_lap_harian> modelList = new ArrayList<>();
+    private Adapter_lap_harian adapter;
     private static String strtanggal;
+    private static TextView tgl;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.s_siswa_lihat);
+        setContentView(R.layout.s_lihat_presensi);
 
         this.activity = this;
         key = new GenKey();
@@ -89,45 +85,33 @@ public class cari_presensi extends AppCompatActivity implements AdapterView.OnIt
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
-        Intent intent = getIntent();
-        action = intent.getStringExtra("next_action");
 
-        setTitle("Cari Kelas - Laporan Bulan");
+        setTitle("LIhat presensi");
+        ((TableRow) findViewById(R.id.tanggal)).setVisibility(View.VISIBLE);
+        LinearLayout date_pick = (LinearLayout) findViewById(R.id.pilih_tgl);
+        date_pick.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DialogFragment dialogfragment = new tanggalmulai();
+                dialogfragment.show(getFragmentManager(), "Tanggal Mulai");
+            }
+        });
+        tgl = (TextView) findViewById(R.id.inpt_tgl);
+        strtanggal = sp.getString("tanggal", "");
+        tgl.setText(Utilities.gettgl_lahir(sp.getString("tanggal", "")));
+        ((LinearLayout)findViewById(R.id.isiannya)).setVisibility(View.GONE);
 
-        ((TableRow) findViewById(R.id.bulan_tahun)).setVisibility(View.VISIBLE);
+//
+//
+        Log.e("ER", sp.getString("kd_kelas", ""));
+        adapter = new Adapter_lap_harian(modelList);
+        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.list_lap_siswa);
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(activity);
+        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setNestedScrollingEnabled(false);
 
-        Spinner spiner = findViewById(R.id.tahn);
-        spiner.setAdapter(null);
-        ArrayList<String> jenis = new ArrayList<String>();
-        for (int i = Integer.parseInt(sp.getString("tanggal", "").substring(0, 4)); i > 2013; i--) {
-
-            jenis.add(String.valueOf(i));
-        }
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(activity, R.layout.spiner_item, jenis);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spiner.setAdapter(adapter);
-        spiner.setOnItemSelectedListener(this);
-
-        Spinner spinerthn = findViewById(R.id.bulan);
-        spinerthn.setAdapter(null);
-        ArrayList<String> mont = new ArrayList<String>();
-        mont.add("Januari");
-        mont.add("Februari");
-        mont.add("Maret");
-        mont.add("April");
-        mont.add("Mei");
-        mont.add("Juni");
-        mont.add("Juli");
-        mont.add("Agustus");
-        mont.add("September");
-        mont.add("Oktober");
-        mont.add("November");
-        mont.add("Desember");
-        ArrayAdapter<String> adapterbln = new ArrayAdapter<String>(this.activity, R.layout.spiner_item, mont);
-        adapterbln.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinerthn.setAdapter(adapterbln);
-        spinerthn.setOnItemSelectedListener(this);
-        spinerthn.setSelection(Integer.parseInt(sp.getString("tanggal", "").substring(5, 7)) - 1);
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        recyclerView.setAdapter(adapter);
 
 
         Button button = findViewById(R.id.carikelas);
@@ -138,24 +122,13 @@ public class cari_presensi extends AppCompatActivity implements AdapterView.OnIt
             }
         });
 
-        Adapter = new Adapter_presensi(modelList);
-        recyclerView = (RecyclerView) findViewById(R.id.list_kelas);
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(activity);
-        recyclerView.setLayoutManager(layoutManager);
-        recyclerView.setNestedScrollingEnabled(false);
 
-        recyclerView.setItemAnimator(new DefaultItemAnimator());
-        recyclerView.setAdapter(Adapter);
-
-
-        ((TableLayout)findViewById(R.id.isian)).setVisibility(View.GONE);
     }
 
     private void kirim() {
-
-        ((TableLayout)findViewById(R.id.isian)).setVisibility(View.GONE);
+        ((LinearLayout)findViewById(R.id.isiannya)).setVisibility(View.GONE);
         modelList.clear();
-        Adapter.notifyDataSetChanged();
+        adapter.notifyDataSetChanged();
         Log.e("ER", "start");
         start = new kirim_siswa().execute();
         handler.postDelayed(new Runnable() {
@@ -194,7 +167,7 @@ public class cari_presensi extends AppCompatActivity implements AdapterView.OnIt
 
         class Param {
             String x1d, type, key, token;
-            String tanggal;
+            String tgl, id_kelas;
         }
 
         @Override
@@ -220,7 +193,8 @@ public class cari_presensi extends AppCompatActivity implements AdapterView.OnIt
                 param.type = "mmm";
                 param.key = Utilities.imei(activity);
                 param.token = sp.getString("token", "");
-                param.tanggal = strtanggal;
+                param.tgl = strtanggal;
+                param.id_kelas = sp.getString("kd_kelas", "");
 
 
                 Gson gson = new Gson();
@@ -228,7 +202,7 @@ public class cari_presensi extends AppCompatActivity implements AdapterView.OnIt
                 p.add(new BasicNameValuePair("parsing", gson.toJson(param)));
 
                 JsonParser jParser = new JsonParser();
-                json = jParser.getJSONFromUrl(key.url(104), p);
+                json = jParser.getJSONFromUrl(key.url(105), p);
                 Log.e("isi json login", json.toString(2));
                 code = json.getString("code");
 
@@ -253,8 +227,9 @@ public class cari_presensi extends AppCompatActivity implements AdapterView.OnIt
                 ab
                         .setCancelable(false).setTitle("Informasi");
                 if (code.equals("OK4")) {
-
                     proses();
+                    ((LinearLayout)findViewById(R.id.isiannya)).setVisibility(View.VISIBLE);
+
                 } else if (code.equals("TOKEN2") || code.equals("TOKEN1")) {
                     SharedPreferences.Editor editorr = sp.edit();
                     editorr.putString("username", "");
@@ -290,57 +265,95 @@ public class cari_presensi extends AppCompatActivity implements AdapterView.OnIt
         private void proses() {
             try {
 
-                Model_presensi row;
-                JSONObject data ;
-                JSONArray aray = json.getJSONArray("kehadiran");
-//                data.getString("tahun_ajar").substring(0, 4) + "/" +
-//                        data.getString("tahun_ajar").substring(4)
-                data = json.getJSONObject("datakelas");
-                ((TextView)findViewById(R.id.presensi_header)).setText("Rekap Presensi "+sp.getString("nama", ""));
-                ((TextView)findViewById(R.id.thn_ajar)).setText(data.getString("thn_ajar").substring(0, 4) + "/" +
-                        data.getString("thn_ajar").substring(4));
-                ((TextView)findViewById(R.id.nama_kelas)).setText(data.getString("nama"));
-                ((TextView)findViewById(R.id.ketua_kelas)).setText(data.getString("ketua"));
-                ((TextView)findViewById(R.id.walikelas)).setText(data.getString("wali"));
+                JSONObject data, isidetil;
+                Model_lap_harian row;
+                JSONArray aray = json.getJSONArray("presensi");
 
                 if (aray != null && aray.length() > 0) {
-
-                    ((RecyclerView)findViewById(R.id.list_kelas)).setVisibility(View.VISIBLE);
-                    ((LinearLayout)findViewById(R.id.nulldata)).setVisibility(View.GONE);
                     for (int i = 0; i < aray.length(); i++) {
-//               for(int i =0; i<1;i++){
                         data = aray.getJSONObject(i);
-                        // type true akan menghilangkan row kelas
-                        row = new Model_presensi(
-                                Utilities.gettanggal(data.getString("tanggal")),
-                                data.getString("stat"),
-                                data.getString("ket")
-
+                        isidetil = data.getJSONObject("kehadiran");
+                        row = new Model_lap_harian(
+                                data.getString("nis"),
+                                data.getString("nama"),
+                                Utilities.status_kehadiran(isidetil.getString("stat")),
+                                isidetil.getString("ket")
                         );
                         modelList.add(row);
+
                     }
 
-                    Adapter.notifyDataSetChanged();
-                }else {
+                    adapter.notifyDataSetChanged();
 
-                    ((RecyclerView)findViewById(R.id.list_kelas)).setVisibility(View.GONE);
-                    ((LinearLayout)findViewById(R.id.nulldata)).setVisibility(View.VISIBLE);
+
                 }
 
-                ((TableLayout)findViewById(R.id.isian)).setVisibility(View.VISIBLE);
-
+                data = json.getJSONObject("datakelas");
+                ((TextView) findViewById(R.id.thn_ajar)).setText("Tanggal " + Utilities.gettgl_lahir(strtanggal));
+                ((TextView) findViewById(R.id.periode)).setText("Tahun Ajar " + Utilities.ubahan_thn_ajrn(data.getString("thn_ajar").substring(0, 4)));
+//                ((TextView) findViewById(R.id.periode)).setText("Tahun Ajar ");
+                ((TextView) findViewById(R.id.nama_kelas)).setText(data.getString("nama"));
+                ((TextView) findViewById(R.id.ketua_kels)).setText(data.getString("ketua"));
+                ((TextView) findViewById(R.id.walikelas)).setText(data.getString("wali"));
             } catch (Exception e) {
                 Log.e("ER___", String.valueOf(e));
             }
-
         }
-
 
 
     }
 
+    public static class tanggalmulai extends DialogFragment implements DatePickerDialog.OnDateSetListener {
+
+        @Override
+        public Dialog onCreateDialog(Bundle savedInstanceState) {
+            final Calendar calendar = Calendar.getInstance();
+            int year = calendar.get(Calendar.YEAR);
+            int month = calendar.get(Calendar.MONTH);
+            int day = calendar.get(Calendar.DAY_OF_MONTH);
+
+            return new DatePickerDialog(getActivity(),
+                    AlertDialog.THEME_DEVICE_DEFAULT_LIGHT, this, year, month, day);
+        }
+
+        @SuppressLint("SetTextI18n")
+        public void onDateSet(DatePicker view, int year, int month, int day) {
+            @SuppressLint("SimpleDateFormat")
+            SimpleDateFormat
+                    date = new SimpleDateFormat("yyyy-MM-dd");
+            String strin = String.valueOf(year) + "-" + ubahan(month + 1) + "-" + ubahan(day);
+
+            try {
+                Date tanggalpilihan, tanggalskrng;
+                tanggalskrng = date.parse(sp.getString("tanggal", ""));
+                tanggalpilihan = date.parse(strin);
+                if ((tanggalpilihan.before(tanggalskrng) || tanggalpilihan.equals(tanggalskrng))) {
+                    strtanggal = strin;
+                    tgl.setText(Utilities.gettgl_lahir(strin));
+                } else {
+                    strtanggal = sp.getString("tanggal", "");
+                    tgl.setText(Utilities.gettgl_lahir(sp.getString("tanggal", "")));
+                    Utilities.showMessageBox(getActivity(), "Informasi", "Pilihan Tanggal Tidak Boleh Setelah " + Utilities.gettgl_lahir(sp.getString("tanggal", "")));
+//                    tgl.setText("Pilih Tanggal");
+
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
 
 
+        }
+
+    }
+
+    private static String ubahan(int a) {
+        String x = String.valueOf(a);
+        if (x.length() == 1) {
+            return "0" + x;
+        } else {
+            return x;
+        }
+    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -350,24 +363,5 @@ public class cari_presensi extends AppCompatActivity implements AdapterView.OnIt
         return super.onOptionsItemSelected(item);
     }
 
-    @Override
-    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
-        if (parent == findViewById(R.id.tahn)) {
-            strtahun = parent.getItemAtPosition(position).toString();
-        }
-        if (parent == findViewById(R.id.bulan)) {
-            strbulan = String.valueOf(position + 1);
-            if (strbulan.length() == 1) {
-                strbulan = "0" + strbulan;
-            }
-        }
-        strtanggal = strtahun + "-" + strbulan;
-        Log.e("ER", strtanggal);
-    }
-
-    @Override
-    public void onNothingSelected(AdapterView<?> parent) {
-
-    }
 }

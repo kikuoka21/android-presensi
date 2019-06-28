@@ -22,10 +22,9 @@
                 android:icon="@drawable/ic_qr_code"
                 android:title="Buat QR Code Kehadiran" />
             <item
-                android:visible="false"
-                android:id="@+id/presensi_hari_ini"
+                android:id="@+id/lihat_presensi_hari"
                 android:icon="@drawable/ic_research"
-                android:title="Lihat Presensi Hari Ini" />
+                android:title="Lihat Presensi perTanggal" />
             <item
                 android:id="@+id/presensi_bulan"
                 android:visible="false"

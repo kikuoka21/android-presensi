@@ -172,6 +172,10 @@
             android:name=".siswa.cari_presensi"
             android:configChanges="orientation|screenSize"
             android:screenOrientation="portrait"/>
+        <activity
+            android:name=".siswa.pengurus.lihatpresensi_tanggal"
+            android:configChanges="orientation|screenSize"
+            android:screenOrientation="portrait"/>
 
 
         <activity

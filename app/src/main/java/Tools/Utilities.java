@@ -172,6 +172,9 @@ public class Utilities {
             return "tidak diketahui";
         }
     }
+    public static String ubahan_thn_ajrn(String a) {
+        return a + "/" + String.valueOf(Integer.parseInt(a) + 1);
+    }
      public static String gettgl_lahir(String tanggal) {
         try {
             DateFormat kedua, df = new SimpleDateFormat("yyyy-MM-dd");

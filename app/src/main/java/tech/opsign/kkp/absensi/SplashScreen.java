@@ -290,7 +290,7 @@ public class SplashScreen extends AppCompatActivity {
                                             } else {
                                                 Log.d("yeyy", "2");
                                                 homeIntent = new Intent(activity, MainSiswa.class);
-                                                homeIntent = new Intent(activity, cari_presensi.class);
+//                                                homeIntent = new Intent(activity, cari_presensi.class);
 
                                             }
                                             startActivity(homeIntent);
