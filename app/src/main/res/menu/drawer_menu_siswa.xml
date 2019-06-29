@@ -24,7 +24,7 @@
             <item
                 android:id="@+id/lihat_presensi_hari"
                 android:icon="@drawable/ic_research"
-                android:title="Lihat Presensi perTanggal" />
+                android:title="Lihat Presensi perHari" />
             <item
                 android:id="@+id/presensi_bulan"
                 android:visible="false"

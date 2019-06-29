@@ -8,6 +8,7 @@ public class GenKey {
         web = "192.168.0.17";
 //        web = "192.168.0.18";
 //        web = "192.168.12.17";
+        web = "192.168.43.242";
         port = ":8000";
         head = "http://" + web + port;
         switch (str) {
