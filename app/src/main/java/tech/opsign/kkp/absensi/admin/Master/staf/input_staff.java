@@ -84,8 +84,8 @@ public class input_staff extends AppCompatActivity implements AdapterView.OnItem
         Spinner spiner = findViewById(R.id.level_staff);
         spiner.setAdapter(null);
         ArrayList<String> jenis = new ArrayList<String>();
-        jenis.add("Guru Wali Kelas");
-        jenis.add("Guru Piket");
+        jenis.add("Staf Guru");
+        jenis.add("Staf Admin");
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(activity, R.layout.spiner_item, jenis);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spiner.setAdapter(adapter);

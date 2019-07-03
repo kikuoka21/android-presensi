@@ -24,7 +24,6 @@
                 android:id="@+id/nis"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:text="adwasdwad"
                 android:textAlignment="center"
                 android:textColor="#fff"
                 android:textSize="18sp" />
@@ -33,7 +32,6 @@
                 android:id="@+id/nama"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:text="adwasdwad"
                 android:textAlignment="center"
                 android:textColor="#fff"
                 android:textSize="18sp" />

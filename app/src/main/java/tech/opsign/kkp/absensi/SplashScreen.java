@@ -64,7 +64,7 @@ public class SplashScreen extends AppCompatActivity {
             pInfo = activity.getPackageManager().getPackageInfo(getPackageName(), 0);
             String version = pInfo.versionName;
 //            String version = key.gen_pass("1234");
-            ((TextView) findViewById(R.id.version)).setText(version);
+            ((TextView) findViewById(R.id.version)).setText(version+"\nIcons made by Freepik from www.flaticon.com is licensed by CC 3.0 BY");
 //            Log.e("ER", version);
         } catch (Exception ignored) {
 
@@ -156,7 +156,7 @@ public class SplashScreen extends AppCompatActivity {
                                 inten_Login();
 
                             }
-                        }, 2000
+                        }, 5000
                 );
             } else {
 
@@ -282,13 +282,11 @@ public class SplashScreen extends AppCompatActivity {
                                         public void run() {
                                             Intent homeIntent;
                                             if (sp.getString("status", "").equals("1")) {
-                                                Log.d("yeyy", "1");
                                                 homeIntent = new Intent(activity, MainAdmin.class);
 //                                                homeIntent = new Intent(activity, test_layout.class);
 //                                                homeIntent = new Intent(activity, Carikelas_tanggal.class);
 //                                                homeIntent = new Intent(activity, ubah_kelas.class);
                                             } else {
-                                                Log.d("yeyy", "2");
                                                 homeIntent = new Intent(activity, MainSiswa.class);
 //                                                homeIntent = new Intent(activity, cari_presensi.class);
 
@@ -296,7 +294,7 @@ public class SplashScreen extends AppCompatActivity {
                                             startActivity(homeIntent);
                                             finish();
                                         }
-                                    }, 2000
+                                    }, 5000
                             );
                         } catch (Exception e) {
                             e.printStackTrace();

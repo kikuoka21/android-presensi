@@ -447,7 +447,7 @@ public class Cari_staf extends AppCompatActivity {
                 json = jParser.getJSONFromUrl(key.url(338), p);
                 Log.e("isiERRRR", json.toString(2));
                 Log.e("isiERRRR", gson.toJson(param));
-                Log.e("isiERRRR", key.url(338));
+//                Log.e("isiERRRR", key.url(338));
                 code = json.getString("code");
 
             } catch (Exception e) {

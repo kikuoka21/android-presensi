@@ -190,6 +190,7 @@
             </TableRow>
 
             <TableRow android:paddingTop="5dp"
+                android:paddingBottom="15dp"
                 android:background="#fff"
                 android:paddingStart="16dp"
                 android:paddingEnd="16dp">
@@ -247,7 +248,6 @@
 
                 <RelativeLayout
                     android:background="#999"
-                    android:layout_marginTop="10dp"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
 

@@ -29,9 +29,9 @@ public class Adapter_list_staf extends RecyclerView.Adapter<Adapter_list_staf.My
         holder.nis.setText(b.nip);
         holder.nama.setText(b.nama);
         if(b.level.equals("0"))
-        holder.level.setText("Guru Kelas");
+        holder.level.setText("Staf Guru");
         else
-        holder.level.setText("Guru Piket");
+        holder.level.setText("Staf Admin");
         if (position % 2 == 1) {
             holder.bg.setBackgroundColor(0xffe68a00);
 //            holder.bg.setBackgroundColor(0xffE8526D);

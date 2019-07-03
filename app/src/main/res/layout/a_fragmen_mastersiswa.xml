@@ -17,7 +17,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="7dp"
             android:textSize="16sp"
-            android:text="Input Siswa "
+            android:text="Input Siswa"
             android:textAllCaps="false"
             android:background="@drawable/button_master"/>
         <Button

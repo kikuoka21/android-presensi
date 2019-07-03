@@ -21,6 +21,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import Tools.GenKey;
@@ -37,11 +38,6 @@ public class MainSiswa extends AppCompatActivity implements NavigationView.OnNav
     private View navHeaderView;
     private MainSiswa activity;
     private boolean doubleBackToExitPressedOnce = false;
-    private Handler halder;
-    private AsyncTask start;
-    private boolean flag = true;
-
-    private GenKey key;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,9 +46,7 @@ public class MainSiswa extends AppCompatActivity implements NavigationView.OnNav
 //        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
         Toast.makeText(this, "Selamat Datang", Toast.LENGTH_SHORT).show();
         this.activity = this;
-        key = new GenKey();
         sp = activity.getSharedPreferences("shared", 0x0000);
-        halder = new Handler();
 
         if (Build.VERSION.SDK_INT >= 21) {
             Window window = this.getWindow();
@@ -106,7 +100,8 @@ public class MainSiswa extends AppCompatActivity implements NavigationView.OnNav
             menu.findItem(R.id.pengurus).setVisible(false);
         }
 
-
+        ((TextView) navHeaderView.findViewById(R.id.nama_nav)).setText(sp.getString("nama", ""));
+        ((TextView) navHeaderView.findViewById(R.id.nip_nav)).setText(sp.getString("username", ""));
     }
 
 

@@ -92,7 +92,7 @@ public class cari_presensi extends AppCompatActivity implements AdapterView.OnIt
         Intent intent = getIntent();
         action = intent.getStringExtra("next_action");
 
-        setTitle("Cari Kelas - Laporan Bulan");
+        setTitle("Rekap Presensi");
 
         ((TableRow) findViewById(R.id.bulan_tahun)).setVisibility(View.VISIBLE);
 
