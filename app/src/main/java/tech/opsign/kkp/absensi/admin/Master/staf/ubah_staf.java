@@ -126,7 +126,7 @@ public class ubah_staf extends AppCompatActivity implements AdapterView.OnItemSe
 
         awalan();
 
-
+        tombol.setText("Ubah");
         tombol.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

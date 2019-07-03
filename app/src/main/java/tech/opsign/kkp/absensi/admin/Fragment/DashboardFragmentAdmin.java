@@ -221,7 +221,9 @@ public class DashboardFragmentAdmin extends Fragment {
 
                 Model row;
                 JSONArray aray = json.getJSONArray("list_absen");
+
                 if (aray != null && aray.length() > 0) {
+                    ((RecyclerView)v.findViewById(R.id.list_kehadiran_siswa)).setVisibility(View.VISIBLE);
                     for(int i =0; i<aray.length();i++){
 //               for(int i =0; i<1;i++){
                         data = aray.getJSONObject(i);
@@ -235,7 +237,8 @@ public class DashboardFragmentAdmin extends Fragment {
                         );
                         modelList.add(row);
                     }
-                }
+                }else
+                    ((RecyclerView)v.findViewById(R.id.list_kehadiran_siswa)).setVisibility(View.GONE);
                 adapter.notifyDataSetChanged();
             } catch (Exception e) {
                 Log.e("ER___", String.valueOf(e));

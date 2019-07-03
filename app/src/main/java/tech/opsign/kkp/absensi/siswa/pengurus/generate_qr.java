@@ -55,7 +55,7 @@ public class generate_qr extends AppCompatActivity {
         setContentView(R.layout.s_generate_qr);
 
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_SECURE, WindowManager.LayoutParams.FLAG_SECURE);
+//        getWindow().setFlags(WindowManager.LayoutParams.FLAG_SECURE, WindowManager.LayoutParams.FLAG_SECURE);
         this.activity = this;
         ((CardView)findViewById(R.id.qrnya)).setVisibility(View.GONE);
         key = new GenKey();
