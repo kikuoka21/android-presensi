@@ -66,7 +66,7 @@ public class level_siswa extends AppCompatActivity implements AdapterView.OnItem
         key = new GenKey();
         sp = activity.getSharedPreferences("shared", 0x0000);
         handler = new Handler();
-        setTitle("Input Hari Libur");
+        setTitle("Ubah Level Siswa");
         if (Build.VERSION.SDK_INT >= 21) {
             Window window = this.getWindow();
             window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
