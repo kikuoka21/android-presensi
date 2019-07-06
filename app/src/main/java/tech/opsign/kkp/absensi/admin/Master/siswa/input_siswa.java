@@ -162,7 +162,6 @@ public class input_siswa extends AppCompatActivity implements AdapterView.OnItem
                 } else if (str_alamat.equals("")) {
                     alamat.setError("Wajib diisi");
                 } else {
-                    Log.e("ER__", "KIRM BOIIIII");
                     kirim();
                 }
             }

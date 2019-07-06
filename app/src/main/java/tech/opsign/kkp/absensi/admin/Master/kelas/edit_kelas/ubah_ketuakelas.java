@@ -282,7 +282,6 @@ public class ubah_ketuakelas extends AppCompatActivity {
                 if (code.equals("OK4")) {
 
                     if (action.equals("1"))
-
                         code = "Ketua Kelas sudah berhasil diganti";
                     else
                         code = "Siswa berhasil dihapus dalam kelas";

@@ -29,7 +29,7 @@
             android:background="@drawable/loginstyle"
             android:hint="Username"
             android:inputType="textEmailAddress|number"
-            android:maxLength="6"
+            android:maxLength="10"
             android:maxLines="1"
             android:padding="14dp"
             android:singleLine="true"

@@ -667,7 +667,7 @@ public class input_tanggal extends AppCompatActivity {
                 ab
                         .setCancelable(false).setTitle("Informasi");
                 if (code.equals("OK4")) {
-                    ab.setMessage("Siswa telah berhasil dihapus").setPositiveButton("Tutup", new DialogInterface.OnClickListener() {
+                    ab.setMessage("Tanggal telah berhasil dihapus").setPositiveButton("Tutup", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             dialog.dismiss();

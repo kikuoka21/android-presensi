@@ -96,7 +96,10 @@ public class Carikelas_tanggal extends AppCompatActivity implements AdapterView.
         Intent intent = getIntent();
         action = intent.getStringExtra("next_action");
         if (action.equals("111")) {
-            setTitle("Cari Kelas - Laporan Hari");
+            if (intent.getStringExtra("ubah").equals("y"))
+                setTitle("Cari Kelas - Ubah Presensi");
+            else
+                setTitle("Cari Kelas - Laporan Hari");
             ((TableRow) findViewById(R.id.bulan_tahun)).setVisibility(View.GONE);
             ((TableRow) findViewById(R.id.tanggal)).setVisibility(View.VISIBLE);
             LinearLayout date_pick = (LinearLayout) findViewById(R.id.pilih_tgl);
