@@ -106,7 +106,7 @@ public class scan_qr_code extends AppCompatActivity implements ZXingScannerView.
 
             try {
                 qrcode = new JSONObject(rawResult.getText());
-                onPause();
+
                 Log.e("ER", "st11111art");
                 Log.e("ER", qrcode.getString("id_kelas"));
                 Log.e("ER", sp.getString("kd_kelas", ""));
@@ -114,6 +114,7 @@ public class scan_qr_code extends AppCompatActivity implements ZXingScannerView.
                 if (qrcode.getString("id_kelas").equals(sp.getString("kd_kelas", ""))) {
 
                     if (qrcode.getString("tanggal").equals(sp.getString("tanggal", ""))) {
+                        onPause();
                         mulai();
                     } else {
 
@@ -128,8 +129,8 @@ public class scan_qr_code extends AppCompatActivity implements ZXingScannerView.
                 Log.e("ER", "stardawdw1t");
 //                mulai();
             } catch (Exception e) {
-                e.printStackTrace();
-                onResume();
+//                e.printStackTrace();
+                generate_pesan("QR-Code salah");
             }
 
 
@@ -254,7 +255,7 @@ public class scan_qr_code extends AppCompatActivity implements ZXingScannerView.
                 AlertDialog.Builder ab = new AlertDialog.Builder(activity);
                 ab.setCancelable(false).setTitle("Informasi");
                 if (code.equals("OK4")) {
-                    ab.setMessage("Anda Berhasil Absen").setPositiveButton("Tutup", new DialogInterface.OnClickListener() {
+                    ab.setMessage("Anda Berhasil Presensi").setPositiveButton("Tutup", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             dialog.dismiss();
@@ -283,6 +284,7 @@ public class scan_qr_code extends AppCompatActivity implements ZXingScannerView.
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             dialog.dismiss();
+                            onResume();
                         }
                     }).show();
                 }
@@ -303,6 +305,7 @@ public class scan_qr_code extends AppCompatActivity implements ZXingScannerView.
     }
 
     private void generate_pesan(String pesan) {
+        onPause();
         AlertDialog.Builder ab = new AlertDialog.Builder(activity);
         ab
                 .setCancelable(false).setTitle("Informasi")
@@ -310,6 +313,7 @@ public class scan_qr_code extends AppCompatActivity implements ZXingScannerView.
                 .setPositiveButton("Tutup", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+                        onResume();
                         dialog.dismiss();
 
 //                                    onResume();

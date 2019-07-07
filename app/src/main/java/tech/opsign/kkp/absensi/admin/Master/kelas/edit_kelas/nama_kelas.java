@@ -223,7 +223,7 @@ public class nama_kelas extends AppCompatActivity {
                 ab
                         .setCancelable(false).setTitle("Informasi");
                 if (code.equals("OK4")) {
-                    ab.setMessage("Nama kelas sudah digantikan").setPositiveButton("Tutup", new DialogInterface.OnClickListener() {
+                    ab.setMessage("Nama kelas berhasil digantikan").setPositiveButton("Tutup", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             dialog.dismiss();

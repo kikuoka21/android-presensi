@@ -113,13 +113,15 @@ public class cari_kelas extends AppCompatActivity {
 
                 str_thn = thn_ajar.getText().toString();
                 if (str_thn.equals("")) {
-                    thn_ajar.setError("Tidak boleh kosong");
+                    thn_ajar.setError("Wajib di isi");
                 } else {
                     str_thn = str_thn + ubahan_thn_ajrn(str_thn);
                     if (str_thn.length() != 8) {
-                        thn_ajar.setError("Tahun salah");
-                    } else if (Integer.parseInt(str_thn) < 19900000) {
-                        thn_ajar.setError("Tahun salah");
+                        thn_ajar.setError("Tahun Ajar salah");
+                    } else if (Integer.parseInt(str_thn) < 20130000) {
+                        thn_ajar.setError("Tahun Ajar salah");
+                    } else if (Integer.parseInt(str_thn) > 20310000) {
+                        thn_ajar.setError("Tahun Ajar salah");
                     } else {
                         Log.e("ER__", "KIRM BOIIIII");
                         kirim();

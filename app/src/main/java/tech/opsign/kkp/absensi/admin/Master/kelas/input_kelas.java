@@ -98,9 +98,11 @@ public class input_kelas extends AppCompatActivity {
 
                     str_thn = str_thn + ubahan_thn_ajrn(str_thn);
                     if (str_thn.length() != 8) {
-                        thn_ajar.setError("Tahun salah");
-                    } else if (Integer.parseInt(str_thn) < 19900000) {
-                        thn_ajar.setError("Tahun salah");
+                        thn_ajar.setError("Tahun Ajar salah");
+                    } else if (Integer.parseInt(str_thn) < 20130000) {
+                        thn_ajar.setError("Tahun Ajar salah");
+                    } else if (Integer.parseInt(str_thn) > 20310000) {
+                        thn_ajar.setError("Tahun Ajar salah");
                     } else {
                         Log.e("ER__", "KIRM BOIIIII");
                         kirim();

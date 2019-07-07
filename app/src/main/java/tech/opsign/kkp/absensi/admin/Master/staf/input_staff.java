@@ -110,7 +110,7 @@ public class input_staff extends AppCompatActivity implements AdapterView.OnItem
                 if (str_nip.equals("")) {
                     nip.setError("Wajib diisi");
                 } else if (str_nip.length() < 6) {
-                    nip.setError("Mimal 6 Digit Angka");
+                    nip.setError("NIP Minimal 6 Digit");
                 } else if (nama.getText().toString().trim().equals("")) {
                     nama.setError("Wajib diisi");
                 } else {
@@ -242,7 +242,7 @@ public class input_staff extends AppCompatActivity implements AdapterView.OnItem
                 ab
                         .setCancelable(false).setTitle("Informasi");
                 if (code.equals("OK4")) {
-                    ab.setMessage("Penginputan Siswa Berhasil.\nUsername \'" + str_nip + "\'\nPassword 'admin'").setPositiveButton("Tutup", new DialogInterface.OnClickListener() {
+                    ab.setMessage("Penginputan Staf Berhasil.\nUsername \'" + str_nip + "\'\nPassword 'admin'").setPositiveButton("Tutup", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             dialog.dismiss();
