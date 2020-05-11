@@ -22,10 +22,8 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 
-
 import com.google.gson.Gson;
 
-import org.apache.commons.codec.binary.Hex;
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONObject;
@@ -39,10 +37,10 @@ import Tools.Utilities;
 import tech.opsign.kkp.absensi.admin.MainAdmin;
 import tech.opsign.kkp.absensi.siswa.MainSiswa;
 
-public class Login extends AppCompatActivity {
+public class Login_Parent extends AppCompatActivity {
 
     private EditText jnip;
-    private Login activity;
+    private Login_Parent activity;
     private EditText jpassword;
     private GenKey key;
     private ProgressDialog dialog;
@@ -54,6 +52,7 @@ public class Login extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
 
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -78,8 +77,6 @@ public class Login extends AppCompatActivity {
         jpassword.addTextChangedListener(logintextwarcher);
 
         SharedPreferences sp = activity.getSharedPreferences("shared", 0x0000);
-        Log.e("username", sp.getString("username", ""));
-        Log.e("ERtoken", sp.getString("token", ""));
 
         tombol = findViewById(R.id.login);
         tombol.setEnabled(true);

@@ -49,8 +49,6 @@ public class SplashScreen extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
         setContentView(R.layout.activity_splash_screen);
 
@@ -99,6 +97,7 @@ public class SplashScreen extends AppCompatActivity {
                 android.Manifest.permission.READ_PHONE_STATE,
                 android.Manifest.permission.CAMERA
         };
+//        String[] PERMISSIONS = { android.Manifest.permission.CAMERA};
 
         if (!hasPermissions(activity, PERMISSIONS)) {
             ActivityCompat.requestPermissions(activity, PERMISSIONS, PERMISSION_ALL);

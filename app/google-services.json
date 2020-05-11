@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "516166573097",
+    "firebase_url": "https://absensi-qr-code.firebaseio.com",
+    "project_id": "absensi-qr-code",
+    "storage_bucket": "absensi-qr-code.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:516166573097:android:cb95ef4035e2c08b795038",
+        "android_client_info": {
+          "package_name": "tech.opsign.kkp.absensi"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "516166573097-nkbo6ndj976cjatvo8a18jnepcrmcr45.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "tech.opsign.kkp.absensi",
+            "certificate_hash": "8f62e5fe821b636af44a6497c1a38886e6536240"
+          }
+        },
+        {
+          "client_id": "516166573097-6h3jk14lbousojhvr12pi0mfdgn89hjc.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAirpxGes6pUEP6B9r4jLCLVJL0yAinvPw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "516166573097-6h3jk14lbousojhvr12pi0mfdgn89hjc.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

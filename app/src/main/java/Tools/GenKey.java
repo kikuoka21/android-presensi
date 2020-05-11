@@ -1,16 +1,24 @@
 package Tools;
 
+import android.app.Dialog;
+import android.content.Context;
+import android.graphics.drawable.AnimationDrawable;
+import android.view.Window;
+import android.widget.ImageView;
+
 import java.security.MessageDigest;
+
+import tech.opsign.kkp.absensi.R;
 
 public class GenKey {
     public String url(int str) {
         String web, port, head;
-//        web = "192.168.0.17";
+        //web = "192.168.0.17";
         web = "192.168.0.10";
-//        web = "192.168.0.18";
-//        web = "192.168.12.17";
-//        web = "192.168.12.33";
-//        web = "192.168.43.242";
+        //web = "192.168.0.18";
+        //web = "192.168.12.17";
+        //web = "192.168.12.33";
+        //web = "192.168.43.242";
         port = ":8000";
         head = "http://" + web + port;
         switch (str) {
@@ -22,7 +30,7 @@ public class GenKey {
                 return head + "/api/auth/ganti-pswd";
 
 
-//                siswa
+            //siswa
             case 101:
                 return head + "/api/siswa/presensi/buat";
 
@@ -40,7 +48,7 @@ public class GenKey {
                 return head + "/api/siswa/presensi/lihat/harian";
 
 
-//                admin
+            //admin
 
             case 300:
                 return head + "/api/admin/dashboard";
@@ -65,7 +73,7 @@ public class GenKey {
             case 313:
                 return head + "/api/admin/master/tanggal/hapus";
 
-//                kelas
+            //kelas
             case 320:
                 return head + "/api/admin/master/kelas/input";
             case 321:
@@ -91,7 +99,7 @@ public class GenKey {
             case 331:
                 return head + "/api/admin/master/kelas/tambah/list-siswa";
 
-                //staf
+            //staf
             case 335:
                 return head + "/api/admin/master/staf/input";
             case 336:
@@ -103,7 +111,7 @@ public class GenKey {
             case 339:
                 return head + "/api/admin/master/staf/hapus";
 
-//
+            //
             case 340:
                 return head + "/api/admin/laporan-smes";
 
@@ -117,9 +125,6 @@ public class GenKey {
                 return head + "/api/admin/absen-ubah/per-siswa";
             case 345:
                 return head + "/api/admin/absen-ubah/per-kelas";
-
-
-
 
 
             default:
@@ -165,6 +170,28 @@ public class GenKey {
 
             default:
                 return "Generate Pesan salah";
+        }
+    }
+
+    private Dialog mDialog;
+
+    public void showProgress(Context context, boolean cancelable) {
+        mDialog = new Dialog(context);
+        // no tile for the dialog
+        mDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        mDialog.setContentView(R.layout.custom_loading);
+
+
+        mDialog.getWindow().setBackgroundDrawableResource(R.color.transparent);
+        mDialog.setCancelable(cancelable);
+        mDialog.setCanceledOnTouchOutside(cancelable);
+        mDialog.show();
+    }
+
+    public void hideProgress() {
+        if (mDialog != null) {
+            mDialog.dismiss();
+            mDialog = null;
         }
     }
 }
