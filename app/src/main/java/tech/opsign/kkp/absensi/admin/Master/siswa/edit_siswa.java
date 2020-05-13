@@ -15,9 +15,13 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.StrictMode;
-import android.support.annotation.Nullable;
-import android.support.design.widget.TextInputLayout;
-import android.support.v7.app.AppCompatActivity;
+
+import androidx.annotation.Nullable;
+
+import com.google.android.material.textfield.TextInputLayout;
+
+import androidx.appcompat.app.AppCompatActivity;
+
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -114,7 +118,7 @@ public class edit_siswa extends AppCompatActivity implements AdapterView.OnItemS
         spin_jenkel.setOnItemSelectedListener(this);
 
         tgl = (TextView) findViewById(R.id.inpt_tgl);
-//        nisn, nama, tmp_lahir,nama_wali, alamat, no_ijazah, no_ujian;
+        //        nisn, nama, tmp_lahir,nama_wali, alamat, no_ijazah, no_ujian;
         nis = (EditText) findViewById(R.id.nis);
         nisn = (EditText) findViewById(R.id.nisn);
         nama = (EditText) findViewById(R.id.namna);
@@ -125,7 +129,7 @@ public class edit_siswa extends AppCompatActivity implements AdapterView.OnItemS
         no_ujian = (EditText) findViewById(R.id.no_ujian);
         LinearLayout date_pick = (LinearLayout) findViewById(R.id.pilih_tgl);
 
-//111 lihat
+        //111 lihat
         //222 ubah
         Button tombol = findViewById(R.id.kirimtanggal);
         Intent intent = getIntent();
@@ -469,7 +473,7 @@ public class edit_siswa extends AppCompatActivity implements AdapterView.OnItemS
 
                 JsonParser jParser = new JsonParser();
                 json = jParser.getJSONFromUrl(key.url(305), p);
-//                Log.e("isi json login", json.toString(2));
+                //                Log.e("isi json login", json.toString(2));
                 code = json.getString("code");
 
             } catch (Exception e) {

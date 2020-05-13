@@ -83,7 +83,7 @@
                     android:textColor="#000"
                     android:textSize="18sp" />
 
-                <android.support.design.widget.TextInputLayout
+                <com.google.android.material.textfield.TextInputLayout
                     android:layout_weight="1"
                     android:paddingStart="0dp"
                     android:paddingEnd="5dp"
@@ -98,7 +98,7 @@
                         android:textColor="#000"
                         android:maxLength="100"
                         android:textSize="18sp" />
-                </android.support.design.widget.TextInputLayout>
+                </com.google.android.material.textfield.TextInputLayout>
                 <!--<EditText-->
                 <!--android:id="@+id/ket"-->
                 <!--android:layout_weight="1"-->
@@ -111,7 +111,7 @@
 
         </TableLayout>
 
-        <android.support.v7.widget.CardView
+        <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="20dp"
@@ -123,11 +123,11 @@
                 android:layout_height="wrap_content"
                 android:background="#80bfff"
                 android:text="Kirim" />
-        </android.support.v7.widget.CardView>
+        </androidx.cardview.widget.CardView>
     </LinearLayout>
 
 
-    <android.support.v7.widget.CardView
+    <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
@@ -154,12 +154,12 @@
                 android:textSize="16sp" />
         </LinearLayout>
 
-        <android.support.v7.widget.RecyclerView
+        <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/list_tanggal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="10dp"
             android:visibility="gone" />
-    </android.support.v7.widget.CardView>
+    </androidx.cardview.widget.CardView>
 
 </LinearLayout>

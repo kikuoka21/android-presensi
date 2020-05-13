@@ -1,6 +1,5 @@
 package tech.opsign.kkp.absensi.admin.Master;
 
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -10,20 +9,17 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.StrictMode;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -83,15 +79,15 @@ public class GantiPass_User extends AppCompatActivity {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
 
-        ((EditText) findViewById(R.id.password_lama)).setVisibility(View.GONE);
-        ((TextView) findViewById(R.id.judulpasss)).setVisibility(View.GONE);
-        pas_baru_1 = (EditText) findViewById(R.id.password_baru1);
-        pas_baru_2 = (EditText) findViewById(R.id.password_baru2);
+        findViewById(R.id.password_lama).setVisibility(View.GONE);
+        findViewById(R.id.judulpasss).setVisibility(View.GONE);
+        pas_baru_1 = findViewById(R.id.password_baru1);
+        pas_baru_2 = findViewById(R.id.password_baru2);
 
         pas_baru_1.addTextChangedListener(logintextwarcher);
         pas_baru_2.addTextChangedListener(logintextwarcher);
 
-        tombol = (Button) findViewById(R.id.tombol_ubah);
+        tombol = findViewById(R.id.tombol_ubah);
         tombol.setText("Ganti Password");
         tombol.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -11,11 +11,11 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.StrictMode;
-import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -27,7 +27,6 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.gson.Gson;
 
@@ -85,16 +84,16 @@ public class Cari_siswa extends AppCompatActivity {
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
-        nama = (EditText) findViewById(R.id.namasiswa) ;
-        tahun = (EditText) findViewById(R.id.tahun_lahir) ;
+        nama = findViewById(R.id.namasiswa);
+        tahun = findViewById(R.id.tahun_lahir);
 
 
-        TextView textdetil = (TextView) findViewById(R.id.textdetil);
+        TextView textdetil = findViewById(R.id.textdetil);
         textdetil.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                TableRow row = (TableRow)findViewById(R.id.detil);
+                TableRow row = findViewById(R.id.detil);
 
                 if (muncul){
                     row.setVisibility(View.VISIBLE);
@@ -109,7 +108,7 @@ public class Cari_siswa extends AppCompatActivity {
         });
 
         adapter = new Adapter_list_siswa(modelList);
-        recyclerView = (RecyclerView) findViewById(R.id.list_siswa);
+        recyclerView = findViewById(R.id.list_siswa);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(activity);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setNestedScrollingEnabled(false);
@@ -286,7 +285,7 @@ public class Cari_siswa extends AppCompatActivity {
                 Model_list_siswa row;
                 JSONArray aray = json.getJSONArray("data");
                 if (aray != null && aray.length() > 0) {
-                    ((LinearLayout) findViewById(R.id.nulldata)).setVisibility(View.GONE);
+                    findViewById(R.id.nulldata).setVisibility(View.GONE);
                     recyclerView.setVisibility(View.VISIBLE);
                     for (int i = 0; i < aray.length(); i++) {
                         json = aray.getJSONObject(i);
@@ -307,7 +306,7 @@ public class Cari_siswa extends AppCompatActivity {
                     });
 
                 } else {
-                    ((LinearLayout) findViewById(R.id.nulldata)).setVisibility(View.VISIBLE);
+                    findViewById(R.id.nulldata).setVisibility(View.VISIBLE);
                     recyclerView.setVisibility(View.GONE);
                 }
 

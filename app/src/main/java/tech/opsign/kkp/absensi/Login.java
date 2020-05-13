@@ -11,8 +11,8 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.StrictMode;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
+import androidx.appcompat.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -25,7 +25,6 @@ import android.widget.EditText;
 
 import com.google.gson.Gson;
 
-import org.apache.commons.codec.binary.Hex;
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONObject;
@@ -257,7 +256,7 @@ public class Login extends AppCompatActivity {
                 if (dialog.isShowing()) {
                     dialog.dismiss();
                     start.cancel(true);
-                    new android.support.v7.app.AlertDialog.Builder(activity)
+                    new androidx.appcompat.app.AlertDialog.Builder(activity)
                             .setTitle("Informasi")
                             .setMessage("Telah Terjadi Kesalahan Pada Koneksi Anda.")
                             .setCancelable(false)

@@ -8,10 +8,10 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.StrictMode;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.support.v7.app.AlertDialog;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.appcompat.app.AlertDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,12 +24,7 @@ import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONObject;
 
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 import Tools.GenKey;
@@ -75,7 +70,7 @@ public class Dashboard extends Fragment {
                 if (dialog.isShowing()) {
                     dialog.dismiss();
                     start.cancel(true);
-                    new android.support.v7.app.AlertDialog.Builder(v.getContext())
+                    new androidx.appcompat.app.AlertDialog.Builder(v.getContext())
                             .setTitle("Informasi")
                             .setMessage("Telah Terjadi Kesalahan Pada Koneksi Anda.")
                             .setCancelable(false)

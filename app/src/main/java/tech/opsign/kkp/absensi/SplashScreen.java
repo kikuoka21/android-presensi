@@ -10,16 +10,19 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.StrictMode;
-import android.support.annotation.NonNull;
-import android.support.v4.app.ActivityCompat;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.app.AppCompatDelegate;
+import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 import android.util.Log;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
 import com.google.gson.Gson;
 
 import org.apache.http.NameValuePair;
@@ -35,7 +38,6 @@ import Tools.JsonParser;
 import Tools.Utilities;
 import tech.opsign.kkp.absensi.admin.MainAdmin;
 import tech.opsign.kkp.absensi.siswa.MainSiswa;
-import tech.opsign.kkp.absensi.siswa.cari_presensi;
 
 public class SplashScreen extends AppCompatActivity {
     private SharedPreferences sp;
@@ -71,7 +73,23 @@ public class SplashScreen extends AppCompatActivity {
         loadIMEI();
 //        md5a("aa");
 //        check();
+        FirebaseInstanceId.getInstance().getInstanceId()
+                .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<InstanceIdResult> task) {
+                        if (!task.isSuccessful()) {
+                            Log.e("ER_", "getInstanceId failed", task.getException());
+                            return;
+                        }
 
+                        // Get new Instance ID token
+                        String token = task.getResult().getToken();
+
+                        // Log and toast
+                        Log.e("ER_", token);
+
+                    }
+                });
     }
 
     private void check() {
@@ -188,7 +206,7 @@ public class SplashScreen extends AppCompatActivity {
             public void run() {
                 if (runhttpget) {
                     start.cancel(true);
-                    new android.support.v7.app.AlertDialog.Builder(activity)
+                    new androidx.appcompat.app.AlertDialog.Builder(activity)
                             .setTitle("Informasi")
                             .setMessage("Telah Terjadi Kesalahan Pada Koneksi Anda.")
                             .setCancelable(false)

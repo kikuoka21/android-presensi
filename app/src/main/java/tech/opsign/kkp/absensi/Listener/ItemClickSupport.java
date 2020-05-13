@@ -1,6 +1,6 @@
 package tech.opsign.kkp.absensi.Listener;
 
-import android.support.v7.widget.RecyclerView;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.View;
 
 import tech.opsign.kkp.absensi.R;

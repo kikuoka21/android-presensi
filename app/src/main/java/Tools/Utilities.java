@@ -11,17 +11,14 @@ import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.support.v4.app.ActivityCompat;
+import androidx.core.app.ActivityCompat;
 import android.telephony.TelephonyManager;
-import android.util.Log;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.w3c.dom.EntityReference;
 
 import java.net.InetAddress;
-import java.security.spec.ECField;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;

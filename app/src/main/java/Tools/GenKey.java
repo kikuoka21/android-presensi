@@ -14,7 +14,7 @@ public class GenKey {
     public String url(int str) {
         String web, port, head;
         //web = "192.168.0.17";
-        web = "192.168.0.10";
+        web = "192.168.1.5";
         //web = "192.168.0.18";
         //web = "192.168.12.17";
         //web = "192.168.12.33";

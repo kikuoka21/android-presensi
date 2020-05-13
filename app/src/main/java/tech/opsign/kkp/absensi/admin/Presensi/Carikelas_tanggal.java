@@ -14,11 +14,11 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.StrictMode;
-import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -32,7 +32,6 @@ import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TableRow;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.gson.Gson;
 
@@ -55,7 +54,6 @@ import tech.opsign.kkp.absensi.Login;
 import tech.opsign.kkp.absensi.R;
 import tech.opsign.kkp.absensi.admin.Master.kelas.Tool_list_kelas.Adapter_kelas_list;
 import tech.opsign.kkp.absensi.admin.Master.kelas.Tool_list_kelas.Model_kelas_list;
-import tech.opsign.kkp.absensi.admin.Master.kelas.cari_kelas;
 
 public class Carikelas_tanggal extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
     private static SharedPreferences sp;

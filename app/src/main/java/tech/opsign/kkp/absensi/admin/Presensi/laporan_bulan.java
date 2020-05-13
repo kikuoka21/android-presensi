@@ -10,11 +10,11 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.StrictMode;
-import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -41,8 +41,6 @@ import tech.opsign.kkp.absensi.Login;
 import tech.opsign.kkp.absensi.R;
 import tech.opsign.kkp.absensi.admin.Presensi.tool_lap_bulan.Adapter_laporan_bulan;
 import tech.opsign.kkp.absensi.admin.Presensi.tool_lap_bulan.Model_laporan_bulan;
-import tech.opsign.kkp.absensi.admin.Presensi.tool_semester.Adapter_laporan_smes;
-import tech.opsign.kkp.absensi.admin.Presensi.tool_semester.Model_laporan_smes;
 
 public class laporan_bulan extends AppCompatActivity {
     private static SharedPreferences sp;

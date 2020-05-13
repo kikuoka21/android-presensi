@@ -12,9 +12,9 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.StrictMode;
-import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.RecyclerView;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -38,8 +38,6 @@ import Tools.JsonParser;
 import Tools.Utilities;
 import tech.opsign.kkp.absensi.Login;
 import tech.opsign.kkp.absensi.R;
-import tech.opsign.kkp.absensi.admin.Master.tanggal.Tool_Input_Tanggal.Adapter_tanggal;
-import tech.opsign.kkp.absensi.admin.Master.tanggal.Tool_Input_Tanggal.Model_tanggal;
 
 public class nama_kelas extends AppCompatActivity {
     private static SharedPreferences sp;

@@ -11,11 +11,11 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.StrictMode;
-import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import android.text.InputType;
 import android.util.Log;
 import android.view.MenuItem;
@@ -26,8 +26,6 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.TableRow;
-import android.widget.TextView;
 
 import com.google.gson.Gson;
 
@@ -46,8 +44,6 @@ import tech.opsign.kkp.absensi.Listener.ItemClickSupport;
 import tech.opsign.kkp.absensi.Login;
 import tech.opsign.kkp.absensi.R;
 import tech.opsign.kkp.absensi.admin.Master.GantiPass_User;
-import tech.opsign.kkp.absensi.admin.Master.siswa.Tool_list_siswa.Adapter_list_siswa;
-import tech.opsign.kkp.absensi.admin.Master.siswa.edit_siswa;
 import tech.opsign.kkp.absensi.admin.Master.staf.Tool_list_staf.Adapter_list_staf;
 import tech.opsign.kkp.absensi.admin.Master.staf.Tool_list_staf.Model_list_staf;
 

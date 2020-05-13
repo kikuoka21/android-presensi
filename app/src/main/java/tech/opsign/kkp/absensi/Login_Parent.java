@@ -11,8 +11,8 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.StrictMode;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
+import androidx.appcompat.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -254,7 +254,7 @@ public class Login_Parent extends AppCompatActivity {
                 if (dialog.isShowing()) {
                     dialog.dismiss();
                     start.cancel(true);
-                    new android.support.v7.app.AlertDialog.Builder(activity)
+                    new androidx.appcompat.app.AlertDialog.Builder(activity)
                             .setTitle("Informasi")
                             .setMessage("Telah Terjadi Kesalahan Pada Koneksi Anda.")
                             .setCancelable(false)

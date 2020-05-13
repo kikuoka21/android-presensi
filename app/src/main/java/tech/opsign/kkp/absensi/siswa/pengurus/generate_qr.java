@@ -5,16 +5,15 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
-import android.media.Image;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.StrictMode;
-import android.support.annotation.Nullable;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.CardView;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -92,7 +91,7 @@ public class generate_qr extends AppCompatActivity {
                 if (dialog.isShowing()) {
                     dialog.dismiss();
                     start.cancel(true);
-                    new android.support.v7.app.AlertDialog.Builder(activity)
+                    new androidx.appcompat.app.AlertDialog.Builder(activity)
                             .setTitle("Informasi")
                             .setMessage("Telah Terjadi Kesalahan Pada Koneksi Anda.")
                             .setCancelable(false)
