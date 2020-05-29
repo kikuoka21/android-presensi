@@ -52,7 +52,6 @@ public class scan_qr_code extends AppCompatActivity implements ZXingScannerView.
         super.onCreate(savedInstanceState);
 //        setContentView(R.layout.s_generate_qr);
 
-//        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
         this.activity = this;
 
 

@@ -20,7 +20,6 @@ public class test_layout extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.a_kelas_laporan);
 
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
         this.activity = this;
         if (Build.VERSION.SDK_INT >= 21) {
             Window window = this.getWindow();

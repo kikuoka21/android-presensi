@@ -10,11 +10,13 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.StrictMode;
+
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
+
 import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -64,14 +66,13 @@ public class SplashScreen extends AppCompatActivity {
             pInfo = activity.getPackageManager().getPackageInfo(getPackageName(), 0);
             String version = pInfo.versionName;
 //            String version = key.gen_pass("1234");
-            ((TextView) findViewById(R.id.version)).setText(version+"\nIcons made by Freepik from www.flaticon.com is licensed by CC 3.0 BY");
+            ((TextView) findViewById(R.id.version)).setText(version + "\nIcons made by Freepik from www.flaticon.com is licensed by CC 3.0 BY");
 //            Log.e("ER", version);
         } catch (Exception ignored) {
 
         }
 
         loadIMEI();
-//        md5a("aa");
 //        check();
         FirebaseInstanceId.getInstance().getInstanceId()
                 .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
@@ -84,9 +85,14 @@ public class SplashScreen extends AppCompatActivity {
 
                         // Get new Instance ID token
                         String token = task.getResult().getToken();
+                        if(!token.equals("")){
+                            SharedPreferences.Editor editor = sp.edit();
+                            editor.putString("token_firebase",token );
+                            editor.apply();
+                        }
 
                         // Log and toast
-                        Log.e("ER_", token);
+//                        Log.e("token firebase", token);
 
                     }
                 });
@@ -95,7 +101,7 @@ public class SplashScreen extends AppCompatActivity {
     private void check() {
         String url;
         int a = 0;
-        for (int i = 1; i < 400; i++) {
+        for (int i = 1; i < 500; i++) {
             url = key.url(i);
             if (!url.equals(key.url(888))) {
 
@@ -173,7 +179,7 @@ public class SplashScreen extends AppCompatActivity {
                                 inten_Login();
 
                             }
-                        }, 5000
+                        }, 2000
                 );
             } else {
 
@@ -231,6 +237,7 @@ public class SplashScreen extends AppCompatActivity {
 
     private class Param {
         String x1d, type, key, token, akses;
+        boolean wali ;
     }
 
     private class asyncUser extends AsyncTask<Void, Void, Void> {
@@ -257,6 +264,8 @@ public class SplashScreen extends AppCompatActivity {
                 param.type = "mmm";
                 param.key = Utilities.imei(activity);
                 param.akses = sp.getString("status", "");
+                param.wali = !sp.getBoolean("usertype", true);
+
 
                 Gson gson = new Gson();
                 List<NameValuePair> p = new ArrayList<NameValuePair>();
@@ -286,33 +295,43 @@ public class SplashScreen extends AppCompatActivity {
                     if (code.equals("OK4")) {
 
                         try {
-                            SharedPreferences.Editor editor = sp.edit();
-                            editor.putString("thn_ajar", json.getString("thn-ajar"));
-                            editor.putString("tanggal", json.getString("tanggal"));
-                            json = json.getJSONObject("data");
-                            editor.putString("nama", json.getString("nama"));
-                            editor.putString("level", json.getString("level"));
-                            editor.commit();
-                            new Handler().postDelayed(
-                                    new Runnable() {
-                                        @Override
-                                        public void run() {
-                                            Intent homeIntent;
-                                            if (sp.getString("status", "").equals("1")) {
-                                                homeIntent = new Intent(activity, MainAdmin.class);
+                            /**
+                             true mewakili user siswa
+                             false mewakili user wali
+                             */
+//        Log.e("ER", sp.getBoolean("usertype", true) + " usernya");
+                            if (sp.getBoolean("usertype", true)) {
+
+                                SharedPreferences.Editor editor = sp.edit();
+                                editor.putString("thn_ajar", json.getString("thn-ajar"));
+                                editor.putString("tanggal", json.getString("tanggal"));
+                                json = json.getJSONObject("data");
+                                editor.putString("nama", json.getString("nama"));
+                                editor.putString("level", json.getString("level"));
+                                editor.apply();
+                                new Handler().postDelayed(
+                                        new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                Intent homeIntent;
+                                                if (sp.getString("status", "").equals("1")) {
+                                                    homeIntent = new Intent(activity, MainAdmin.class);
 //                                                homeIntent = new Intent(activity, test_layout.class);
 //                                                homeIntent = new Intent(activity, Carikelas_tanggal.class);
 //                                                homeIntent = new Intent(activity, ubah_kelas.class);
-                                            } else {
-                                                homeIntent = new Intent(activity, MainSiswa.class);
+                                                } else {
+                                                    homeIntent = new Intent(activity, MainSiswa.class);
 //                                                homeIntent = new Intent(activity, cari_presensi.class);
 
+                                                }
+                                                startActivity(homeIntent);
+                                                finish();
                                             }
-                                            startActivity(homeIntent);
-                                            finish();
-                                        }
-                                    }, 5000
-                            );
+                                        }, 5000
+                                );
+                            } else {
+                                Utilities.showMessageBox(activity, "Informasi","berhasil token parent" );
+                            }
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
@@ -347,7 +366,22 @@ public class SplashScreen extends AppCompatActivity {
     }
 
     private void inten_Login() {
-        startActivity(new Intent(activity, Login.class));
+//        startActivity(new Intent(activity, Login.class));
+//        if (sp.getString("type", "").equals("") || sp.getString("token", "").equals("")) {
+        /**
+         true mewakili user siswa
+         false mewakili user wali
+         */
+//        Log.e("ER", sp.getBoolean("usertype", true) + " usernya");
+        if (sp.getBoolean("usertype", true)) {
+
+            startActivity(new Intent(activity, Login.class));
+        } else {
+
+            startActivity(new Intent(activity, Login_Parent.class));
+        }
+//        }else
+
         finish();
     }
 }

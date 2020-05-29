@@ -10,10 +10,12 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.StrictMode;
+
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
+
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -53,10 +55,9 @@ public class generate_qr extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.s_generate_qr);
 
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
 //        getWindow().setFlags(WindowManager.LayoutParams.FLAG_SECURE, WindowManager.LayoutParams.FLAG_SECURE);
         this.activity = this;
-        ((CardView)findViewById(R.id.qrnya)).setVisibility(View.GONE);
+        findViewById(R.id.qrnya).setVisibility(View.GONE);
         key = new GenKey();
         sp = activity.getSharedPreferences("shared", 0x0000);
         handler = new Handler();
@@ -112,6 +113,7 @@ public class generate_qr extends AppCompatActivity {
             }
         }, Utilities.rto());
     }
+
     private class generate {
         String id_kelas, tanggal, token;
     }
@@ -184,7 +186,7 @@ public class generate_qr extends AppCompatActivity {
                 if (code.equals("OK4")) {
                     proses();
 
-                    ((CardView)findViewById(R.id.qrnya)).setVisibility(View.VISIBLE);
+                    findViewById(R.id.qrnya).setVisibility(View.VISIBLE);
 
                 } else if (code.equals("TOKEN2") || code.equals("TOKEN1")) {
                     SharedPreferences.Editor editorr = sp.edit();
@@ -213,7 +215,6 @@ public class generate_qr extends AppCompatActivity {
                 }
 
 
-
             } else {
                 Utilities.codeerror(activity, "ER0211");
             }
@@ -230,7 +231,7 @@ public class generate_qr extends AppCompatActivity {
                 BitMatrix bitMatrix = multi.encode(gson.toJson(obj), BarcodeFormat.QR_CODE, 150, 150);
                 BarcodeEncoder barcodeEncoder = new BarcodeEncoder();
                 Bitmap bitmap = barcodeEncoder.createBitmap(bitMatrix);
-                ImageView image = (ImageView) findViewById(R.id.qrcodenya);
+                ImageView image = findViewById(R.id.qrcodenya);
                 image.setImageBitmap(bitmap);
             } catch (Exception e) {
                 Log.e("ER___", String.valueOf(e));

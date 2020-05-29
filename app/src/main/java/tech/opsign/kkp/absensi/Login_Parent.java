@@ -3,6 +3,7 @@ package tech.opsign.kkp.absensi;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -11,14 +12,17 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.StrictMode;
+
 import androidx.core.content.ContextCompat;
 import androidx.appcompat.app.AppCompatActivity;
+
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 
@@ -43,12 +47,12 @@ public class Login_Parent extends AppCompatActivity {
     private Login_Parent activity;
     private EditText jpassword;
     private GenKey key;
-    private ProgressDialog dialog;
     private Handler handler;
     private AsyncTask start;
     private Button tombol;
     private String str_username;
     private String str_pass;
+    private SharedPreferences sp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,9 +60,8 @@ public class Login_Parent extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
-        setContentView(R.layout.login);
+        setContentView(R.layout.login_parent);
 
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
         this.activity = this;
         if (Build.VERSION.SDK_INT >= 21) {
             Window window = this.getWindow();
@@ -67,7 +70,6 @@ public class Login_Parent extends AppCompatActivity {
             window.setStatusBarColor(this.getResources().getColor(R.color.hitam));
         }
         key = new GenKey();
-        dialog = new ProgressDialog(activity);
         handler = new Handler();
         jnip = findViewById(R.id.nip);
         jpassword = findViewById(R.id.password);
@@ -76,7 +78,7 @@ public class Login_Parent extends AppCompatActivity {
         jnip.addTextChangedListener(logintextwarcher);
         jpassword.addTextChangedListener(logintextwarcher);
 
-        SharedPreferences sp = activity.getSharedPreferences("shared", 0x0000);
+        sp = activity.getSharedPreferences("shared", 0x0000);
 
         tombol = findViewById(R.id.login);
         tombol.setEnabled(true);
@@ -84,13 +86,31 @@ public class Login_Parent extends AppCompatActivity {
         tombol.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                closekeyboard();
                 str_username = jnip.getText().toString().trim();
                 str_pass = jpassword.getText().toString().trim();
                 jnip.setError(null);
                 jpassword.setError(null);
                 mulai();
 
+
+            }
+        });
+
+        Button tombolbiasa = findViewById(R.id.login_biasa);
+        tombolbiasa.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                closekeyboard();
+
+                SharedPreferences.Editor editor = sp.edit();
+                editor.putBoolean("usertype", true);
+                editor.apply();
+
+                Intent login = new Intent(activity, SplashScreen.class);
+                login.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(login);
+                finish();
 
             }
         });
@@ -105,7 +125,6 @@ public class Login_Parent extends AppCompatActivity {
     @SuppressLint("StaticFieldLeak")
     private class asyncUser extends AsyncTask<Void, Void, Void> {
 
-        private String code;
         private JSONObject json;
         private boolean background;
 
@@ -114,10 +133,11 @@ public class Login_Parent extends AppCompatActivity {
         protected void onPreExecute() {
             super.onPreExecute();
             background = true;
-            dialog = new ProgressDialog(activity);
-            dialog.setMessage("Sedang memproses data. Harap tunggu sejenak.");
-            dialog.setCancelable(false);
-            dialog.show();
+//            dialog = new ProgressDialog(activity);
+//            dialog.setMessage("Sedang memproses data. Harap tunggu sejenak.");
+//            dialog.setCancelable(false);
+//            dialog.show();
+            key.showProgress(activity, true);
 
         }
 
@@ -126,6 +146,7 @@ public class Login_Parent extends AppCompatActivity {
             try {
                 StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
                 StrictMode.setThreadPolicy(policy);
+
 
 
                 Param param = new Param();
@@ -139,12 +160,12 @@ public class Login_Parent extends AppCompatActivity {
                 p.add(new BasicNameValuePair("parsing", gson.toJson(param)));
 
                 JsonParser jParser = new JsonParser();
-                json = jParser.getJSONFromUrl(key.url(1), p);
+                json = jParser.getJSONFromUrl(key.url(401), p);
                 Log.e("param login ", gson.toJson(param));
                 Log.e("isi json login", json.toString(2));
-                code = json.getString("code");
 
             } catch (Exception e) {
+                e.printStackTrace();
                 background = false;
             }
             return null;
@@ -154,69 +175,80 @@ public class Login_Parent extends AppCompatActivity {
         protected void onPostExecute(Void result) {
             super.onPostExecute(result);
 
-            if (dialog.isShowing()) {
-                dialog.dismiss();
-            }
+//            if (dialog.isShowing()) {
+//                dialog.dismiss();
+//            }
+            key.hideProgress();
             handler.removeCallbacksAndMessages(null);
 
             if (background) {
 
-                if (code.equals("OK4")) {
-                    try {
+                try {
+                    if (json.getBoolean("hasil")) {
                         json = json.getJSONObject("data");
 
-                        String status = json.getString("status");
-                        Intent homeIntent;
-                        if (status.equals("1")) {
-                            //aksen admin
-                            Log.d("yeyy", "1");
-                            homeIntent = new Intent(activity, MainAdmin.class);
-                        } else {
-                            //siswa
-                            Log.d("yeyy", "2");
-                            homeIntent = new Intent(activity, MainSiswa.class);
+//                        String status = json.getString("status");
+//                        Intent homeIntent;
+//                        if (status.equals("1")) {
+//                            //aksen admin
+//                            Log.d("yeyy", "1");
+//                            homeIntent = new Intent(activity, MainAdmin.class);
+//                        } else {
+//                            //siswa
+//                            Log.d("yeyy", "2");
+//                            homeIntent = new Intent(activity, MainSiswa.class);
+//
+//                        }
+//                        SharedPreferences.Editor editor = sp.edit();
+//                        editor.putString("username", str_username);
+//                        editor.putString("status", status);
+//                        editor.putString("token", json.getString("token"));
+//                        editor.putString("thn_ajar", json.getString("thn-ajar"));
+//                        editor.putString("tanggal", json.getString("tanggal"));
+//
+//                        json = json.getJSONObject("data_pribadi");
+//                        editor.putString("nama", json.getString("nama"));
+//                        editor.putString("level", json.getString("level"));
+//
+//
+//                        editor.commit();
+//                        startActivity(homeIntent);
+//                        finish();
+                        Log.e("ER_", "berhasil boii parent");
 
-                        }
-                        SharedPreferences sp = activity.getSharedPreferences("shared", 0x0000);
-                        SharedPreferences.Editor editor = sp.edit();
-                        editor.putString("username", str_username);
-                        editor.putString("status", status);
-                        editor.putString("token", json.getString("token"));
-                        editor.putString("thn_ajar", json.getString("thn-ajar"));
-                        editor.putString("tanggal", json.getString("tanggal"));
-
-                        json = json.getJSONObject("data_pribadi");
-                        editor.putString("nama", json.getString("nama"));
-                        editor.putString("level", json.getString("level"));
-
-
-                        editor.commit();
-                        startActivity(homeIntent);
-                        finish();
-                        Log.e("ER_", "berhasil boii");
-                    } catch (Exception e) {
-                        e.printStackTrace();
+                    } else {
+                        AlertDialog.Builder ab = new AlertDialog.Builder(activity);
+                        ab
+                                .setCancelable(false).setTitle("Informasi")
+                                .setMessage(json.getString("message"))
+                                .setPositiveButton("Tutup", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        dialog.dismiss();
+                                    }
+                                })
+                                .show();
                     }
-                } else {
-                    AlertDialog.Builder ab = new AlertDialog.Builder(activity);
-                    ab
-                            .setCancelable(false).setTitle("Informasi")
-                            .setMessage(code)
-                            .setPositiveButton("Tutup", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    dialog.dismiss();
-                                }
-                            })
-                            .show();
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
-
             } else {
                 Utilities.codeerror(activity, "ER0211");
             }
         }
     }
+    private void closekeyboard() {
+        try {
+            View view = activity.getCurrentFocus();
+            if (view != null) {
+                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                assert imm != null;
+                imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+            }
+        } catch (Exception e) {
 
+        }
+    }
 
     private TextWatcher logintextwarcher = new TextWatcher() {
 
@@ -233,9 +265,9 @@ public class Login_Parent extends AppCompatActivity {
 
             tombol.setEnabled(!user.isEmpty() && !pass.isEmpty());
             if (!user.isEmpty() && !pass.isEmpty())
-                tombol.setBackground(ContextCompat.getDrawable(activity,R.drawable.button ));
+                tombol.setBackground(ContextCompat.getDrawable(activity, R.drawable.button));
             else
-                tombol.setBackground(ContextCompat.getDrawable(activity,R.drawable.button_deny ));
+                tombol.setBackground(ContextCompat.getDrawable(activity, R.drawable.button_deny));
         }
 
         @Override
@@ -251,8 +283,8 @@ public class Login_Parent extends AppCompatActivity {
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                if (dialog.isShowing()) {
-                    dialog.dismiss();
+                if (key.progres_isShowing()) {
+                    key.hideProgress();
                     start.cancel(true);
                     new androidx.appcompat.app.AlertDialog.Builder(activity)
                             .setTitle("Informasi")

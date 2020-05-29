@@ -42,8 +42,6 @@ public class MainAdmin extends AppCompatActivity implements NavigationView.OnNav
     private MainAdmin activity;
     private boolean doubleBackToExitPressedOnce = false;
     private Handler halder;
-    private AsyncTask start;
-    private boolean flag = true;
 
     private GenKey key;
     Handler mHandler;
@@ -51,7 +49,6 @@ public class MainAdmin extends AppCompatActivity implements NavigationView.OnNav
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.a_mainactivity_admin);
-//        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
 //        Toast.makeText(this, "Selamat Datang", Toast.LENGTH_SHORT).show();
         this.activity = this;
         key = new GenKey();
@@ -141,7 +138,7 @@ public class MainAdmin extends AppCompatActivity implements NavigationView.OnNav
         item.setChecked(false);
         int id = item.getItemId();
         FragmentManager fragmentManager = getFragmentManager();
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
 
         if (id == R.id.ubahpresensi) {
             Intent myIntent = new Intent(activity, Carikelas_tanggal.class);
@@ -215,7 +212,7 @@ public class MainAdmin extends AppCompatActivity implements NavigationView.OnNav
 
     @Override
     public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         FragmentManager fragmentManager = getFragmentManager();
 
 
@@ -240,11 +237,6 @@ public class MainAdmin extends AppCompatActivity implements NavigationView.OnNav
     }
 
 
-    private void codeeror(String kode) {
-        if (flag) {
-            Utilities.codeerror(activity, kode);
-            flag = false;
-        }
-    }
+
 
 }

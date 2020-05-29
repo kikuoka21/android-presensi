@@ -3,6 +3,7 @@ package tech.opsign.kkp.absensi;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -11,14 +12,17 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.StrictMode;
+
 import androidx.core.content.ContextCompat;
 import androidx.appcompat.app.AppCompatActivity;
+
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 
@@ -50,7 +54,7 @@ public class Login extends AppCompatActivity {
     private Button tombol;
     private String str_username;
     private String str_pass;
-
+    SharedPreferences sp;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -58,7 +62,6 @@ public class Login extends AppCompatActivity {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.login);
 
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
         this.activity = this;
         if (Build.VERSION.SDK_INT >= 21) {
             Window window = this.getWindow();
@@ -76,9 +79,9 @@ public class Login extends AppCompatActivity {
         jnip.addTextChangedListener(logintextwarcher);
         jpassword.addTextChangedListener(logintextwarcher);
 
-        SharedPreferences sp = activity.getSharedPreferences("shared", 0x0000);
+        sp = activity.getSharedPreferences("shared", 0x0000);
         Log.e("username", sp.getString("username", ""));
-        Log.e("ERtoken", sp.getString("token", ""));
+//        Log.e("ERtoken", sp.getString("token", ""));
 
         tombol = findViewById(R.id.login);
         tombol.setEnabled(true);
@@ -86,7 +89,7 @@ public class Login extends AppCompatActivity {
         tombol.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                closekeyboard();
                 str_username = jnip.getText().toString().trim();
                 str_pass = jpassword.getText().toString().trim();
                 jnip.setError(null);
@@ -98,6 +101,38 @@ public class Login extends AppCompatActivity {
         });
 
 
+
+        Button tombolbiasa = findViewById(R.id.login_biasa);
+        tombolbiasa.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                closekeyboard();
+
+                SharedPreferences.Editor editor = sp.edit();
+                editor.putBoolean("usertype", false);
+                editor.apply();
+
+                Intent login = new Intent(activity, SplashScreen.class);
+                login.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(login);
+                finish();
+
+            }
+        });
+
+    }
+
+    private void closekeyboard() {
+        try {
+            View view = activity.getCurrentFocus();
+            if (view != null) {
+                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                assert imm != null;
+                imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+            }
+        } catch (Exception e) {
+
+        }
     }
 
     private class Param {
@@ -179,7 +214,7 @@ public class Login extends AppCompatActivity {
                             homeIntent = new Intent(activity, MainSiswa.class);
 
                         }
-                        SharedPreferences sp = activity.getSharedPreferences("shared", 0x0000);
+//                        SharedPreferences sp = activity.getSharedPreferences("shared", 0x0000);
                         SharedPreferences.Editor editor = sp.edit();
                         editor.putString("username", str_username);
                         editor.putString("status", status);
@@ -192,7 +227,7 @@ public class Login extends AppCompatActivity {
                         editor.putString("level", json.getString("level"));
 
 
-                        editor.commit();
+                        editor.apply();
                         startActivity(homeIntent);
                         finish();
                         Log.e("ER_", "berhasil boii");
@@ -235,9 +270,9 @@ public class Login extends AppCompatActivity {
 
             tombol.setEnabled(!user.isEmpty() && !pass.isEmpty());
             if (!user.isEmpty() && !pass.isEmpty())
-                tombol.setBackground(ContextCompat.getDrawable(activity,R.drawable.button ));
+                tombol.setBackground(ContextCompat.getDrawable(activity, R.drawable.button));
             else
-                tombol.setBackground(ContextCompat.getDrawable(activity,R.drawable.button_deny ));
+                tombol.setBackground(ContextCompat.getDrawable(activity, R.drawable.button_deny));
         }
 
         @Override

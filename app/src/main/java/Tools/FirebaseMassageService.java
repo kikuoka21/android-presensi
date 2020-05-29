@@ -5,7 +5,9 @@ import android.annotation.SuppressLint;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
 import android.util.Log;
@@ -13,12 +15,13 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.core.app.NotificationCompat;
 
+import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
 import java.util.Map;
 
-import tech.opsign.kkp.absensi.R;
+import tech.opsign.kkp.absensi.SplashScreen;
 
 public class FirebaseMassageService extends FirebaseMessagingService {
     String TAG = "ER__";
@@ -26,18 +29,18 @@ public class FirebaseMassageService extends FirebaseMessagingService {
     @Override
     public void onNewToken(@NonNull String s) {
         super.onNewToken(s);
-//        Log.e(TAG, "token2: " + FirebaseInstanceId.getInstance().getToken());
+
+        Log.e(TAG, "token2: " + FirebaseInstanceId.getInstance().getToken());
     }
 
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
         Log.e(TAG, "onMessageReceived " );
-        if (remoteMessage.getData() != null) {
-            sendnotification(remoteMessage);
-
-        }
+        remoteMessage.getData();
+        sendnotification(remoteMessage);
 
     }
+
 
     private void sendnotification(RemoteMessage remoteMessage) {
 //
@@ -45,14 +48,15 @@ public class FirebaseMassageService extends FirebaseMessagingService {
         try{
             Map<String, String> data = remoteMessage.getData();
             String tittle = data.get("title");
-            Log.e(TAG, "onMessageReceived 2" );
             String content = data.get("content");
             Log.e("ER", String.valueOf(data));
             NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
             String NOTIFCATION_CHANEL_ID = "EDMTDev";
-            Log.e(TAG, "onMessageReceived3 " );
+//            if(!data.get("nama").equals("")){
+            if(data.containsKey("chanel")){
+                NOTIFCATION_CHANEL_ID = data.get("chanel");
+            }
 
-            Log.e(TAG, "onMessageReceived " +(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O));
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
 
                 @SuppressLint("WrongConstant")
@@ -66,7 +70,9 @@ public class FirebaseMassageService extends FirebaseMessagingService {
                 notificationManager.createNotificationChannel(notificationChannel);
 
             }
-            Log.e(TAG, "onMessageReceived4 " );
+
+            Intent result =new Intent(this, SplashScreen.class);
+            PendingIntent resultpendingIntent = PendingIntent.getActivities(this, 1, new Intent[]{result}, PendingIntent.FLAG_UPDATE_CURRENT);
             NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this, NOTIFCATION_CHANEL_ID);
             notificationBuilder.setAutoCancel(true)
                     .setDefaults(Notification.DEFAULT_ALL)
@@ -75,12 +81,13 @@ public class FirebaseMassageService extends FirebaseMessagingService {
                     .setTicker("Hearty365")
                     .setContentTitle(tittle)
                     .setContentText(content)
+                    .setAutoCancel(true)
+                    .setContentIntent(resultpendingIntent)
                     .setContentInfo("info");
             Log.e(TAG, "onMessageReceived5 " );
             notificationManager.notify(0, notificationBuilder.build());
         }catch (Exception e){
             e.printStackTrace();
         }
-        Log.e(TAG, "onMessageReceived6 " );
     }
 }

@@ -12,6 +12,8 @@ import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import androidx.core.app.ActivityCompat;
+
+import android.os.Build;
 import android.telephony.TelephonyManager;
 
 import org.json.JSONArray;
@@ -46,26 +48,6 @@ public class Utilities {
 
     }
 
-    public boolean inetOnline(Context context) {
-        boolean connected = false;
-        try {
-            ConnectivityManager connManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-
-            NetworkInfo netInfo = connManager.getActiveNetworkInfo();
-
-            // check pertama untuk memeriksa koneksi internet
-            connected = ((netInfo != null) && netInfo.isAvailable() && netInfo.isConnected());
-
-            if (connected) {
-                // melakukan double check ke server budi luhur
-                InetAddress ipAddr = InetAddress.getByName("budiluhur.ac.id");
-                connected = !ipAddr.equals("");
-            }
-        } catch (Exception ex) {
-//            Log.v("inetOnline", ex.getMessage() == null ? "Unknown error" : ex.getMessage());
-        }
-        return connected;
-    }
 
 
     public static void showMessageBox(Context context, String title, String message) {
@@ -104,27 +86,29 @@ public class Utilities {
             if (imei != null && !imei.isEmpty()) {
                 return imei;
             } else {
-                return "berubah";
+                return imei2();
             }
         } catch (Exception e) {
-            new android.app.AlertDialog.Builder(context)
-                    .setTitle("Permission Request")
-                    .setMessage("Wajib Memberikan Akses")
-                    .setCancelable(false)
-                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.dismiss();
-                        }
-                    }).setOnDismissListener(new DialogInterface.OnDismissListener() {
-                @Override
-                public void onDismiss(DialogInterface dialog) {
-                    ((Activity) context).finish();
-                }
-            })
-                    .show();
-            return "gagal";
+
+            return "gak ke gnerate imei";
         }
     }
+    private static String imei2() {
+        return Build.VERSION.SDK_INT + "_" +
+                Build.BOARD.length() % 10 +
+                Build.BRAND.length() % 10 +
+                Build.DEVICE.length() % 10 +
+                Build.DISPLAY.length() % 10 +
+                Build.HOST.length() % 10 +
+                Build.ID.length() % 10 +
+                Build.MANUFACTURER.length() % 10 +
+                Build.MODEL.length() % 10 +
+                Build.PRODUCT.length() % 10 +
+                Build.TAGS.length() % 10 +
+                Build.TYPE.length() % 10 +
+                Build.USER.length() % 10;
+    }
+
 
 
     public static int rto() {
@@ -170,7 +154,7 @@ public class Utilities {
         }
     }
     public static String ubahan_thn_ajrn(String a) {
-        return a + "/" + String.valueOf(Integer.parseInt(a) + 1);
+        return a + "/" + (Integer.parseInt(a) + 1);
     }
      public static String gettgl_lahir(String tanggal) {
         try {

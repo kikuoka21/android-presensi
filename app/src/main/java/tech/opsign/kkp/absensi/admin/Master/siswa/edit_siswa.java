@@ -117,17 +117,17 @@ public class edit_siswa extends AppCompatActivity implements AdapterView.OnItemS
         spin_jenkel.setAdapter(adapterbln);
         spin_jenkel.setOnItemSelectedListener(this);
 
-        tgl = (TextView) findViewById(R.id.inpt_tgl);
+        tgl = findViewById(R.id.inpt_tgl);
         //        nisn, nama, tmp_lahir,nama_wali, alamat, no_ijazah, no_ujian;
-        nis = (EditText) findViewById(R.id.nis);
-        nisn = (EditText) findViewById(R.id.nisn);
-        nama = (EditText) findViewById(R.id.namna);
-        tmp_lahir = (EditText) findViewById(R.id.tmp_lahir);
-        nama_wali = (EditText) findViewById(R.id.orang_tua);
-        alamat = (EditText) findViewById(R.id.alamat);
-        no_ijazah = (EditText) findViewById(R.id.no_ijazah);
-        no_ujian = (EditText) findViewById(R.id.no_ujian);
-        LinearLayout date_pick = (LinearLayout) findViewById(R.id.pilih_tgl);
+        nis = findViewById(R.id.nis);
+        nisn = findViewById(R.id.nisn);
+        nama = findViewById(R.id.namna);
+        tmp_lahir = findViewById(R.id.tmp_lahir);
+        nama_wali = findViewById(R.id.orang_tua);
+        alamat = findViewById(R.id.alamat);
+        no_ijazah = findViewById(R.id.no_ijazah);
+        no_ujian = findViewById(R.id.no_ujian);
+        LinearLayout date_pick = findViewById(R.id.pilih_tgl);
 
         //111 lihat
         //222 ubah
@@ -557,7 +557,7 @@ public class edit_siswa extends AppCompatActivity implements AdapterView.OnItemS
             @SuppressLint("SimpleDateFormat")
             SimpleDateFormat
                     date = new SimpleDateFormat("yyyy-MM-dd");
-            String strin = String.valueOf(year) + "-" + ubahan(month + 1) + "-" + ubahan(day);
+            String strin = year + "-" + ubahan(month + 1) + "-" + ubahan(day);
 
             try {
                 Date tanggalpilihan, tanggalskrng;

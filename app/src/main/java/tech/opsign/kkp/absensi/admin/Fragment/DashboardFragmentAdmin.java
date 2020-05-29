@@ -8,6 +8,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.StrictMode;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -15,6 +16,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -106,7 +108,7 @@ public class DashboardFragmentAdmin extends Fragment {
     }
 
     private class Param {
-        String x1d, type, key, token;
+        String x1d, type, key, token, token_firebase;
     }
 
     private class callAPI extends AsyncTask<Void, Void, Void> {
@@ -139,6 +141,8 @@ public class DashboardFragmentAdmin extends Fragment {
                 param.type = "mmm";
                 param.key = Utilities.imei(getActivity());
                 param.token = sp.getString("token", "");
+                param.token_firebase = sp.getString("token_firebase", "");
+
 //                param.kd_kls = sp.getString("token", "");
 
                 Gson gson = new Gson();
@@ -223,8 +227,8 @@ public class DashboardFragmentAdmin extends Fragment {
                 JSONArray aray = json.getJSONArray("list_absen");
 
                 if (aray != null && aray.length() > 0) {
-                    ((RecyclerView)v.findViewById(R.id.list_kehadiran_siswa)).setVisibility(View.VISIBLE);
-                    for(int i =0; i<aray.length();i++){
+                    ((RecyclerView) v.findViewById(R.id.list_kehadiran_siswa)).setVisibility(View.VISIBLE);
+                    for (int i = 0; i < aray.length(); i++) {
 //               for(int i =0; i<1;i++){
                         data = aray.getJSONObject(i);
                         // type true akan menghilangkan row kelas
@@ -237,8 +241,8 @@ public class DashboardFragmentAdmin extends Fragment {
                         );
                         modelList.add(row);
                     }
-                }else
-                    ((RecyclerView)v.findViewById(R.id.list_kehadiran_siswa)).setVisibility(View.GONE);
+                } else
+                    ((RecyclerView) v.findViewById(R.id.list_kehadiran_siswa)).setVisibility(View.GONE);
                 adapter.notifyDataSetChanged();
             } catch (Exception e) {
                 Log.e("ER___", String.valueOf(e));
