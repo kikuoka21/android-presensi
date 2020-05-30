@@ -38,6 +38,7 @@ import Tools.GenKey;
 import Tools.InetConnection;
 import Tools.JsonParser;
 import Tools.Utilities;
+import tech.opsign.kkp.absensi.Parent.MainParent2;
 import tech.opsign.kkp.absensi.admin.MainAdmin;
 import tech.opsign.kkp.absensi.siswa.MainSiswa;
 
@@ -85,9 +86,9 @@ public class SplashScreen extends AppCompatActivity {
 
                         // Get new Instance ID token
                         String token = task.getResult().getToken();
-                        if(!token.equals("")){
+                        if (!token.equals("")) {
                             SharedPreferences.Editor editor = sp.edit();
-                            editor.putString("token_firebase",token );
+                            editor.putString("token_firebase", token);
                             editor.apply();
                         }
 
@@ -105,7 +106,7 @@ public class SplashScreen extends AppCompatActivity {
             url = key.url(i);
             if (!url.equals(key.url(888))) {
 
-                Log.e("__genkey " + String.valueOf(i), url);
+                Log.e("__genkey " + i, url);
                 a++;
             }
         }
@@ -237,7 +238,7 @@ public class SplashScreen extends AppCompatActivity {
 
     private class Param {
         String x1d, type, key, token, akses;
-        boolean wali ;
+        boolean wali;
     }
 
     private class asyncUser extends AsyncTask<Void, Void, Void> {
@@ -272,7 +273,7 @@ public class SplashScreen extends AppCompatActivity {
                 p.add(new BasicNameValuePair("parsing", gson.toJson(param)));
                 JsonParser jParser = new JsonParser();
                 json = jParser.getJSONFromUrl(key.url(2), p);
-//                Log.e("ER_", json.toString(3));
+                Log.e("ER_splashscreen", json.toString(3));
 //
                 code = json.getString("code");
 
@@ -330,7 +331,26 @@ public class SplashScreen extends AppCompatActivity {
                                         }, 5000
                                 );
                             } else {
-                                Utilities.showMessageBox(activity, "Informasi","berhasil token parent" );
+//                                Utilities.showMessageBox(activity, "Informasi", "berhasil token parent");
+                                SharedPreferences.Editor editor = sp.edit();
+                                editor.putString("thn_ajar", json.getString("thn-ajar"));
+                                editor.putString("tanggal", json.getString("tanggal"));
+//
+                                editor.putString("nama", json.getString("nama"));
+                                editor.apply();
+
+
+                                new Handler().postDelayed(
+                                        new Runnable() {
+                                            @Override
+                                            public void run() {
+
+                                                startActivity(new Intent(activity, MainParent2.class));
+                                                finish();
+                                                Log.e("ER_", "berhasil boii parent");
+                                            }
+                                        }, 2000
+                                );
                             }
                         } catch (Exception e) {
                             e.printStackTrace();
@@ -340,11 +360,11 @@ public class SplashScreen extends AppCompatActivity {
                         SharedPreferences.Editor editor = sp.edit();
                         editor.putString("username", "");
                         editor.putString("token", "");
-                        editor.commit();
+                        editor.apply();
                         AlertDialog.Builder ab = new AlertDialog.Builder(activity);
                         ab
                                 .setCancelable(false).setTitle("Informasi")
-                                .setMessage(code)
+                                .setMessage(GenKey.pesan(code))
                                 .setPositiveButton("Oke", new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {

@@ -38,6 +38,7 @@ import java.util.List;
 import Tools.GenKey;
 import Tools.JsonParser;
 import Tools.Utilities;
+import tech.opsign.kkp.absensi.Parent.MainParent2;
 import tech.opsign.kkp.absensi.admin.MainAdmin;
 import tech.opsign.kkp.absensi.siswa.MainSiswa;
 
@@ -185,35 +186,19 @@ public class Login_Parent extends AppCompatActivity {
 
                 try {
                     if (json.getBoolean("hasil")) {
-                        json = json.getJSONObject("data");
 
-//                        String status = json.getString("status");
-//                        Intent homeIntent;
-//                        if (status.equals("1")) {
-//                            //aksen admin
-//                            Log.d("yeyy", "1");
-//                            homeIntent = new Intent(activity, MainAdmin.class);
-//                        } else {
-//                            //siswa
-//                            Log.d("yeyy", "2");
-//                            homeIntent = new Intent(activity, MainSiswa.class);
+
+                        SharedPreferences.Editor editor = sp.edit();
+                        editor.putString("username", str_username);
+                        editor.putString("token", json.getString("token"));
+                        editor.putString("thn_ajar", json.getString("thn-ajar"));
+                        editor.putString("tanggal", json.getString("tanggal"));
 //
-//                        }
-//                        SharedPreferences.Editor editor = sp.edit();
-//                        editor.putString("username", str_username);
-//                        editor.putString("status", status);
-//                        editor.putString("token", json.getString("token"));
-//                        editor.putString("thn_ajar", json.getString("thn-ajar"));
-//                        editor.putString("tanggal", json.getString("tanggal"));
-//
-//                        json = json.getJSONObject("data_pribadi");
-//                        editor.putString("nama", json.getString("nama"));
-//                        editor.putString("level", json.getString("level"));
-//
-//
-//                        editor.commit();
-//                        startActivity(homeIntent);
-//                        finish();
+                        editor.putString("nama", json.getString("nama"));
+                        editor.apply();
+
+                        startActivity(new Intent(activity, MainParent2.class));
+                        finish();
                         Log.e("ER_", "berhasil boii parent");
 
                     } else {

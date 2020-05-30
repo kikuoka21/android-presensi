@@ -54,11 +54,7 @@ public class Dashboard extends Fragment {
         ((TextView) v.findViewById(R.id.textView14)).setText(sp.getString("nama", ""));
         ((TextView) v.findViewById(R.id.tanggal)).setText(Utilities.gettanggal(sp.getString("tanggal", "")));
         mulai();
-        try {
 
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
         return v;
     }
 
