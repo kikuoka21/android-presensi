@@ -28,6 +28,7 @@ import Tools.Utilities;
 import tech.opsign.kkp.absensi.GantiPass;
 import tech.opsign.kkp.absensi.Login;
 import tech.opsign.kkp.absensi.R;
+import tech.opsign.kkp.absensi.SplashScreen;
 import tech.opsign.kkp.absensi.admin.Fragment.DashboardFragmentAdmin;
 import tech.opsign.kkp.absensi.admin.Fragment.master_kelas;
 import tech.opsign.kkp.absensi.admin.Fragment.master_siswa;
@@ -192,7 +193,7 @@ public class MainAdmin extends AppCompatActivity implements NavigationView.OnNav
                             editor.putString("username", "");
                             editor.putString("token", "");
                             editor.commit();
-                            startActivity(new Intent(activity, Login.class));
+                            startActivity(new Intent(activity, SplashScreen.class));
                             overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
                             finish();
                         }

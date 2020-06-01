@@ -132,15 +132,17 @@ public class GenKey {
                 return head + "/api/parent/login";
             case 402:
                 return head + "/api/parent/dashboard";
-//            case 403:
-//                return head + "/api/parent/login";
+            case 403:
+                return head + "/api/parent/profil";
 //            case 405:
 //                return head + "/api/parent/login";
+            case 406:
+                return head + "/api/tanggal";
 
 
 
 //
-//            case 404:
+//            case 404: //logout
 //                return head + "/api/parent/login";
 
 

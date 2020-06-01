@@ -8,6 +8,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.StrictMode;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -15,6 +16,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -165,8 +167,6 @@ public class Profile extends Fragment {
             if (background) {
 
 
-
-
                 AlertDialog.Builder ab = new AlertDialog.Builder(v.getContext());
                 ab
                         .setCancelable(false).setTitle("Informasi");
@@ -199,7 +199,6 @@ public class Profile extends Fragment {
                 }
 
 
-
             } else {
                 Utilities.codeerror(v.getContext(), "ER0211");
             }
@@ -212,13 +211,13 @@ public class Profile extends Fragment {
                 ((TextView) v.findViewById(R.id.nis)).setText(data.getString("nis"));
                 ((TextView) v.findViewById(R.id.nama)).setText(data.getString("nama_siswa"));
                 ((TextView) v.findViewById(R.id.nisn)).setText(data.getString("nisn"));
-                String jeniskelamin ;
-                if(data.getString("jenkel").equals("L")){
-                    jeniskelamin ="Laki-Laki";
-                }else if(data.getString("jenkel").equals("P")){
+                String jeniskelamin;
+                if (data.getString("jenkel").equals("L")) {
+                    jeniskelamin = "Laki-Laki";
+                } else if (data.getString("jenkel").equals("P")) {
                     jeniskelamin = "Perempuan";
-                }else {
-                    jeniskelamin="-";
+                } else {
+                    jeniskelamin = "-";
                 }
                 ((TextView) v.findViewById(R.id.jenkel)).setText(jeniskelamin);
                 ((TextView) v.findViewById(R.id.tmp_tgl_lahir)).setText(data.getString("tmp_lahir").toUpperCase() + ", " + Utilities.gettgl_lahir(data.getString("tgl_lahir")));
@@ -229,7 +228,10 @@ public class Profile extends Fragment {
 
                 Model row;
                 JSONArray aray = json.getJSONArray("kelas");
-                if (aray != null && aray.length() > 0) {
+                if ( aray.length() > 0) {
+
+                    recyclerView.setVisibility(View.VISIBLE);
+                    v.findViewById(R.id.nulldata).setVisibility(View.GONE);
                     for (int i = 0; i < aray.length(); i++) {
 //               for(int i =0; i<1;i++){
                         data = aray.getJSONObject(i);
@@ -243,8 +245,11 @@ public class Profile extends Fragment {
                         );
                         modelList.add(row);
                     }
+                    adapter.notifyDataSetChanged();
+                }else {
+                    recyclerView.setVisibility(View.GONE);
+                    v.findViewById(R.id.nulldata).setVisibility(View.VISIBLE);
                 }
-                adapter.notifyDataSetChanged();
             } catch (Exception e) {
                 Log.e("ER___", String.valueOf(e));
             }

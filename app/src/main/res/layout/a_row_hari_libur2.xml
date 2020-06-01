@@ -3,18 +3,15 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginStart="12dp"
-    android:layout_marginEnd="12dp"
-    android:layout_marginBottom="12dp"
-    app:cardCornerRadius="10dp"
-    app:cardElevation="4dp">
+    android:layout_marginBottom="10dp"
+
+    app:cardCornerRadius="10dp">
 
     <TableLayout
         android:id="@+id/latar"
-
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/gray"
+        android:background="@color/hitam"
         android:padding="10dp">
 
 
@@ -23,24 +20,25 @@
             <TextView
                 android:layout_marginStart="0dp"
                 android:layout_marginEnd="10dp"
-                android:text="Nama Kelas"
+                android:text="Tanggal"
                 android:textColor="#FFF"
-                android:textSize="20sp" />
+                android:textSize="16sp" />
 
             <TextView
                 android:paddingStart="2dp"
                 android:paddingEnd="6dp"
                 android:text=":"
                 android:textColor="#FFF"
-                android:textSize="20sp" />
+                android:textSize="18sp" />
 
             <TextView
-                android:id="@+id/namarow"
+                android:id="@+id/tanggal"
                 android:layout_weight="1"
                 android:paddingStart="0dp"
                 android:paddingEnd="5dp"
+                android:text="kasnfkasnkald askdmakd kasmdiwaldmasdaw"
                 android:textColor="#FFF"
-                android:textSize="20sp" />
+                android:textSize="18sp" />
 
         </TableRow>
 
@@ -49,24 +47,25 @@
             <TextView
                 android:layout_marginStart="0dp"
                 android:layout_marginEnd="10dp"
-                android:text="Tahun Ajaran"
+                android:text="Keterangan"
                 android:textColor="#FFF"
-                android:textSize="20sp" />
+                android:textSize="16sp" />
 
             <TextView
                 android:paddingStart="2dp"
                 android:paddingEnd="6dp"
                 android:text=":"
                 android:textColor="#FFF"
-                android:textSize="20sp" />
+                android:textSize="18sp" />
 
             <TextView
-                android:id="@+id/kelas"
+                android:id="@+id/keterangan"
                 android:layout_weight="1"
                 android:paddingStart="0dp"
                 android:paddingEnd="5dp"
+                android:text="kasnfkasnkald askdmakd kasmdiwaldmasdaw"
                 android:textColor="#FFF"
-                android:textSize="20sp" />
+                android:textSize="18sp" />
 
         </TableRow>
 

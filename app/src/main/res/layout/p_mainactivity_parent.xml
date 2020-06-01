@@ -9,7 +9,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#D2EFFF"
+        android:background="#e49b81"
         android:orientation="vertical"
         android:padding="12dp">
 
@@ -18,14 +18,14 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Selamat Datang Orang Tua atau Wali dari"
-            android:textColor="@color/cardview_dark_background"
+            android:textColor="@color/dark"
             android:textSize="@dimen/text_head_2_parent" />
 
         <TextView
             android:id="@+id/namasiswa"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="@color/cardview_dark_background"
+            android:textColor="@color/dark"
             android:textSize="@dimen/text_head_1_parent" />
     </LinearLayout>
 
@@ -70,8 +70,8 @@
                         android:paddingEnd="5dp"
                         android:text="Minggu, 12 desember 2018"
                         android:textAlignment="center"
-                        android:textColor="#000"
-                        android:textSize="18sp" />
+                        android:textColor="@color/dark"
+                        android:textSize="@dimen/text_head_2_parent" />
 
                     <TextView
                         android:id="@+id/keterangan"
@@ -81,8 +81,8 @@
                         android:paddingStart="0dp"
                         android:paddingEnd="5dp"
                         android:textAlignment="center"
-                        android:textColor="#000"
-                        android:textSize="18sp"
+                        android:textColor="@color/dark"
+                        android:textSize="@dimen/text_head_2_parent"
                         android:textStyle="bold" />
 
                     <TextView
@@ -94,14 +94,15 @@
                         android:paddingEnd="5dp"
                         android:text="Tidak ada KBM"
                         android:textAlignment="center"
-                        android:textColor="#000"
-                        android:textSize="18sp"
+                        android:textColor="@color/dark"
+                        android:textSize="@dimen/text_head_2_parent"
                         android:textStyle="bold"
                         android:visibility="gone" />
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
             <com.google.android.material.card.MaterialCardView
+                android:id="@+id/keterangan_status"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="12dp"
@@ -127,8 +128,8 @@
                         android:paddingEnd="5dp"
                         android:text="Status presensi"
                         android:textAlignment="center"
-                        android:textColor="#000"
-                        android:textSize="18sp" />
+                        android:textColor="@color/dark"
+                        android:textSize="@dimen/text_head_2_parent" />
 
                     <TextView
                         android:id="@+id/ket_status"
@@ -139,8 +140,8 @@
                         android:paddingEnd="5dp"
                         android:text="SUDAH PRESSENSI"
                         android:textAlignment="center"
-                        android:textColor="#000"
-                        android:textSize="18sp"
+                        android:textColor="@color/dark"
+                        android:textSize="@dimen/text_head_2_parent"
                         android:textStyle="bold" />
 
 
@@ -151,7 +152,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="3dp"
                 android:layout_marginBottom="10dp"
-                android:background="@color/hitam" />
+                android:background="#e9ac96" />
+
+
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -202,6 +205,7 @@
                 </com.google.android.material.card.MaterialCardView>
 
                 <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/profil_siswa"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
@@ -227,6 +231,7 @@
                             android:layout_height="80dp"
                             android:layout_alignParentTop="true"
                             android:layout_centerHorizontal="true"
+                            android:src="@drawable/ic_profile"
                             android:layout_gravity="center"
                             android:scaleType="centerCrop" />
 
@@ -243,12 +248,14 @@
                     </RelativeLayout>
                 </com.google.android.material.card.MaterialCardView>
             </LinearLayout>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
                 <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/his_tanggal"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
@@ -276,7 +283,7 @@
                             android:layout_centerHorizontal="true"
                             android:layout_gravity="center"
                             android:scaleType="centerCrop"
-                            android:src="@drawable/ic_history" />
+                            android:src="@drawable/ic_calendar" />
 
                         <TextView
                             android:layout_width="match_parent"
@@ -292,6 +299,7 @@
                 </com.google.android.material.card.MaterialCardView>
 
                 <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/logout_parent"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
@@ -314,6 +322,7 @@
                         <ImageView
                             android:id="@+id/image4"
                             android:layout_width="80dp"
+                            android:src="@drawable/ic_logout"
                             android:layout_height="80dp"
                             android:layout_alignParentTop="true"
                             android:layout_centerHorizontal="true"

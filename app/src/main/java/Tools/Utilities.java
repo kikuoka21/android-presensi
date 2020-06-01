@@ -11,6 +11,7 @@ import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+
 import androidx.core.app.ActivityCompat;
 
 import android.os.Build;
@@ -47,7 +48,6 @@ public class Utilities {
 
 
     }
-
 
 
     public static void showMessageBox(Context context, String title, String message) {
@@ -93,6 +93,7 @@ public class Utilities {
             return "gak ke gnerate imei";
         }
     }
+
     private static String imei2() {
         return Build.VERSION.SDK_INT + "_" +
                 Build.BOARD.length() % 10 +
@@ -108,7 +109,6 @@ public class Utilities {
                 Build.TYPE.length() % 10 +
                 Build.USER.length() % 10;
     }
-
 
 
     public static int rto() {
@@ -153,10 +153,12 @@ public class Utilities {
             return "tidak diketahui";
         }
     }
+
     public static String ubahan_thn_ajrn(String a) {
         return a + "/" + (Integer.parseInt(a) + 1);
     }
-     public static String gettgl_lahir(String tanggal) {
+
+    public static String gettgl_lahir(String tanggal) {
         try {
             DateFormat kedua, df = new SimpleDateFormat("yyyy-MM-dd");
 
@@ -179,7 +181,8 @@ public class Utilities {
             return "tidak diketahui";
         }
     }
-     public static String tgl_bulan(String tanggal) {
+
+    public static String tgl_bulan(String tanggal) {
         try {
             DateFormat kedua, df = new SimpleDateFormat("yyyy-MM-dd");
 
@@ -199,7 +202,8 @@ public class Utilities {
             return "tidak diketahui";
         }
     }
-     public static String bln_thn(String tanggal) {
+
+    public static String bln_thn(String tanggal) {
         try {
             DateFormat kedua, df = new SimpleDateFormat("yyyy-MM");
 
@@ -209,7 +213,7 @@ public class Utilities {
             c.setTime(date);
 //           Log.e("ER_asdj,awd", df.format(c.getTime()));
             kedua = new SimpleDateFormat("MMMM");
-            String balikan =  bulan(kedua.format(c.getTime())) + " - ";
+            String balikan = bulan(kedua.format(c.getTime())) + " - ";
 
             kedua = new SimpleDateFormat("yyyy");
             balikan = balikan + kedua.format(c.getTime());
@@ -222,7 +226,7 @@ public class Utilities {
     }
 
     public static String status_kehadiran(String stat) {
-        switch (stat.substring(0,1)) {
+        switch (stat.substring(0, 1)) {
             case "L":
                 return "Libur";
 
@@ -247,7 +251,7 @@ public class Utilities {
 
 
     private static String hari_ini(String hari) {
-        switch (hari.substring(0,3)) {
+        switch (hari.substring(0, 3)) {
             case "Sun":
                 return "Minggu";
 

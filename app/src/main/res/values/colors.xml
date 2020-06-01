@@ -7,4 +7,9 @@
     <color name="hitam">#000</color>
     <color name="transparent">#00000000</color>
     <color name="gray">#eee</color>
+
+
+
+    <color name="dark">#353b48</color>
+
 </resources>

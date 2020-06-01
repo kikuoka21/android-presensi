@@ -26,21 +26,38 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.DefaultRetryPolicy;
+import com.android.volley.NetworkError;
+import com.android.volley.NetworkResponse;
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.TimeoutError;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.google.android.material.navigation.NavigationView;
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import Tools.GenKey;
 import Tools.JsonParser;
 import Tools.Utilities;
 import tech.opsign.kkp.absensi.Login;
 import tech.opsign.kkp.absensi.R;
+import tech.opsign.kkp.absensi.SplashScreen;
+import tech.opsign.kkp.absensi.Tanggal_Libur;
 import tech.opsign.kkp.absensi.siswa.Fragmen.Dashboard;
 import tech.opsign.kkp.absensi.siswa.scan_qr_code;
 
@@ -48,64 +65,82 @@ public class MainParent2 extends AppCompatActivity {
     private SharedPreferences sp;
     private MainParent2 activity;
     private boolean doubleBackToExitPressedOnce = false;
-    private Handler handler;
-    private AsyncTask start;
-
     private GenKey key;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.p_mainactivity_parent);
-        Toast.makeText(this, "Selamat Datang", Toast.LENGTH_SHORT).show();
         this.activity = this;
         sp = activity.getSharedPreferences("shared", 0x0000);
         key = new GenKey();
-        handler = new Handler();
 
 
         ((TextView) findViewById(R.id.namasiswa)).setText(sp.getString("nama", ""));
 
         ((TextView) findViewById(R.id.tanggal)).setText(Utilities.gettanggal(sp.getString("tanggal", "")));
 //        ((TextView) navHeaderView.findViewById(R.id.nip_nav)).setText(sp.getString("username", ""));
-        mulai();
-    }
+//        mulai();
+        volley_call();
 
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        //menu pojok kanan atas titik 3 https://stackoverflow.com/questions/46967736/how-to-remove-settings-option-in-navigation-drawer-activity-in-android-studio
-//        getMenuInflater().inflate(R.menu.menu_scan_qr, menu);
-        // return true -> akan menampilkan menu ini
-        //return false -> menghilangkan menu ini
-        return false;
-    }
-
-
-    private void mulai() {
-        start = new callAPI().execute();
-        handler.postDelayed(new Runnable() {
+        findViewById(R.id.his_tanggal).setOnClickListener(new View.OnClickListener() {
             @Override
-            public void run() {
-                if (key.progres_isShowing()) {
-                    start.cancel(true);
-                    key.hideProgress();
-                    new androidx.appcompat.app.AlertDialog.Builder(activity)
-                            .setTitle("Informasi")
-                            .setMessage("Telah Terjadi Kesalahan Pada Koneksi Anda.")
-                            .setCancelable(false)
-                            .setPositiveButton("Coba Lagi", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    dialog.dismiss();
-                                    mulai();
-                                }
-                            }).show();
-                }
+            public void onClick(View v) {
+                new Handler().postDelayed(
+                        new Runnable() {
+                            @Override
+                            public void run() {
+
+                                startActivity(new Intent(activity, Tanggal_Libur.class));
+                            }
+                        }, 300
+                );
             }
-        }, Utilities.rto());
+        });
+        findViewById(R.id.profil_siswa).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new Handler().postDelayed(
+                        new Runnable() {
+                            @Override
+                            public void run() {
+                                startActivity(new Intent(activity, Profile_parent.class));
+                            }
+                        }, 300
+                );
+            }
+        });
+        findViewById(R.id.logout_parent).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+
+                new android.app.AlertDialog.Builder(activity, R.style.ThemeOverlay_MaterialComponents_Dialog)
+                        .setTitle("Konfirmasi")
+                        .setMessage("Apakah Anda yakin ingin keluar ?")
+                        .setPositiveButton("Konfirmasi", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                SharedPreferences.Editor editor = sp.edit();
+                                editor.putString("username", "");
+                                editor.putString("token", "");
+                                editor.commit();
+                                startActivity(new Intent(activity, SplashScreen.class));
+                                overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+                                finish();
+                            }
+                        })
+                        .setNegativeButton("Batal", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        }).show();
+            }
+        });
+
     }
+
 
     @Override
     public void onBackPressed() {
@@ -127,129 +162,158 @@ public class MainParent2 extends AppCompatActivity {
 
     }
 
-    private class Param {
-        String x1d, type, key, token, token_firebase;
-    }
+    private void volley_call() {
+        key.showProgress(activity, true);
 
-    private class callAPI extends AsyncTask<Void, Void, Void> {
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, key.url(402),
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        key.hideProgress();
+                        try {
+                            androidx.appcompat.app.AlertDialog.Builder ab = new AlertDialog.Builder(activity);
+                            ab.setCancelable(false).setTitle("Informasi");
 
-        private JSONObject json;
-        private boolean background;
+                            JSONObject json = new JSONObject(response);
+                            Log.e("ER", json.toString(3));
+                            if (json.getBoolean("token")) {
+                                if (json.getBoolean("hasil")) {
 
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            background = true;
-            key.showProgress(activity, false);
-
-        }
-
-        @Override
-        protected Void doInBackground(Void... voids) {
-            try {
-                StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-                StrictMode.setThreadPolicy(policy);
+                                    SharedPreferences.Editor editor = sp.edit();
+                                    editor.putString("kd_kelas", json.getString("kd_kelas"));
+                                    editor.putString("nama_kelas", json.getString("nm_kelas"));
+                                    editor.putString("tanggal", json.getString("tanggal"));
 
 
-                Param param = new Param();
-                param.x1d = sp.getString("username", "");
-                param.type = "mmm";
-                param.key = Utilities.imei(activity);
-                param.token = sp.getString("token", "");
-                param.token_firebase = sp.getString("token_firebase", "");
-//                param.kd_kls = sp.getString("token", "");
+                                    ((TextView) findViewById(R.id.tanggal)).setText(Utilities.gettanggal(json.getString("tanggal")));
+                                    editor.apply();
+                                    JSONObject status = json.getJSONObject("status_siswa");
+                                    json = json.getJSONObject("hari_ini");
+                                    if (json.getBoolean("status")) {
+                                        ((TextView) findViewById(R.id.keterangan)).setText("Ada Kegiatan Belajar Mengajar");
+                                        findViewById(R.id.info).setVisibility(View.GONE);
 
-                Gson gson = new Gson();
-                List<NameValuePair> p = new ArrayList<NameValuePair>();
-                p.add(new BasicNameValuePair("parsing", gson.toJson(param)));
-
-                JsonParser jParser = new JsonParser();
-                json = jParser.getJSONFromUrl(key.url(402), p);
-//                Log.e("param login ", gson.toJson(param));
-                Log.e("isi json login", json.toString(2));
-
-            } catch (Exception e) {
-                background = false;
-            }
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Void result) {
-            super.onPostExecute(result);
-
-            key.hideProgress();
-            handler.removeCallbacksAndMessages(null);
-
-            if (background) {
+                                        findViewById(R.id.keterangan_status).setVisibility(View.VISIBLE);
+                                        if (status.getString("status").equals("H") || status.getString("status").equals("h")) {
+                                            ((TextView) findViewById(R.id.ket_status)).setText("Sudah Melakukan Presensi hari ini");
+                                        } else
+                                            ((TextView) findViewById(R.id.ket_status)).setText(status.getString("status") + " (" + Utilities.status_kehadiran(status.getString("status")) + "), dengan keterangan " + status.getString("ket"));
 
 
-                androidx.appcompat.app.AlertDialog.Builder ab = new AlertDialog.Builder(activity);
-                ab.setCancelable(false).setTitle("Informasi");
+                                    } else {
+                                        ((TextView) findViewById(R.id.keterangan)).setText("Libur");
+                                        ((TextView) findViewById(R.id.info)).setText(json.getString("ket"));
+                                        findViewById(R.id.info).setVisibility(View.VISIBLE);
+                                        findViewById(R.id.keterangan_status).setVisibility(View.GONE);
+                                    }
+
+//                                    if (status.getBoolean("flag")) {
+//                                    ((TextView) findViewById(R.id.ket_status)).setText(status.getString("ket"));
+//                                    } else {
+//                                        ((TextView) findViewById(R.id.ket_status)).setText("Tidak ada");
+//                                    }
+
+                                } else {
+                                    ab.setMessage(json.getString("message")).setPositiveButton("Tutup", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            dialog.dismiss();
+                                        }
+                                    }).show();
+                                }
+                            } else {
+                                SharedPreferences.Editor editorr = sp.edit();
+                                editorr.putString("username", "");
+                                editorr.putString("token", "");
+                                editorr.apply();
+                                ab.setMessage(GenKey.pesan(json.getString("message")))
+                                        .setPositiveButton("Tutup", new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialog, int which) {
+
+                                                dialog.dismiss();
+                                                Intent login = new Intent(activity, Login.class);
+                                                login.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                                startActivity(login);
+                                                activity.finish();
+                                            }
+                                        }).show();
+                            }
+
+                        } catch (Exception e) {
+                            e.printStackTrace();
+
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+                key.hideProgress();
 
                 try {
-                    if (json.getBoolean("token")) {
-                        if (json.getBoolean("hasil")) {
+                    String message;
+                    if (!(error instanceof NetworkError | error instanceof TimeoutError)) {
 
-                            proses();
-                        } else {
-                            ab.setMessage(json.getString("message")).setPositiveButton("Tutup", new DialogInterface.OnClickListener() {
+                        NetworkResponse networkResponse = error.networkResponse;
+                        message = "Gagal terhubung dengan server, siahkan coba beberapa menit lagi\nError Code: " + networkResponse.statusCode;
+
+                    } else {
+                        Log.e("ER", (error instanceof NetworkError) + "" + error.getMessage());
+                        message = "Gagal terhubung dengan server, siahkan coba beberapa menit lagi";
+                    }
+
+
+                    new androidx.appcompat.app.AlertDialog.Builder(activity)
+                            .setTitle("Informasi")
+                            .setMessage(message)
+                            .setCancelable(false)
+                            .setPositiveButton("Coba Lagi", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     dialog.dismiss();
+                                    volley_call();
                                 }
                             }).show();
-                        }
-                    } else {
-                        SharedPreferences.Editor editorr = sp.edit();
-                        editorr.putString("username", "");
-                        editorr.putString("token", "");
-                        editorr.apply();
-                        ab.setMessage(GenKey.pesan(json.getString("message")))
-                                .setPositiveButton("Tutup", new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
+                } catch (Exception se) {
+                    se.printStackTrace();
+                }
 
-                                        dialog.dismiss();
-                                        Intent login = new Intent(activity, Login.class);
-                                        login.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                                        startActivity(login);
-                                        activity.finish();
-                                    }
-                                }).show();
-                    }
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+
+//                postMap.put("xnip", uid.getText().toString().trim());
+//                postMap.put("xpassword", (pass.getText().toString().trim()));
+//                postMap.put("xtype", "1");
+//                postMap.put("xkey", generate.imei(activity));
+//                Log.e("ER", generate.Ubah_POST(postMap, core) + "  ");
+
+                Map<String, String> postMap2 = new HashMap<>();
+                try {
+                    JsonObject xdata = new JsonObject();
+
+
+                    xdata.addProperty("x1d", sp.getString("username", ""));
+                    xdata.addProperty("type", "mmm");
+                    xdata.addProperty("key", Utilities.imei(activity));
+                    xdata.addProperty("token", sp.getString("token", ""));
+                    xdata.addProperty("token_firebase", sp.getString("token_firebase", ""));
+                    Log.e("er", xdata.toString());
+                    postMap2.put("parsing", xdata.toString());
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    postMap2 = null;
                 }
-
-
-            } else {
-                Utilities.codeerror(activity, "ER0211");
+                return postMap2;
             }
-        }
+        };
 
-        private void proses() {
-            try {
-
-                SharedPreferences.Editor editor = sp.edit();
-                editor.putString("kd_kelas", json.getString("kd_kelas"));
-                editor.putString("nama_kelas", json.getString("nm_kelas"));
-                editor.apply();
-
-                json = json.getJSONObject("hari_ini");
-                if (json.getBoolean("status")) {
-                    ((TextView) findViewById(R.id.keterangan)).setText("Masuk");
-                    findViewById(R.id.info).setVisibility(View.GONE);
-                } else {
-                    ((TextView) findViewById(R.id.keterangan)).setText("Libur");
-                    ((TextView) findViewById(R.id.info)).setText(json.getString("ket"));
-                    findViewById(R.id.info).setVisibility(View.VISIBLE);
-                }
-            } catch (Exception e) {
-                Log.e("ER___", String.valueOf(e));
-            }
-        }
+        //make the request to your server as indicated in your request URL
+        stringRequest.setRetryPolicy(new DefaultRetryPolicy(Utilities.rto(),
+                0,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        Volley.newRequestQueue(activity).add(stringRequest);
     }
 
 }

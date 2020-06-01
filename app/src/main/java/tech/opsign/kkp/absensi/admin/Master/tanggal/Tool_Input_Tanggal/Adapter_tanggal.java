@@ -28,12 +28,14 @@ public class Adapter_tanggal extends RecyclerView.Adapter<Adapter_tanggal.MyView
         Model_tanggal b = arrayListData.get(position);
         holder.tanggal.setText(b.tanggal);
         holder.ket.setText(b.keterangan);
+//        #97CE68
         if (position % 2 == 1) {
-            holder.bg.setBackgroundColor(0xffe68a00);
+//            holder.bg.setBackgroundColor(0xffe68a00);
+            holder.bg.setBackgroundColor(0xffcc7a00);
 //            holder.bg.setBackgroundColor(0xffE8526D);
         } else
 //            holder.bg.setBackgroundColor(0xffC15CF5);
-            holder.bg.setBackgroundColor(0xff3Fbf00);
+            holder.bg.setBackgroundColor(0xff3B7E87);
 
     }
 
@@ -44,9 +46,9 @@ public class Adapter_tanggal extends RecyclerView.Adapter<Adapter_tanggal.MyView
 
         MyViewHolder(View v) {
             super(v);
-            tanggal = (TextView) v.findViewById(R.id.tanggal);
-            ket = (TextView) v.findViewById(R.id.keterangan);
-            bg = (TableLayout) v.findViewById(R.id.latar);
+            tanggal = v.findViewById(R.id.tanggal);
+            ket = v.findViewById(R.id.keterangan);
+            bg = v.findViewById(R.id.latar);
 
         }
 

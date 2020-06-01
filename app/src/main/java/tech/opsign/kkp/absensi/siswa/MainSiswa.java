@@ -26,6 +26,7 @@ import android.widget.Toast;
 import tech.opsign.kkp.absensi.GantiPass;
 import tech.opsign.kkp.absensi.Login;
 import tech.opsign.kkp.absensi.R;
+import tech.opsign.kkp.absensi.SplashScreen;
 import tech.opsign.kkp.absensi.siswa.Fragmen.Dashboard;
 import tech.opsign.kkp.absensi.siswa.Fragmen.Profile;
 import tech.opsign.kkp.absensi.siswa.pengurus.generate_qr;
@@ -56,7 +57,7 @@ public class MainSiswa extends AppCompatActivity implements NavigationView.OnNav
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
@@ -131,7 +132,7 @@ public class MainSiswa extends AppCompatActivity implements NavigationView.OnNav
         item.setChecked(false);
         int id = item.getItemId();
         FragmentManager fragmentManager = getFragmentManager();
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
 
         if (id == R.id.presensi_saya) {
             Intent intent  = new Intent(activity, cari_presensi.class);
@@ -170,7 +171,7 @@ public class MainSiswa extends AppCompatActivity implements NavigationView.OnNav
                             editor.putString("username", "");
                             editor.putString("token", "");
                             editor.commit();
-                            startActivity(new Intent(activity, Login.class));
+                            startActivity(new Intent(activity, SplashScreen.class));
                             overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
                             finish();
                         }
@@ -190,7 +191,7 @@ public class MainSiswa extends AppCompatActivity implements NavigationView.OnNav
 
     @Override
     public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         FragmentManager fragmentManager = getFragmentManager();
 
 

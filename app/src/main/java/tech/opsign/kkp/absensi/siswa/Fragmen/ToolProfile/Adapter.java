@@ -28,10 +28,16 @@ public class Adapter extends RecyclerView.Adapter<Adapter.MyViewHolder> {
         Model b = arrayListData.get(position);
         holder.nama.setText(b.nama);
         holder.kelas.setText(b.kelas);
+
         if (position % 2 == 1) {
-            holder.bg.setBackgroundColor(0xffE8526D);
+            holder.bg.setBackgroundColor(0xffFF3B30);
         } else
-            holder.bg.setBackgroundColor(0xffC15CF5);
+            holder.bg.setBackgroundColor(0xffFF9301);
+//
+//        if (position % 2 == 1) {
+//            holder.bg.setBackgroundColor(0xffE8526D);
+//        } else
+//            holder.bg.setBackgroundColor(0xffC15CF5);
 
     }
 
@@ -42,9 +48,9 @@ public class Adapter extends RecyclerView.Adapter<Adapter.MyViewHolder> {
 
         MyViewHolder(View v) {
             super(v);
-            nama = (TextView) v.findViewById(R.id.namarow);
-            kelas = (TextView) v.findViewById(R.id.kelas);
-            bg = (TableLayout) v.findViewById(R.id.latar);
+            nama = v.findViewById(R.id.namarow);
+            kelas = v.findViewById(R.id.kelas);
+            bg = v.findViewById(R.id.latar);
 
         }
 

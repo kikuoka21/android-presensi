@@ -25,15 +25,29 @@ import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.DefaultRetryPolicy;
+import com.android.volley.NetworkError;
+import com.android.volley.NetworkResponse;
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.TimeoutError;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import Tools.GenKey;
 import Tools.JsonParser;
@@ -74,7 +88,7 @@ public class Login_Parent extends AppCompatActivity {
         handler = new Handler();
         jnip = findViewById(R.id.nip);
         jpassword = findViewById(R.id.password);
-
+        jnip.setText("181142");
 
         jnip.addTextChangedListener(logintextwarcher);
         jpassword.addTextChangedListener(logintextwarcher);
@@ -92,7 +106,7 @@ public class Login_Parent extends AppCompatActivity {
                 str_pass = jpassword.getText().toString().trim();
                 jnip.setError(null);
                 jpassword.setError(null);
-                mulai();
+                volley_call();
 
 
             }
@@ -119,109 +133,8 @@ public class Login_Parent extends AppCompatActivity {
 
     }
 
-    private class Param {
-        String x1d, type, key, xp455;
-    }
-
-    @SuppressLint("StaticFieldLeak")
-    private class asyncUser extends AsyncTask<Void, Void, Void> {
-
-        private JSONObject json;
-        private boolean background;
 
 
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            background = true;
-//            dialog = new ProgressDialog(activity);
-//            dialog.setMessage("Sedang memproses data. Harap tunggu sejenak.");
-//            dialog.setCancelable(false);
-//            dialog.show();
-            key.showProgress(activity, true);
-
-        }
-
-        @Override
-        protected Void doInBackground(Void... voids) {
-            try {
-                StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-                StrictMode.setThreadPolicy(policy);
-
-
-
-                Param param = new Param();
-                param.x1d = str_username;
-                param.xp455 = key.gen_pass(str_pass);
-                param.type = "mmm";
-                param.key = Utilities.imei(activity);
-
-                Gson gson = new Gson();
-                List<NameValuePair> p = new ArrayList<NameValuePair>();
-                p.add(new BasicNameValuePair("parsing", gson.toJson(param)));
-
-                JsonParser jParser = new JsonParser();
-                json = jParser.getJSONFromUrl(key.url(401), p);
-                Log.e("param login ", gson.toJson(param));
-                Log.e("isi json login", json.toString(2));
-
-            } catch (Exception e) {
-                e.printStackTrace();
-                background = false;
-            }
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Void result) {
-            super.onPostExecute(result);
-
-//            if (dialog.isShowing()) {
-//                dialog.dismiss();
-//            }
-            key.hideProgress();
-            handler.removeCallbacksAndMessages(null);
-
-            if (background) {
-
-                try {
-                    if (json.getBoolean("hasil")) {
-
-
-                        SharedPreferences.Editor editor = sp.edit();
-                        editor.putString("username", str_username);
-                        editor.putString("token", json.getString("token"));
-                        editor.putString("thn_ajar", json.getString("thn-ajar"));
-                        editor.putString("tanggal", json.getString("tanggal"));
-//
-                        editor.putString("nama", json.getString("nama"));
-                        editor.apply();
-
-                        startActivity(new Intent(activity, MainParent2.class));
-                        finish();
-                        Log.e("ER_", "berhasil boii parent");
-
-                    } else {
-                        AlertDialog.Builder ab = new AlertDialog.Builder(activity);
-                        ab
-                                .setCancelable(false).setTitle("Informasi")
-                                .setMessage(json.getString("message"))
-                                .setPositiveButton("Tutup", new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        dialog.dismiss();
-                                    }
-                                })
-                                .show();
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            } else {
-                Utilities.codeerror(activity, "ER0211");
-            }
-        }
-    }
     private void closekeyboard() {
         try {
             View view = activity.getCurrentFocus();
@@ -262,37 +175,122 @@ public class Login_Parent extends AppCompatActivity {
     };
 
 
-    private void mulai() {
-        Log.e("ER", "start");
-        start = new asyncUser().execute();
-        handler.postDelayed(new Runnable() {
+
+
+    private void volley_call() {
+        key.showProgress(activity, true);
+
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, key.url(401),
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        key.hideProgress();
+                        try {
+
+                            JSONObject json = new JSONObject(response);
+                            Log.e("ER", json.toString(3));
+                            if (json.getBoolean("hasil")) {
+
+
+                                SharedPreferences.Editor editor = sp.edit();
+                                editor.putString("username", str_username);
+                                editor.putString("token", json.getString("token"));
+                                editor.putString("thn_ajar", json.getString("thn-ajar"));
+                                editor.putString("tanggal", json.getString("tanggal"));
+//
+                                editor.putString("nama", json.getString("nama"));
+                                editor.apply();
+
+                                startActivity(new Intent(activity, MainParent2.class));
+                                finish();
+                                Log.e("ER_", "berhasil boii parent");
+
+                            } else {
+                                AlertDialog.Builder ab = new AlertDialog.Builder(activity);
+                                ab
+                                        .setTitle("Informasi")
+                                        .setMessage(json.getString("message"))
+                                        .setPositiveButton("Tutup", new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                dialog.dismiss();
+                                            }
+                                        })
+                                        .show();
+                            }
+
+                        } catch (Exception e) {
+                            e.printStackTrace();
+
+                        }
+                    }
+                }, new Response.ErrorListener() {
             @Override
-            public void run() {
-                if (key.progres_isShowing()) {
-                    key.hideProgress();
-                    start.cancel(true);
+            public void onErrorResponse(VolleyError error) {
+
+                key.hideProgress();
+
+                try {
+                    String message;
+                    if (!(error instanceof NetworkError | error instanceof TimeoutError)) {
+
+                        NetworkResponse networkResponse = error.networkResponse;
+                        message = "Gagal terhubung dengan server, siahkan coba beberapa menit lagi\nError Code: " + networkResponse.statusCode;
+
+                    } else {
+                        Log.e("ER", (error instanceof NetworkError) + "" + error.getMessage());
+                        message = "Gagal terhubung dengan server, siahkan coba beberapa menit lagi";
+                    }
+
+
                     new androidx.appcompat.app.AlertDialog.Builder(activity)
                             .setTitle("Informasi")
-                            .setMessage("Telah Terjadi Kesalahan Pada Koneksi Anda.")
+                            .setMessage(message)
                             .setCancelable(false)
-                            .setPositiveButton("Coba Lagi", new DialogInterface.OnClickListener() {
+                            .setPositiveButton("Tutup", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     dialog.dismiss();
-                                    mulai();
                                 }
-                            }).setNegativeButton("Keluar Aplikasi", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.dismiss();
-                            finish();
-                        }
-                    }).show();
+                            }).show();
+                } catch (Exception se) {
+                    se.printStackTrace();
                 }
-            }
-        }, Utilities.rto());
-    }
 
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+
+//                postMap.put("xnip", uid.getText().toString().trim());
+//                postMap.put("xpassword", (pass.getText().toString().trim()));
+//                postMap.put("xtype", "1");
+//                postMap.put("xkey", generate.imei(activity));
+//                Log.e("ER", generate.Ubah_POST(postMap, core) + "  ");
+
+                Map<String, String> postMap2 = new HashMap<>();
+                try {
+                    JsonObject xdata = new JsonObject();
+
+                    xdata.addProperty("x1d", str_username);
+                    xdata.addProperty("type", "mmm");
+                    xdata.addProperty("key", Utilities.imei(activity));
+                    xdata.addProperty("xp455", key.gen_pass(str_pass));
+                    Log.e("er", xdata.toString());
+                    postMap2.put("parsing", xdata.toString());
+                } catch (Exception e) {
+                    postMap2 = null;
+                }
+                return postMap2;
+            }
+        };
+
+        //make the request to your server as indicated in your request URL
+        stringRequest.setRetryPolicy(new DefaultRetryPolicy(Utilities.rto(),
+                0,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        Volley.newRequestQueue(activity).add(stringRequest);
+    }
 
 }
 

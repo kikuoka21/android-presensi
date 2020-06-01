@@ -2,7 +2,7 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#fff"
+    android:background="@color/gray"
     android:orientation="vertical">
 
     <LinearLayout
@@ -26,7 +26,7 @@
                 android:layout_height="match_parent"
                 android:textAlignment="center"
                 android:textColor="#fff"
-                android:textSize="18sp" />
+                android:textSize="@dimen/text_head_1_parent" />
 
             <TextView
                 android:id="@+id/nama"
@@ -34,7 +34,7 @@
                 android:layout_height="match_parent"
                 android:textAlignment="center"
                 android:textColor="#fff"
-                android:textSize="18sp" />
+                android:textSize="@dimen/text_head_1_parent" />
         </LinearLayout>
 
         <LinearLayout
@@ -56,7 +56,7 @@
                         android:layout_height="wrap_content"
                         android:text="NISN"
                         android:textColor="@color/dark"
-                        android:textSize="16sp" />
+                        android:textSize="@dimen/text_head_2_parent" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -66,7 +66,7 @@
                         android:paddingEnd="5dp"
                         android:text=":"
                         android:textColor="@color/dark"
-                        android:textSize="16sp" />
+                        android:textSize="@dimen/text_head_2_parent" />
 
                     <TextView
                         android:id="@+id/nisn"
@@ -74,8 +74,9 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="10"
                         android:textColor="@color/dark"
-                        android:textSize="16sp" />
+                        android:textSize="@dimen/text_head_2_parent" />
                 </TableRow>
+
                 <TableRow>
 
                     <TextView
@@ -83,7 +84,7 @@
                         android:layout_height="wrap_content"
                         android:text="Jenis Kelamin"
                         android:textColor="@color/dark"
-                        android:textSize="16sp" />
+                        android:textSize="@dimen/text_head_2_parent" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -93,7 +94,7 @@
                         android:paddingEnd="5dp"
                         android:text=":"
                         android:textColor="@color/dark"
-                        android:textSize="16sp" />
+                        android:textSize="@dimen/text_head_2_parent" />
 
                     <TextView
                         android:id="@+id/jenkel"
@@ -101,7 +102,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="10"
                         android:textColor="@color/dark"
-                        android:textSize="16sp" />
+                        android:textSize="@dimen/text_head_2_parent" />
                 </TableRow>
 
                 <TableRow>
@@ -109,9 +110,9 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Tempat, Tanggal Lahir"
+                        android:text="Tempat Lahir"
                         android:textColor="@color/dark"
-                        android:textSize="16sp" />
+                        android:textSize="@dimen/text_head_2_parent" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -121,7 +122,7 @@
                         android:paddingEnd="5dp"
                         android:text=":"
                         android:textColor="@color/dark"
-                        android:textSize="16sp" />
+                        android:textSize="@dimen/text_head_2_parent" />
 
                     <TextView
                         android:id="@+id/tmp_tgl_lahir"
@@ -129,7 +130,34 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="10"
                         android:textColor="@color/dark"
-                        android:textSize="16sp" />
+                        android:textSize="@dimen/text_head_2_parent" />
+                </TableRow>
+                <TableRow>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Tanggal Lahir"
+                        android:textColor="@color/dark"
+                        android:textSize="@dimen/text_head_2_parent" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.01"
+                        android:paddingStart="10dp"
+                        android:paddingEnd="5dp"
+                        android:text=":"
+                        android:textColor="@color/dark"
+                        android:textSize="@dimen/text_head_2_parent" />
+
+                    <TextView
+                        android:id="@+id/tmp_tgl_lahir2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="10"
+                        android:textColor="@color/dark"
+                        android:textSize="@dimen/text_head_2_parent" />
                 </TableRow>
 
                 <TableRow>
@@ -139,7 +167,7 @@
                         android:layout_height="wrap_content"
                         android:text="Agama"
                         android:textColor="@color/dark"
-                        android:textSize="16sp" />
+                        android:textSize="@dimen/text_head_2_parent" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -149,7 +177,7 @@
                         android:paddingEnd="5dp"
                         android:text=":"
                         android:textColor="@color/dark"
-                        android:textSize="16sp" />
+                        android:textSize="@dimen/text_head_2_parent" />
 
                     <TextView
                         android:id="@+id/agama"
@@ -157,7 +185,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="10"
                         android:textColor="@color/dark"
-                        android:textSize="16sp" />
+                        android:textSize="@dimen/text_head_2_parent" />
                 </TableRow>
 
                 <TableRow>
@@ -167,7 +195,7 @@
                         android:layout_height="wrap_content"
                         android:text="Orang Tua / Wali"
                         android:textColor="@color/dark"
-                        android:textSize="16sp" />
+                        android:textSize="@dimen/text_head_2_parent" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -177,7 +205,7 @@
                         android:paddingEnd="5dp"
                         android:text=":"
                         android:textColor="@color/dark"
-                        android:textSize="16sp" />
+                        android:textSize="@dimen/text_head_2_parent" />
 
                     <TextView
                         android:id="@+id/orangtua"
@@ -185,7 +213,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="10"
                         android:textColor="@color/dark"
-                        android:textSize="16sp" />
+                        android:textSize="@dimen/text_head_2_parent" />
                 </TableRow>
 
                 <TableRow>
@@ -195,7 +223,7 @@
                         android:layout_height="wrap_content"
                         android:text="Alamat"
                         android:textColor="@color/dark"
-                        android:textSize="16sp" />
+                        android:textSize="@dimen/text_head_2_parent" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -205,7 +233,7 @@
                         android:paddingEnd="5dp"
                         android:text=":"
                         android:textColor="@color/dark"
-                        android:textSize="16sp" />
+                        android:textSize="@dimen/text_head_2_parent" />
 
                     <TextView
                         android:id="@+id/alamat"
@@ -213,21 +241,21 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="10"
                         android:textColor="@color/dark"
-                        android:textSize="16sp" />
+                        android:textSize="@dimen/text_head_2_parent" />
                 </TableRow>
             </TableLayout>
         </LinearLayout>
 
         <TextView
-            android:paddingStart="12dp"
-            android:paddingEnd="12dp"
-            android:paddingTop="20dp"
-            android:paddingBottom="5dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:paddingStart="16dp"
+            android:paddingTop="20dp"
+            android:paddingEnd="16dp"
+            android:paddingBottom="5dp"
             android:text="Riwayat Kelas"
-            android:textSize="18sp"
-            android:textColor="@color/dark"/>
+            android:textColor="@color/dark"
+            android:textSize="@dimen/text_head_1_parent" />
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -239,6 +267,7 @@
                 android:layout_marginTop="4dp"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
+
             <TextView
                 android:id="@+id/nulldata"
                 android:layout_width="match_parent"

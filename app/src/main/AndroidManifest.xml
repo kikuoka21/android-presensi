@@ -208,8 +208,21 @@
         <activity
             android:name=".Parent.MainParent2"
             android:configChanges="orientation|screenSize"
-            android:theme="@style/AppTheme2.NoActionBar"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme2.NoActionBar" />
+
+        <activity
+            android:name=".Tanggal_Libur"
+            android:configChanges="orientation|screenSize"
+            android:label="Daftar Tanggal Libur Sekolah"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme2" />
+        <activity
+            android:name=".Parent.Profile_parent"
+            android:configChanges="orientation|screenSize"
+            android:label="Data Diri Siswa"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme2.NoActionBar" />
     </application>
 
 

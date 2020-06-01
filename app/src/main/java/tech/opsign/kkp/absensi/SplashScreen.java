@@ -328,7 +328,7 @@ public class SplashScreen extends AppCompatActivity {
                                                 startActivity(homeIntent);
                                                 finish();
                                             }
-                                        }, 5000
+                                        }, 1500
                                 );
                             } else {
 //                                Utilities.showMessageBox(activity, "Informasi", "berhasil token parent");
@@ -346,10 +346,11 @@ public class SplashScreen extends AppCompatActivity {
                                             public void run() {
 
                                                 startActivity(new Intent(activity, MainParent2.class));
+//                                                startActivity(new Intent(activity, Tanggal_Libur.class));
                                                 finish();
                                                 Log.e("ER_", "berhasil boii parent");
                                             }
-                                        }, 2000
+                                        }, 1500
                                 );
                             }
                         } catch (Exception e) {

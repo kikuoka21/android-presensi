@@ -15,11 +15,13 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.StrictMode;
+
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import android.text.InputType;
 import android.util.Log;
 import android.view.MenuItem;
@@ -97,16 +99,16 @@ public class input_tanggal extends AppCompatActivity {
         if (intent.getStringExtra("next_action").equals("111")) {
             setTitle("Input Hari Libur");
         } else {
-            ((LinearLayout) findViewById(R.id.bagianinput)).setVisibility(View.GONE);
+            findViewById(R.id.bagianinput).setVisibility(View.GONE);
             setTitle("Pilih Hari Libur");
         }
 
-        tgl = (TextView) findViewById(R.id.inpt_tgl);
-        ket = (EditText) findViewById(R.id.ket);
+        tgl = findViewById(R.id.inpt_tgl);
+        ket = findViewById(R.id.ket);
 
 
         adapter = new Adapter_tanggal(modelList);
-        recyclerView = (RecyclerView) findViewById(R.id.list_tanggal);
+        recyclerView = findViewById(R.id.list_tanggal);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(activity);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setNestedScrollingEnabled(false);
@@ -114,7 +116,7 @@ public class input_tanggal extends AppCompatActivity {
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(adapter);
 
-        LinearLayout date_pick = (LinearLayout) findViewById(R.id.pilih_tgl);
+        LinearLayout date_pick = findViewById(R.id.pilih_tgl);
         date_pick.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -430,7 +432,7 @@ public class input_tanggal extends AppCompatActivity {
                 Model_tanggal row;
                 JSONArray aray = json.getJSONArray("data");
                 if (aray != null && aray.length() > 0) {
-                    ((LinearLayout) findViewById(R.id.nulldata)).setVisibility(View.GONE);
+                    findViewById(R.id.nulldata).setVisibility(View.GONE);
                     recyclerView.setVisibility(View.VISIBLE);
                     for (int i = 0; i < aray.length(); i++) {
                         json = aray.getJSONObject(i);
@@ -445,7 +447,7 @@ public class input_tanggal extends AppCompatActivity {
                         modelList.add(row);
                     }
                 } else {
-                    ((LinearLayout) findViewById(R.id.nulldata)).setVisibility(View.VISIBLE);
+                    findViewById(R.id.nulldata).setVisibility(View.VISIBLE);
                     recyclerView.setVisibility(View.GONE);
                 }
                 adapter.notifyDataSetChanged();
@@ -493,6 +495,7 @@ public class input_tanggal extends AppCompatActivity {
             }
         }
     }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -521,7 +524,7 @@ public class input_tanggal extends AppCompatActivity {
             @SuppressLint("SimpleDateFormat")
             SimpleDateFormat
                     date = new SimpleDateFormat("yyyy-MM-dd");
-            String strin = String.valueOf(year) + "-" + ubahan(month + 1) + "-" + ubahan(day);
+            String strin = year + "-" + ubahan(month + 1) + "-" + ubahan(day);
 
             try {
                 Date tanggalpilihan, tanggalskrng;
@@ -698,7 +701,6 @@ public class input_tanggal extends AppCompatActivity {
                         }
                     }).show();
                 }
-
 
 
             } else {
