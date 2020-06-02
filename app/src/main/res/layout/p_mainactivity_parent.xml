@@ -68,7 +68,6 @@
                         android:layout_weight="1"
                         android:paddingStart="0dp"
                         android:paddingEnd="5dp"
-                        android:text="Minggu, 12 desember 2018"
                         android:textAlignment="center"
                         android:textColor="@color/dark"
                         android:textSize="@dimen/text_head_2_parent" />
@@ -138,7 +137,6 @@
                         android:layout_weight="1"
                         android:paddingStart="0dp"
                         android:paddingEnd="5dp"
-                        android:text="SUDAH PRESSENSI"
                         android:textAlignment="center"
                         android:textColor="@color/dark"
                         android:textSize="@dimen/text_head_2_parent"
@@ -173,7 +171,7 @@
                     android:clickable="true"
                     android:foreground="?android:attr/selectableItemBackground"
                     app:cardCornerRadius="8dp"
-                    app:cardElevation="8dp">
+                    app:cardElevation="4dp">
 
                     <RelativeLayout
                         android:layout_width="match_parent"
@@ -199,7 +197,7 @@
                             android:layout_marginTop="4dp"
                             android:gravity="center"
                             android:text="Riwayat Presensi"
-                            android:textColor="@color/hitam"
+                            android:textColor="@color/dark"
                             android:textSize="@dimen/text_head_2_parent" />
                     </RelativeLayout>
                 </com.google.android.material.card.MaterialCardView>
@@ -217,7 +215,7 @@
                     android:clickable="true"
                     android:foreground="?android:attr/selectableItemBackground"
                     app:cardCornerRadius="8dp"
-                    app:cardElevation="8dp">
+                    app:cardElevation="4dp">
 
                     <RelativeLayout
                         android:layout_width="match_parent"
@@ -243,7 +241,7 @@
                             android:layout_marginTop="4dp"
                             android:gravity="center"
                             android:text="Biodata Siswa"
-                            android:textColor="@color/hitam"
+                            android:textColor="@color/dark"
                             android:textSize="@dimen/text_head_2_parent" />
                     </RelativeLayout>
                 </com.google.android.material.card.MaterialCardView>
@@ -267,7 +265,7 @@
                     android:clickable="true"
                     android:foreground="?android:attr/selectableItemBackground"
                     app:cardCornerRadius="8dp"
-                    app:cardElevation="8dp">
+                    app:cardElevation="4dp">
 
                     <RelativeLayout
                         android:layout_width="match_parent"
@@ -293,7 +291,7 @@
                             android:layout_marginTop="4dp"
                             android:gravity="center"
                             android:text="Daftar Tanggal Libur  "
-                            android:textColor="@color/hitam"
+                            android:textColor="@color/dark"
                             android:textSize="@dimen/text_head_2_parent" />
                     </RelativeLayout>
                 </com.google.android.material.card.MaterialCardView>
@@ -311,7 +309,7 @@
                     android:clickable="true"
                     android:foreground="?android:attr/selectableItemBackground"
                     app:cardCornerRadius="8dp"
-                    app:cardElevation="8dp">
+                    app:cardElevation="4dp">
 
                     <RelativeLayout
                         android:layout_width="match_parent"
@@ -337,7 +335,7 @@
                             android:layout_marginTop="4dp"
                             android:gravity="center"
                             android:text="Logout"
-                            android:textColor="@color/hitam"
+                            android:textColor="@color/dark"
                             android:textSize="@dimen/text_head_2_parent" />
                     </RelativeLayout>
                 </com.google.android.material.card.MaterialCardView>

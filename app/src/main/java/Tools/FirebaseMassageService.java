@@ -21,6 +21,7 @@ import com.google.firebase.messaging.RemoteMessage;
 
 import java.util.Map;
 
+import tech.opsign.kkp.absensi.R;
 import tech.opsign.kkp.absensi.SplashScreen;
 
 public class FirebaseMassageService extends FirebaseMessagingService {
@@ -51,11 +52,9 @@ public class FirebaseMassageService extends FirebaseMessagingService {
             String content = data.get("content");
             Log.e("ER", String.valueOf(data));
             NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-            String NOTIFCATION_CHANEL_ID = "EDMTDev";
+            String NOTIFCATION_CHANEL_ID = data.get("chanel");
 //            if(!data.get("nama").equals("")){
-            if(data.containsKey("chanel")){
-                NOTIFCATION_CHANEL_ID = data.get("chanel");
-            }
+
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
 
@@ -80,10 +79,12 @@ public class FirebaseMassageService extends FirebaseMessagingService {
                     .setStyle(new NotificationCompat.BigTextStyle().bigText(content))
                     .setTicker("Hearty365")
                     .setContentTitle(tittle)
+                    .setSmallIcon(R.mipmap.ic_launcher)
                     .setContentText(content)
                     .setAutoCancel(true)
                     .setContentIntent(resultpendingIntent)
                     .setContentInfo("info");
+
             Log.e(TAG, "onMessageReceived5 " );
             notificationManager.notify(0, notificationBuilder.build());
         }catch (Exception e){

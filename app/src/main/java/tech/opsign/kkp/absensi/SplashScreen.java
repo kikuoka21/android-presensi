@@ -67,10 +67,11 @@ public class SplashScreen extends AppCompatActivity {
             pInfo = activity.getPackageManager().getPackageInfo(getPackageName(), 0);
             String version = pInfo.versionName;
 //            String version = key.gen_pass("1234");
-            ((TextView) findViewById(R.id.version)).setText(version + "\nIcons made by Freepik from www.flaticon.com is licensed by CC 3.0 BY");
+            ((TextView) findViewById(R.id.version)).setText("Versi "+version + "\nIcons made by Freepik\nfrom www.flaticon.com is licensed by CC 3.0 BY");
 //            Log.e("ER", version);
         } catch (Exception ignored) {
 
+            ((TextView) findViewById(R.id.version)).setText("Versi -" + "\nIcons made by Freepik\nfrom www.flaticon.com is licensed by CC 3.0 BY");
         }
 
         loadIMEI();

@@ -83,7 +83,7 @@ public class Dashboard extends Fragment {
     }
 
     private class Param {
-        String x1d, type, key, token;
+        String x1d, type, key, token,token_firebase;
     }
 
     private class callAPI extends AsyncTask<Void, Void, Void> {
@@ -116,6 +116,7 @@ public class Dashboard extends Fragment {
                 param.type = "mmm";
                 param.key = Utilities.imei(getActivity());
                 param.token = sp.getString("token", "");
+                param.token_firebase = sp.getString("token_firebase", "");
 //                param.kd_kls = sp.getString("token", "");
 
                 Gson gson = new Gson();
@@ -196,10 +197,11 @@ public class Dashboard extends Fragment {
                 json = json.getJSONObject("hari_ini");
                 if (json.getString("status").equals("L")) {
                     ((TextView) v.findViewById(R.id.keterangan)).setText("Libur");
-                    ((TextView) v.findViewById(R.id.info)).setVisibility(View.VISIBLE);
+                    v.findViewById(R.id.info).setVisibility(View.VISIBLE);
+                    ((TextView)  v.findViewById(R.id.info)).setText(json.getString("ket"));
                 } else {
-                    ((TextView) v.findViewById(R.id.keterangan)).setText("Masuk");
-                    ((TextView) v.findViewById(R.id.info)).setVisibility(View.GONE);
+                    ((TextView) v.findViewById(R.id.keterangan)).setText("Ada Kegiatan Belajar Mengajar");
+                    v.findViewById(R.id.info).setVisibility(View.GONE);
                 }
              } catch (Exception e) {
                 Log.e("ER___", String.valueOf(e));

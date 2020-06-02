@@ -184,7 +184,7 @@ public class scan_qr_code extends AppCompatActivity implements ZXingScannerView.
 
 
     private class Param {
-        String x1d, type, key, token, kd_kls, token_absen, tanggal;
+        String x1d, type, key, token, kd_kls, token_absen, tanggal,nama;
     }
 
     private class callAPI extends AsyncTask<Void, Void, Void> {
@@ -222,6 +222,7 @@ public class scan_qr_code extends AppCompatActivity implements ZXingScannerView.
                 param.kd_kls = sp.getString("kd_kelas", "");
                 param.token_absen = qrcode.getString("token");
                 param.tanggal = qrcode.getString("tanggal");
+                param.nama = sp.getString("nama", "");
 
 
                 Gson gson = new Gson();

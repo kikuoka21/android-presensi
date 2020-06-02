@@ -184,11 +184,12 @@ public class Login_Parent extends AppCompatActivity {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        key.hideProgress();
                         try {
 
                             JSONObject json = new JSONObject(response);
                             Log.e("ER", json.toString(3));
+
+                            key.hideProgress();
                             if (json.getBoolean("hasil")) {
 
 

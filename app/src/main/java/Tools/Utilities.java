@@ -226,27 +226,30 @@ public class Utilities {
     }
 
     public static String status_kehadiran(String stat) {
-        switch (stat.substring(0, 1)) {
-            case "L":
-                return "Libur";
 
-            case "A":
-                return "Alpha";
 
-            case "I":
-                return "Izin";
+            switch (stat.substring(0, 1)) {
+                case "L":
+                    return "Libur";
 
-            case "S":
-                return "Sakit";
+                case "A":
+                    return "Alpha";
 
-            case "H":
-                return "Hadir";
-            case "T":
-                return "Telat";
+                case "I":
+                    return "Izin";
 
-            default:
-                return stat;
-        }
+                case "S":
+                    return "Sakit";
+
+                case "H":
+                    return "Hadir";
+
+                case "T":
+                    return "Telat";
+
+                default:
+                    return stat;
+            }
     }
 
 

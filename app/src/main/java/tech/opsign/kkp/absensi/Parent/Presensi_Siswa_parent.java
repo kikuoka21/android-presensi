@@ -1,4 +1,4 @@
-package tech.opsign.kkp.absensi.siswa;
+package tech.opsign.kkp.absensi.Parent;
 
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
@@ -10,11 +10,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.StrictMode;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.DefaultItemAnimator;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -23,11 +18,14 @@ import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.Spinner;
-import android.widget.TableLayout;
-import android.widget.TableRow;
 import android.widget.TextView;
+
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.gson.Gson;
 
@@ -47,12 +45,9 @@ import tech.opsign.kkp.absensi.R;
 import tech.opsign.kkp.absensi.siswa.tool_presensi.Adapter_presensi;
 import tech.opsign.kkp.absensi.siswa.tool_presensi.Model_presensi;
 
-public class cari_presensi extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
+public class Presensi_Siswa_parent extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
     private static SharedPreferences sp;
-    private cari_presensi activity;
-    private Handler handler;
-    private AsyncTask start;
-    private ProgressDialog dialog;
+    private Presensi_Siswa_parent activity;
     private GenKey key;
     private RecyclerView recyclerView;
     private List<Model_presensi> modelList = new ArrayList<>();
@@ -69,7 +64,6 @@ public class cari_presensi extends AppCompatActivity implements AdapterView.OnIt
         this.activity = this;
         key = new GenKey();
         sp = activity.getSharedPreferences("shared", 0x0000);
-        handler = new Handler();
 
 
         if (Build.VERSION.SDK_INT >= 21) {
@@ -150,33 +144,6 @@ public class cari_presensi extends AppCompatActivity implements AdapterView.OnIt
         modelList.clear();
         Adapter.notifyDataSetChanged();
         Log.e("ER", "start");
-        start = new kirim_siswa().execute();
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                if (dialog.isShowing()) {
-                    dialog.dismiss();
-                    start.cancel(true);
-                    new AlertDialog.Builder(activity)
-                            .setTitle("Informasi")
-                            .setMessage("Telah Terjadi Kesalahan Pada Koneksi Anda.")
-                            .setCancelable(false)
-                            .setPositiveButton("Coba Lagi", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    dialog.dismiss();
-                                    kirim();
-                                }
-                            }).setNegativeButton("kembali", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.dismiss();
-                            finish();
-                        }
-                    }).show();
-                }
-            }
-        }, Utilities.rto());
     }
 
     private class kirim_siswa extends AsyncTask<Void, Void, Void> {
@@ -194,10 +161,6 @@ public class cari_presensi extends AppCompatActivity implements AdapterView.OnIt
         protected void onPreExecute() {
             super.onPreExecute();
             background = true;
-            dialog = new ProgressDialog(activity);
-            dialog.setMessage("Sedang memproses data. Harap tunggu sejenak.");
-            dialog.setCancelable(false);
-            dialog.show();
 
         }
 
@@ -235,10 +198,6 @@ public class cari_presensi extends AppCompatActivity implements AdapterView.OnIt
         protected void onPostExecute(Void result) {
             super.onPostExecute(result);
 
-            if (dialog.isShowing()) {
-                dialog.dismiss();
-            }
-            handler.removeCallbacksAndMessages(null);
 
             if (background) {
 

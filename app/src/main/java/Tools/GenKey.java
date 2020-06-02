@@ -142,8 +142,8 @@ public class GenKey {
 
 
 //
-//            case 404: //logout
-//                return head + "/api/parent/login";
+            case 404: //logout
+                return head + "/api/auth/logout";
 
 
             default:
@@ -195,8 +195,8 @@ public class GenKey {
     private Dialog mDialog;
 
 
-
-    public void showProgress(Context context, boolean cancelable) {
+    @Deprecated
+    public void showProgress(Context context, boolean bisa_dibatalin_gk) {
         mDialog = new Dialog(context);
         // no tile for the dialog
         mDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -204,8 +204,22 @@ public class GenKey {
 
 
         mDialog.getWindow().setBackgroundDrawableResource(R.color.transparent);
-        mDialog.setCancelable(cancelable);
-        mDialog.setCanceledOnTouchOutside(cancelable);
+        mDialog.setCancelable(false);
+        mDialog.setCanceledOnTouchOutside(false);
+        mDialog.show();
+    }
+
+
+    public void showProgress(Context context) {
+        mDialog = new Dialog(context);
+        // no tile for the dialog
+        mDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        mDialog.setContentView(R.layout.custom_loading);
+
+
+        mDialog.getWindow().setBackgroundDrawableResource(R.color.transparent);
+        mDialog.setCancelable(false);
+        mDialog.setCanceledOnTouchOutside(false);
         mDialog.show();
     }
 

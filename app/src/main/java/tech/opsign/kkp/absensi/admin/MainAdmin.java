@@ -9,12 +9,27 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+
+import com.android.volley.AuthFailureError;
+import com.android.volley.DefaultRetryPolicy;
+import com.android.volley.NetworkError;
+import com.android.volley.NetworkResponse;
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.TimeoutError;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.google.android.material.navigation.NavigationView;
+import com.google.gson.JsonObject;
+
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -22,6 +37,11 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import org.json.JSONObject;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import Tools.GenKey;
 import Tools.Utilities;
@@ -189,13 +209,7 @@ public class MainAdmin extends AppCompatActivity implements NavigationView.OnNav
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
 
-                            SharedPreferences.Editor editor = sp.edit();
-                            editor.putString("username", "");
-                            editor.putString("token", "");
-                            editor.commit();
-                            startActivity(new Intent(activity, SplashScreen.class));
-                            overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
-                            finish();
+                           logout();
                         }
                     })
                     .setNegativeButton("Batal", new DialogInterface.OnClickListener() {
@@ -237,6 +251,107 @@ public class MainAdmin extends AppCompatActivity implements NavigationView.OnNav
 
     }
 
+    private void logout() {
+        key.showProgress(activity, true);
+
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, key.url(404),
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        key.hideProgress();
+                        try {
+
+
+                            JSONObject json = new JSONObject(response);
+                            Log.e("ER", json.toString(3));
+                            if (json.getBoolean("hasil")) {
+
+                                SharedPreferences.Editor editor = sp.edit();
+                                editor.putString("username", "");
+                                editor.putString("token", "");
+                                editor.apply();
+                                startActivity(new Intent(activity, SplashScreen.class));
+                                overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+                                finish();
+
+
+                            } else {
+                                androidx.appcompat.app.AlertDialog.Builder ab = new androidx.appcompat.app.AlertDialog.Builder(activity);
+                                ab.setCancelable(false).setTitle("Informasi");
+                                ab.setMessage(json.getString("message")).setPositiveButton("Tutup", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        dialog.dismiss();
+                                    }
+                                }).show();
+                            }
+
+                        } catch (Exception e) {
+                            e.printStackTrace();
+
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+                key.hideProgress();
+
+                try {
+                    String message;
+                    if (!(error instanceof NetworkError | error instanceof TimeoutError)) {
+
+                        NetworkResponse networkResponse = error.networkResponse;
+                        message = "Gagal terhubung dengan server, siahkan coba beberapa menit lagi\nError Code: " + networkResponse.statusCode;
+
+                    } else {
+                        Log.e("ER", (error instanceof NetworkError) + "" + error.getMessage());
+                        message = "Gagal terhubung dengan server, siahkan coba beberapa menit lagi";
+                    }
+
+
+                    new androidx.appcompat.app.AlertDialog.Builder(activity)
+                            .setTitle("Informasi")
+                            .setMessage(message)
+                            .setCancelable(false)
+                            .setPositiveButton("Tutup", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                }
+                            }).show();
+                } catch (Exception se) {
+                    se.printStackTrace();
+                }
+
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+
+                Map<String, String> postMap2 = new HashMap<>();
+                try {
+                    JsonObject xdata = new JsonObject();
+
+
+                    xdata.addProperty("x1d", sp.getString("username", ""));
+                    xdata.addProperty("token", sp.getString("token", ""));
+                    xdata.addProperty("wali", false);
+                    Log.e("er", xdata.toString());
+                    postMap2.put("parsing", xdata.toString());
+                } catch (Exception e) {
+                    postMap2 = null;
+                }
+                return postMap2;
+            }
+        };
+
+        //make the request to your server as indicated in your request URL
+        stringRequest.setRetryPolicy(new DefaultRetryPolicy(Utilities.rto(),
+                0,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        Volley.newRequestQueue(activity).add(stringRequest);
+    }
 
 
 
