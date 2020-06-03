@@ -157,7 +157,7 @@ public class Dashboard extends Fragment {
                     SharedPreferences.Editor editorr = sp.edit();
                     editorr.putString("username", "");
                     editorr.putString("token", "");
-                    editorr.commit();
+                    editorr.apply();
                     ab.setMessage(GenKey.pesan(code))
                             .setPositiveButton("Tutup", new DialogInterface.OnClickListener() {
                                 @Override
@@ -192,7 +192,7 @@ public class Dashboard extends Fragment {
                 SharedPreferences.Editor editor = sp.edit();
                 editor.putString("kd_kelas", json.getString("kd_kelas"));
                 editor.putString("nama_kelas", json.getString("nm_kelas"));
-                editor.commit();
+                editor.apply();
 
                 json = json.getJSONObject("hari_ini");
                 if (json.getString("status").equals("L")) {

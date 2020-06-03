@@ -232,4 +232,10 @@ public class GenKey {
     public boolean progres_isShowing(){
         return mDialog.isShowing();
     }
+
+
+    public int random(double min, double max) {
+        return (int) ((int) (Math.random() * ((max - min) + 1)) + min);
+    }
+
 }

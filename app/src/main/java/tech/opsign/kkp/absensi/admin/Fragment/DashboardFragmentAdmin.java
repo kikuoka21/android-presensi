@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -19,10 +20,19 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.github.mikephil.charting.animation.Easing;
+import com.github.mikephil.charting.charts.PieChart;
+import com.github.mikephil.charting.components.Description;
+import com.github.mikephil.charting.data.PieData;
+import com.github.mikephil.charting.data.PieDataSet;
+import com.github.mikephil.charting.data.PieEntry;
+import com.github.mikephil.charting.formatter.ValueFormatter;
+import com.github.mikephil.charting.utils.ColorTemplate;
 import com.google.gson.Gson;
 
 import org.apache.http.NameValuePair;
@@ -31,6 +41,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import Tools.GenKey;
@@ -40,6 +51,8 @@ import tech.opsign.kkp.absensi.Login;
 import tech.opsign.kkp.absensi.R;
 import tech.opsign.kkp.absensi.admin.Fragment.ToolDashboard.Adapter;
 import tech.opsign.kkp.absensi.admin.Fragment.ToolDashboard.Model;
+
+import static com.github.mikephil.charting.animation.Easing.EaseInOutCubic;
 
 public class DashboardFragmentAdmin extends Fragment {
 
@@ -54,6 +67,19 @@ public class DashboardFragmentAdmin extends Fragment {
 
     private List<Model> modelList = new ArrayList<>();
     private Adapter adapter;
+    private PieChart pieChart;
+    private int[] MATERIAL_COLORS = {
+            Color.rgb(217, 80, 138), Color.rgb(254, 149, 7),
+            Color.rgb(106, 167, 134), Color.rgb(53, 194, 209),
+            Color.rgb(255, 140, 157), ColorTemplate.rgb("#2ecc71"),
+            ColorTemplate.rgb("#f1c40f"), ColorTemplate.rgb("#e74c3c"), ColorTemplate.rgb("#3498db"),
+            Color.rgb(193, 37, 82), Color.rgb(255, 102, 0),
+            Color.rgb(245, 199, 0), Color.rgb(106, 150, 31),
+            Color.rgb(179, 100, 53), Color.rgb(64, 89, 128),
+            Color.rgb(149, 165, 124), Color.rgb(191, 134, 134),
+            Color.rgb(179, 48, 80), Color.rgb(42, 109, 130)
+    };
+
 
     @Nullable
     @Override
@@ -70,7 +96,7 @@ public class DashboardFragmentAdmin extends Fragment {
 
 
         adapter = new Adapter(modelList);
-        RecyclerView recyclerView = (RecyclerView) v.findViewById(R.id.list_kehadiran_siswa);
+        RecyclerView recyclerView = v.findViewById(R.id.list_kehadiran_siswa);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(v.getContext());
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setNestedScrollingEnabled(false);
@@ -79,9 +105,39 @@ public class DashboardFragmentAdmin extends Fragment {
         recyclerView.setAdapter(adapter);
 
         mulai();
+
+
+        pieChart = v.findViewById(R.id.piechart);
+
+
+//        pieChart.getDescription().setEnabled(false);
+
+        pieChart.setDragDecelerationFrictionCoef(0.99f);
+
+        pieChart.setDrawHoleEnabled(true);
+        pieChart.setHoleRadius(15);
+        pieChart.setHoleColor(0xffeeeeee);
+        pieChart.setTransparentCircleRadius(25);
+
+        pieChart.setEntryLabelTextSize(18);
+        pieChart.animateY(1000, EaseInOutCubic);
+
+        Description description = new Description();
+//        description.setPosition();
+        description.setText("*hanya siswa yang berstatus Alpha");
+        pieChart.setDescription(description);
+
+
+        Log.e("ER", Arrays.toString(MATERIAL_COLORS));
         return v;
     }
+    public class MyValueFormatter extends ValueFormatter {
 
+        @Override
+        public String getFormattedValue(float value) {
+            return "" + ((int) value);
+        }
+    }
 
     private void mulai() {
         start = new callAPI().execute();
@@ -116,7 +172,6 @@ public class DashboardFragmentAdmin extends Fragment {
         private String code;
         private JSONObject json;
         private boolean background;
-
 
         @Override
         protected void onPreExecute() {
@@ -216,18 +271,18 @@ public class DashboardFragmentAdmin extends Fragment {
                 JSONObject data = json.getJSONObject("date");
                 if (data.getString("status").equals("L")) {
                     ((TextView) v.findViewById(R.id.keterangan)).setText("Libur");
-                    ((TextView) v.findViewById(R.id.info)).setVisibility(View.VISIBLE);
+                    v.findViewById(R.id.info).setVisibility(View.VISIBLE);
                 } else {
-                    ((TextView) v.findViewById(R.id.keterangan)).setText("Masuk");
-                    ((TextView) v.findViewById(R.id.info)).setVisibility(View.GONE);
+                    ((TextView) v.findViewById(R.id.keterangan)).setText("Ada Kegiatan Belajar Mengajar");
+                    v.findViewById(R.id.info).setVisibility(View.GONE);
                 }
                 ((TextView) v.findViewById(R.id.info)).setText(data.getString("ket"));
 
                 Model row;
                 JSONArray aray = json.getJSONArray("list_absen");
 
-                if (aray != null && aray.length() > 0) {
-                    ((RecyclerView) v.findViewById(R.id.list_kehadiran_siswa)).setVisibility(View.VISIBLE);
+                if (aray.length() > 0) {
+                    v.findViewById(R.id.list_kehadiran_siswa).setVisibility(View.VISIBLE);
                     for (int i = 0; i < aray.length(); i++) {
 //               for(int i =0; i<1;i++){
                         data = aray.getJSONObject(i);
@@ -242,8 +297,50 @@ public class DashboardFragmentAdmin extends Fragment {
                         modelList.add(row);
                     }
                 } else
-                    ((RecyclerView) v.findViewById(R.id.list_kehadiran_siswa)).setVisibility(View.GONE);
+                    v.findViewById(R.id.list_kehadiran_siswa).setVisibility(View.GONE);
                 adapter.notifyDataSetChanged();
+
+
+                json = json.getJSONObject("statistik");
+                ((TextView) v.findViewById(R.id.hadir)).setText(json.getString("hadir"));
+                ((TextView) v.findViewById(R.id.alpha)).setText(json.getString("alpha"));
+                ((TextView) v.findViewById(R.id.sakit)).setText(json.getString("sakit"));
+                ((TextView) v.findViewById(R.id.izin)).setText(json.getString("izin"));
+                ((TextView) v.findViewById(R.id.telat)).setText(json.getString("telat"));
+
+                JSONArray list_kelas = json.getJSONArray("list_kelas");
+                if (list_kelas.length() > 0) {
+                    pieChart.setVisibility(View.VISIBLE);
+                    ArrayList<PieEntry> datapie = new ArrayList<>();
+
+                    for (int i = 0; i < list_kelas.length(); i++) {
+                        data = list_kelas.getJSONObject(i);
+                        if (data.getInt("alpha") > 0)
+                            datapie.add(new PieEntry(data.getInt("alpha"), "kelas " + data.getString("kelas")));
+                    }
+
+                    PieDataSet pieDataSet = new PieDataSet(datapie, "");
+                    pieDataSet.setSliceSpace(2);
+                    pieDataSet.setSelectionShift(6f);
+                    pieDataSet.setValueTextSize(18);
+                    pieDataSet.setValueFormatter(new MyValueFormatter());
+                    pieDataSet.setColors(MATERIAL_COLORS);
+
+                    PieData pieData = new PieData(pieDataSet);
+
+
+                    pieChart.setData(pieData);
+                    pieChart.invalidate();
+                    if (list_kelas.length() >6) {
+
+                        pieChart.getLegend().setEnabled(false);
+                    } else
+
+                        pieChart.getLegend().setEnabled(true);
+                } else {
+                    pieChart.setVisibility(View.GONE);
+                }
+
             } catch (Exception e) {
                 Log.e("ER___", String.valueOf(e));
             }

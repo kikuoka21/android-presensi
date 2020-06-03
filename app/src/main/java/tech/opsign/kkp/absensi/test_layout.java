@@ -11,21 +11,23 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.SeekBar;
+import android.widget.TextView;
+
+import com.github.mikephil.charting.charts.PieChart;
 
 public class test_layout extends AppCompatActivity {
     private test_layout activity;
 
+    private PieChart chart;
+    private SeekBar seekBarX, seekBarY;
+    private TextView tvX, tvY;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.a_kelas_laporan);
+        setContentView(R.layout.coba_piechart);
 
         this.activity = this;
-        if (Build.VERSION.SDK_INT >= 21) {
-            Window window = this.getWindow();
-            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-            window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-            window.setStatusBarColor(this.getResources().getColor(R.color.hitam));
-        }
+
     }
 }
