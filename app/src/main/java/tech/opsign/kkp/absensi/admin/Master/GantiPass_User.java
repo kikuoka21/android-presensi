@@ -40,6 +40,7 @@ import Tools.JsonParser;
 import Tools.Utilities;
 import tech.opsign.kkp.absensi.Login;
 import tech.opsign.kkp.absensi.R;
+import tech.opsign.kkp.absensi.SplashScreen;
 
 public class GantiPass_User extends AppCompatActivity {
 
@@ -278,7 +279,7 @@ public class GantiPass_User extends AppCompatActivity {
 
                             dialog.dismiss();
 
-                            Intent login = new Intent(activity, Login.class);
+                            Intent login = new Intent(activity, SplashScreen.class);
                             login.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                             startActivity(login);
                             finish();

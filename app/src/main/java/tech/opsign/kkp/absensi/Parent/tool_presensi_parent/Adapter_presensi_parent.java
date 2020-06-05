@@ -40,9 +40,6 @@ public class Adapter_presensi_parent extends RecyclerView.Adapter<Adapter_presen
             case "H":
                 holder.bg.setBackgroundColor(0xff4dff4d);
                 break;
-            case "L":
-                holder.bg.setBackgroundColor(0xffeeeeee);
-                break;
             case "A":
                 holder.bg.setBackgroundColor(0xffff8080);
                 break;
@@ -53,7 +50,7 @@ public class Adapter_presensi_parent extends RecyclerView.Adapter<Adapter_presen
                 holder.bg.setBackgroundColor(0xff81b9e4);
                 break;
             default:
-                holder.bg.setBackgroundColor(0xffcccccc);
+                holder.bg.setBackgroundColor(0xffeeeeee);
                 break;
         }
 
@@ -68,11 +65,11 @@ public class Adapter_presensi_parent extends RecyclerView.Adapter<Adapter_presen
 
         MyViewHolder(View v) {
             super(v);
-            tgl = (TextView) v.findViewById(R.id.tgl);
-            stat = (TextView) v.findViewById(R.id.stat);
-            ket = (TextView) v.findViewById(R.id.ket);
-            rowket = (TableRow) v.findViewById(R.id.row_ket);
-            bg = (TableLayout) v.findViewById(R.id.bgroudnd_lap);
+            tgl = v.findViewById(R.id.tgl);
+            stat = v.findViewById(R.id.stat);
+            ket = v.findViewById(R.id.ket);
+            rowket = v.findViewById(R.id.row_ket);
+            bg = v.findViewById(R.id.bgroudnd_lap);
 
         }
 

@@ -1,20 +1,12 @@
 package tech.opsign.kkp.absensi.Parent;
 
-import android.app.AlertDialog;
-import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.StrictMode;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -22,43 +14,54 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.gson.Gson;
+import com.android.volley.AuthFailureError;
+import com.android.volley.DefaultRetryPolicy;
+import com.android.volley.NetworkError;
+import com.android.volley.NetworkResponse;
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.TimeoutError;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+import com.google.gson.JsonObject;
 
-import org.apache.http.NameValuePair;
-import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import Tools.GenKey;
-import Tools.JsonParser;
 import Tools.Utilities;
-import tech.opsign.kkp.absensi.Login;
+import tech.opsign.kkp.absensi.Parent.tool_presensi_parent.Adapter_presensi_parent;
+import tech.opsign.kkp.absensi.Parent.tool_presensi_parent.Model_presensi_parent;
 import tech.opsign.kkp.absensi.R;
-import tech.opsign.kkp.absensi.siswa.tool_presensi.Adapter_presensi;
-import tech.opsign.kkp.absensi.siswa.tool_presensi.Model_presensi;
+import tech.opsign.kkp.absensi.SplashScreen;
 
 public class Presensi_Siswa_parent extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
     private SharedPreferences sp;
     private Presensi_Siswa_parent activity;
     private GenKey key;
-    private RecyclerView recyclerView;
-    private List<Model_presensi> modelList = new ArrayList<>();
-    private Adapter_presensi Adapter;
-    private String action = "", strtahun = "", strbulan = "";
+    private List<Model_presensi_parent> modelList = new ArrayList<>();
+    private Adapter_presensi_parent Adapter;
+    private String strtahun = "", strbulan = "";
     private String strtanggal;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+
+        setTitle("Rekap Presensi");
         setContentView(R.layout.s_siswa_lihat);
 
         this.activity = this;
@@ -66,20 +69,9 @@ public class Presensi_Siswa_parent extends AppCompatActivity implements AdapterV
         sp = activity.getSharedPreferences("shared", 0x0000);
 
 
-        if (Build.VERSION.SDK_INT >= 21) {
-            Window window = this.getWindow();
-            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-            window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-            window.setStatusBarColor(this.getResources().getColor(R.color.colorPrimary));
-        }
-
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
-        Intent intent = getIntent();
-        action = intent.getStringExtra("next_action");
-
-        setTitle("Rekap Presensi");
 
         findViewById(R.id.bulan_tahun).setVisibility(View.VISIBLE);
 
@@ -89,7 +81,7 @@ public class Presensi_Siswa_parent extends AppCompatActivity implements AdapterV
 
         String temp = sp.getString("tanggal", "");
 
-        for (  int i = Integer.parseInt(temp.substring(0, 4))  ; i > 2016; i--) {
+        for (int i = Integer.parseInt(temp.substring(0, 4)); i > 2016; i--) {
 
             jenis.add(String.valueOf(i));
         }
@@ -128,8 +120,8 @@ public class Presensi_Siswa_parent extends AppCompatActivity implements AdapterV
             }
         });
 
-        Adapter = new Adapter_presensi(modelList);
-        recyclerView = findViewById(R.id.list_kelas);
+        Adapter = new Adapter_presensi_parent(modelList);
+        RecyclerView recyclerView = findViewById(R.id.list_kelas);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(activity);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setNestedScrollingEnabled(false);
@@ -147,8 +139,156 @@ public class Presensi_Siswa_parent extends AppCompatActivity implements AdapterV
         modelList.clear();
         Adapter.notifyDataSetChanged();
         Log.e("ER", "start");
+        volley_call();
     }
 
+    void volley_call() {
+        key.showProgress(activity);
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, key.url(405),
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            androidx.appcompat.app.AlertDialog.Builder ab = new AlertDialog.Builder(activity);
+                            ab.setCancelable(false).setTitle("Informasi");
+
+                            JSONObject json = new JSONObject(response);
+                            Log.e("ER", json.toString(3));
+                            if (json.getBoolean("token")) {
+                                if (json.getBoolean("hasil")) {
+                                    Log.e("ER", "clearrr");
+                                    Model_presensi_parent row;
+                                    JSONObject data;
+                                    JSONArray aray = json.getJSONArray("kehadiran");
+
+                                    data = json.getJSONObject("datakelas");
+                                    ((TextView) findViewById(R.id.presensi_header)).setText("Rekap Presensi " + sp.getString("nama", ""));
+                                    ((TextView) findViewById(R.id.thn_ajar)).setText(data.getString("thn_ajar").substring(0, 4) + "/" +
+                                            data.getString("thn_ajar").substring(4));
+                                    ((TextView) findViewById(R.id.nama_kelas)).setText(data.getString("nama"));
+                                    ((TextView) findViewById(R.id.ketua_kelas)).setText(data.getString("ketua"));
+                                    ((TextView) findViewById(R.id.walikelas)).setText(data.getString("wali"));
+
+                                    if (aray.length() > 0) {
+
+                                        findViewById(R.id.list_kelas).setVisibility(View.VISIBLE);
+                                        findViewById(R.id.nulldata).setVisibility(View.GONE);
+                                        for (int i = 0; i < aray.length(); i++) {
+//               for(int i =0; i<1;i++){
+                                            data = aray.getJSONObject(i);
+                                            // type true akan menghilangkan row kelas
+                                            row = new Model_presensi_parent(
+                                                    Utilities.gettanggal(data.getString("tanggal")),
+                                                    data.getString("stat") + " / " + Utilities.status_kehadiran(data.getString("stat")),
+                                                    data.getString("ket")
+
+                                            );
+                                            modelList.add(row);
+                                        }
+
+                                        Adapter.notifyDataSetChanged();
+                                    } else {
+
+                                        findViewById(R.id.list_kelas).setVisibility(View.GONE);
+                                        findViewById(R.id.nulldata).setVisibility(View.VISIBLE);
+                                    }
+
+                                    findViewById(R.id.isian).setVisibility(View.VISIBLE);
+//
+                                } else {
+                                    ab.setMessage(json.getString("message")).setPositiveButton("Tutup", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            dialog.dismiss();
+                                        }
+                                    }).show();
+                                }
+                            } else {
+                                SharedPreferences.Editor editorr = sp.edit();
+                                editorr.putString("username", "");
+                                editorr.putString("token", "");
+                                editorr.apply();
+                                ab.setMessage(GenKey.pesan(json.getString("message")))
+                                        .setPositiveButton("Tutup", new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialog, int which) {
+
+                                                dialog.dismiss();
+                                                Intent login = new Intent(activity, SplashScreen.class);
+                                                login.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                                startActivity(login);
+                                                activity.finish();
+                                            }
+                                        }).show();
+                            }
+
+                        } catch (Exception e) {
+                            e.printStackTrace();
+
+                        }
+                        key.hideProgress();
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+                key.hideProgress();
+
+                try {
+                    String message;
+                    if (!(error instanceof NetworkError | error instanceof TimeoutError)) {
+
+                        NetworkResponse networkResponse = error.networkResponse;
+                        message = "Gagal terhubung dengan server, siahkan coba beberapa menit lagi\nError Code: " + networkResponse.statusCode;
+
+                    } else {
+                        Log.e("ER", (error instanceof NetworkError) + "" + error.getMessage());
+                        message = "Gagal terhubung dengan server, siahkan coba beberapa menit lagi";
+                    }
+
+
+                    new androidx.appcompat.app.AlertDialog.Builder(activity)
+                            .setTitle("Informasi")
+                            .setMessage(message)
+                            .setCancelable(false)
+                            .setPositiveButton("tutup", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                }
+                            }).show();
+                } catch (Exception se) {
+                    se.printStackTrace();
+                }
+
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+
+                Map<String, String> postMap2 = new HashMap<>();
+                try {
+                    JsonObject xdata = new JsonObject();
+
+
+                    xdata.addProperty("x1d", sp.getString("username", ""));
+                    xdata.addProperty("token", sp.getString("token", ""));
+                    xdata.addProperty("tanggal", strtanggal);
+                    Log.e("er", xdata.toString());
+                    postMap2.put("parsing", xdata.toString());
+                } catch (Exception e) {
+                    postMap2 = null;
+                }
+                return postMap2;
+            }
+        };
+
+        //make the request to your server as indicated in your request URL
+        stringRequest.setRetryPolicy(new DefaultRetryPolicy(Utilities.rto(),
+                0,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        Volley.newRequestQueue(activity).add(stringRequest);
+    }
 //
 //
 //    private void proses() {

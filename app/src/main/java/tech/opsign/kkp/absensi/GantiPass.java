@@ -213,7 +213,7 @@ public class GantiPass extends Fragment {
                             .setPositiveButton("Tutup", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
-                                    Intent login = new Intent(v.getContext(), Login.class);
+                                    Intent login = new Intent(v.getContext(), SplashScreen.class);
                                     login.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                     startActivity(login);
                                     getActivity().finish();

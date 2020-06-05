@@ -39,6 +39,7 @@ import Tools.GenKey;
 import Tools.Utilities;
 import tech.opsign.kkp.absensi.Login;
 import tech.opsign.kkp.absensi.R;
+import tech.opsign.kkp.absensi.SplashScreen;
 import tech.opsign.kkp.absensi.siswa.Fragmen.ToolProfile.Adapter;
 import tech.opsign.kkp.absensi.siswa.Fragmen.ToolProfile.Model;
 
@@ -75,7 +76,7 @@ public class Profile_parent extends AppCompatActivity {
 
     private void volley_call() {
         modelList.clear();
-        key.showProgress(activity, true);
+        key.showProgress(activity);
 
         StringRequest stringRequest = new StringRequest(Request.Method.POST, key.url(403),
                 new Response.Listener<String>() {
@@ -158,7 +159,7 @@ public class Profile_parent extends AppCompatActivity {
                                             public void onClick(DialogInterface dialog, int which) {
 
                                                 dialog.dismiss();
-                                                Intent login = new Intent(activity, Login.class);
+                                                Intent login = new Intent(activity, SplashScreen.class);
                                                 login.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                                 startActivity(login);
                                                 activity.finish();

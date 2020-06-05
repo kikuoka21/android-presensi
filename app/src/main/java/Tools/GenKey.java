@@ -14,8 +14,8 @@ public class GenKey {
     public String url(int str) {
         String web, port, head;
         //web = "192.168.0.17";
-        web = "192.168.1.6";
-        //web = "192.168.0.18";
+//        web = "192.168.1.6";
+        web = "192.168.0.19";
         //web = "192.168.12.17";
         //web = "192.168.12.33";
         //web = "192.168.43.242";
@@ -127,18 +127,16 @@ public class GenKey {
                 return head + "/api/admin/absen-ubah/per-kelas";
 
 
-
             case 401:
                 return head + "/api/parent/login";
             case 402:
                 return head + "/api/parent/dashboard";
             case 403:
                 return head + "/api/parent/profil";
-//            case 405:
-//                return head + "/api/parent/login";
+            case 405:
+                return head + "/api/parent/rekap_presensi";
             case 406:
                 return head + "/api/tanggal";
-
 
 
 //
@@ -229,7 +227,8 @@ public class GenKey {
             mDialog = null;
         }
     }
-    public boolean progres_isShowing(){
+
+    public boolean progres_isShowing() {
         return mDialog.isShowing();
     }
 

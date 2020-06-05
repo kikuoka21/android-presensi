@@ -1,30 +1,17 @@
 package tech.opsign.kkp.absensi.Parent;
 
-import android.app.FragmentManager;
-import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.StrictMode;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.core.view.GravityCompat;
-import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
@@ -36,30 +23,18 @@ import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.google.android.material.navigation.NavigationView;
-import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
-import org.apache.http.NameValuePair;
-import org.apache.http.message.BasicNameValuePair;
-import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.text.DecimalFormat;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import Tools.GenKey;
-import Tools.JsonParser;
 import Tools.Utilities;
-import tech.opsign.kkp.absensi.Login;
 import tech.opsign.kkp.absensi.R;
 import tech.opsign.kkp.absensi.SplashScreen;
 import tech.opsign.kkp.absensi.Tanggal_Libur;
-import tech.opsign.kkp.absensi.siswa.Fragmen.Dashboard;
-import tech.opsign.kkp.absensi.siswa.scan_qr_code;
 
 public class MainParent2 extends AppCompatActivity {
     private SharedPreferences sp;
@@ -172,7 +147,7 @@ public class MainParent2 extends AppCompatActivity {
     }
 
     private void volley_call() {
-        key.showProgress(activity, true);
+        key.showProgress(activity);
         StringRequest stringRequest = new StringRequest(Request.Method.POST, key.url(402),
                 new Response.Listener<String>() {
                     @Override
@@ -243,9 +218,9 @@ public class MainParent2 extends AppCompatActivity {
                                             public void onClick(DialogInterface dialog, int which) {
 
                                                 dialog.dismiss();
-                                                Intent login = new Intent(activity, Login.class);
-                                                login.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                                                startActivity(login);
+                                                Intent splash = new Intent(activity, SplashScreen.class);
+                                                splash.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                                startActivity(splash);
                                                 activity.finish();
                                             }
                                         }).show();
