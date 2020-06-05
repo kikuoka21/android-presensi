@@ -46,14 +46,14 @@ import tech.opsign.kkp.absensi.siswa.tool_presensi.Adapter_presensi;
 import tech.opsign.kkp.absensi.siswa.tool_presensi.Model_presensi;
 
 public class Presensi_Siswa_parent extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
-    private static SharedPreferences sp;
+    private SharedPreferences sp;
     private Presensi_Siswa_parent activity;
     private GenKey key;
     private RecyclerView recyclerView;
     private List<Model_presensi> modelList = new ArrayList<>();
     private Adapter_presensi Adapter;
     private String action = "", strtahun = "", strbulan = "";
-    private static String strtanggal;
+    private String strtanggal;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -86,7 +86,10 @@ public class Presensi_Siswa_parent extends AppCompatActivity implements AdapterV
         Spinner spiner = findViewById(R.id.tahn);
         spiner.setAdapter(null);
         ArrayList<String> jenis = new ArrayList<String>();
-        for (int i = Integer.parseInt(sp.getString("tanggal", "").substring(0, 4)); i > 2013; i--) {
+
+        String temp = sp.getString("tanggal", "");
+
+        for (  int i = Integer.parseInt(temp.substring(0, 4))  ; i > 2016; i--) {
 
             jenis.add(String.valueOf(i));
         }
@@ -146,152 +149,55 @@ public class Presensi_Siswa_parent extends AppCompatActivity implements AdapterV
         Log.e("ER", "start");
     }
 
-    private class kirim_siswa extends AsyncTask<Void, Void, Void> {
-
-        private String code;
-        private JSONObject json;
-        private boolean background;
-
-        class Param {
-            String x1d, type, key, token;
-            String tanggal;
-        }
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            background = true;
-
-        }
-
-        @Override
-        protected Void doInBackground(Void... voids) {
-            try {
-                StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-                StrictMode.setThreadPolicy(policy);
-
-
-                Param param = new Param();
-                param.x1d = sp.getString("username", "");
-                param.type = "mmm";
-                param.key = Utilities.imei(activity);
-                param.token = sp.getString("token", "");
-                param.tanggal = strtanggal;
-
-
-                Gson gson = new Gson();
-                List<NameValuePair> p = new ArrayList<NameValuePair>();
-                p.add(new BasicNameValuePair("parsing", gson.toJson(param)));
-
-                JsonParser jParser = new JsonParser();
-                json = jParser.getJSONFromUrl(key.url(104), p);
-                Log.e("isi json login", json.toString(2));
-                code = json.getString("code");
-
-            } catch (Exception e) {
-                background = false;
-            }
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Void result) {
-            super.onPostExecute(result);
-
-
-            if (background) {
-
-                AlertDialog.Builder ab = new AlertDialog.Builder(activity);
-                ab
-                        .setCancelable(false).setTitle("Informasi");
-                if (code.equals("OK4")) {
-
-                    proses();
-                } else if (code.equals("TOKEN2") || code.equals("TOKEN1")) {
-                    SharedPreferences.Editor editorr = sp.edit();
-                    editorr.putString("username", "");
-                    editorr.putString("token", "");
-                    editorr.commit();
-                    ab.setMessage(GenKey.pesan(code))
-                            .setPositiveButton("Tutup", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-
-                                    dialog.dismiss();
-                                    Intent login = new Intent(activity, Login.class);
-                                    login.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                                    startActivity(login);
-                                    finish();
-                                }
-                            }).show();
-                } else {
-                    ab.setMessage(code).setPositiveButton("Tutup", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.dismiss();
-                        }
-                    }).show();
-                }
-
-
-            } else {
-                Utilities.codeerror(activity, "ER0211");
-            }
-        }
-
-        private void proses() {
-            try {
-
-                Model_presensi row;
-                JSONObject data ;
-                JSONArray aray = json.getJSONArray("kehadiran");
-//                data.getString("tahun_ajar").substring(0, 4) + "/" +
-//                        data.getString("tahun_ajar").substring(4)
-                data = json.getJSONObject("datakelas");
-                ((TextView)findViewById(R.id.presensi_header)).setText("Rekap Presensi "+sp.getString("nama", ""));
-                ((TextView)findViewById(R.id.thn_ajar)).setText(data.getString("thn_ajar").substring(0, 4) + "/" +
-                        data.getString("thn_ajar").substring(4));
-                ((TextView)findViewById(R.id.nama_kelas)).setText(data.getString("nama"));
-                ((TextView)findViewById(R.id.ketua_kelas)).setText(data.getString("ketua"));
-                ((TextView)findViewById(R.id.walikelas)).setText(data.getString("wali"));
-
-                if (aray != null && aray.length() > 0) {
-
-                    findViewById(R.id.list_kelas).setVisibility(View.VISIBLE);
-                    findViewById(R.id.nulldata).setVisibility(View.GONE);
-                    for (int i = 0; i < aray.length(); i++) {
-//               for(int i =0; i<1;i++){
-                        data = aray.getJSONObject(i);
-                        // type true akan menghilangkan row kelas
-                        row = new Model_presensi(
-                                Utilities.gettanggal(data.getString("tanggal")),
-                                data.getString("stat")+" / "+Utilities.status_kehadiran(data.getString("stat")),
-                                data.getString("ket")
-
-                        );
-                        modelList.add(row);
-                    }
-
-                    Adapter.notifyDataSetChanged();
-                }else {
-
-                    findViewById(R.id.list_kelas).setVisibility(View.GONE);
-                    findViewById(R.id.nulldata).setVisibility(View.VISIBLE);
-                }
-
-                findViewById(R.id.isian).setVisibility(View.VISIBLE);
-
-            } catch (Exception e) {
-                Log.e("ER___", String.valueOf(e));
-            }
-
-        }
-
-
-
-    }
-
-
+//
+//
+//    private void proses() {
+//        try {
+//
+//            Model_presensi row;
+//            JSONObject data ;
+//            JSONArray aray = json.getJSONArray("kehadiran");
+////                data.getString("tahun_ajar").substring(0, 4) + "/" +
+////                        data.getString("tahun_ajar").substring(4)
+//            data = json.getJSONObject("datakelas");
+//            ((TextView)findViewById(R.id.presensi_header)).setText("Rekap Presensi "+sp.getString("nama", ""));
+//            ((TextView)findViewById(R.id.thn_ajar)).setText(data.getString("thn_ajar").substring(0, 4) + "/" +
+//                    data.getString("thn_ajar").substring(4));
+//            ((TextView)findViewById(R.id.nama_kelas)).setText(data.getString("nama"));
+//            ((TextView)findViewById(R.id.ketua_kelas)).setText(data.getString("ketua"));
+//            ((TextView)findViewById(R.id.walikelas)).setText(data.getString("wali"));
+//
+//            if (aray != null && aray.length() > 0) {
+//
+//                findViewById(R.id.list_kelas).setVisibility(View.VISIBLE);
+//                findViewById(R.id.nulldata).setVisibility(View.GONE);
+//                for (int i = 0; i < aray.length(); i++) {
+////               for(int i =0; i<1;i++){
+//                    data = aray.getJSONObject(i);
+//                    // type true akan menghilangkan row kelas
+//                    row = new Model_presensi(
+//                            Utilities.gettanggal(data.getString("tanggal")),
+//                            data.getString("stat")+" / "+Utilities.status_kehadiran(data.getString("stat")),
+//                            data.getString("ket")
+//
+//                    );
+//                    modelList.add(row);
+//                }
+//
+//                Adapter.notifyDataSetChanged();
+//            }else {
+//
+//                findViewById(R.id.list_kelas).setVisibility(View.GONE);
+//                findViewById(R.id.nulldata).setVisibility(View.VISIBLE);
+//            }
+//
+//            findViewById(R.id.isian).setVisibility(View.VISIBLE);
+//
+//        } catch (Exception e) {
+//            Log.e("ER___", String.valueOf(e));
+//        }
+//
+//    }
 
 
     @Override

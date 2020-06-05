@@ -76,7 +76,7 @@ public class MainParent2 extends AppCompatActivity {
         key = new GenKey();
 
 
-        ((TextView) findViewById(R.id.namasiswa)).setText("(" +sp.getString("username", "")+ ") "+sp.getString("nama", ""));
+        ((TextView) findViewById(R.id.namasiswa)).setText("(" + sp.getString("username", "") + ") " + sp.getString("nama", ""));
 
         ((TextView) findViewById(R.id.tanggal)).setText(Utilities.gettanggal(sp.getString("tanggal", "")));
 //        ((TextView) navHeaderView.findViewById(R.id.nip_nav)).setText(sp.getString("username", ""));
@@ -92,6 +92,21 @@ public class MainParent2 extends AppCompatActivity {
                             public void run() {
 
                                 startActivity(new Intent(activity, Tanggal_Libur.class));
+                            }
+                        }, 300
+                );
+            }
+        });
+
+        findViewById(R.id.riwayat_presensi).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new Handler().postDelayed(
+                        new Runnable() {
+                            @Override
+                            public void run() {
+
+                                startActivity(new Intent(activity, Presensi_Siswa_parent.class));
                             }
                         }, 300
                 );

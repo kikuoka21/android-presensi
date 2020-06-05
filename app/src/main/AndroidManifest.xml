@@ -223,6 +223,8 @@
             android:label="Data Diri Siswa"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme2.NoActionBar" />
+        <activity android:name=".Parent.Presensi_Siswa_parent" />
+
         <service
             android:name="Tools.FirebaseMassageService">
             <intent-filter>
