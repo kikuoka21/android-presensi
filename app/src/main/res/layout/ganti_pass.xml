@@ -17,7 +17,7 @@
             android:paddingStart="14dp"
             android:paddingEnd="14dp"
             android:paddingBottom="10dp"
-            android:background="#ecfeff"
+            android:background="@color/putih"
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
@@ -27,7 +27,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Password Lama"
-                android:textColor="#000"
+                android:textColor="@color/dark"
                 android:textSize="20sp" />
 
             <EditText
@@ -41,7 +41,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Password Baru"
-                android:textColor="#000"
+                android:textColor="@color/dark"
                 android:textSize="20sp" />
 
             <EditText
@@ -55,7 +55,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Ulangi Password Baru"
-                android:textColor="#000"
+                android:textColor="@color/dark"
                 android:textSize="20sp" />
 
             <EditText
@@ -74,7 +74,7 @@
             android:enabled="false"
             android:background="@drawable/button_deny"
             android:text="Ubah"
-            android:textColor="#000"
-            android:textStyle="bold" />
+            android:textSize="20sp"
+            android:textColor="@color/dark" />
     </LinearLayout>
 </android.widget.ScrollView>

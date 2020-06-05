@@ -21,7 +21,7 @@ public class Adapter_presensi_parent extends RecyclerView.Adapter<Adapter_presen
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
-        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.s_row_presensi, parent, false);
+        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.p_row_presensi, parent, false);
         return new MyViewHolder(itemView);
     }
 
@@ -37,20 +37,20 @@ public class Adapter_presensi_parent extends RecyclerView.Adapter<Adapter_presen
             holder.rowket.setVisibility(View.VISIBLE);
 
         switch (b.stat.substring(0, 1)) {
-            case "H":
-                holder.bg.setBackgroundColor(0xff4dff4d);
-                break;
             case "A":
-                holder.bg.setBackgroundColor(0xffff8080);
+                holder.bg.setBackgroundColor(0xffffcccc);
                 break;
             case "I":
-                holder.bg.setBackgroundColor(0xffe9f53d);
+                holder.bg.setBackgroundColor(0xfff5fa9e);
                 break;
             case "S":
-                holder.bg.setBackgroundColor(0xff81b9e4);
+                holder.bg.setBackgroundColor(0xffc0dcf2);
+                break;
+            case "T":
+                holder.bg.setBackgroundColor(0xffbbf7d5);
                 break;
             default:
-                holder.bg.setBackgroundColor(0xffeeeeee);
+                holder.bg.setBackgroundColor(0xffffffff);
                 break;
         }
 

@@ -208,25 +208,29 @@
         <activity
             android:name=".Parent.MainParent2"
             android:configChanges="orientation|screenSize"
-            android:screenOrientation="portrait"
             android:theme="@style/AppTheme2.NoActionBar" />
 
         <activity
             android:name=".Tanggal_Libur"
             android:configChanges="orientation|screenSize"
             android:label="Daftar Tanggal Libur Sekolah"
-            android:screenOrientation="portrait"
             android:theme="@style/AppTheme2" />
         <activity
             android:name=".Parent.Profile_parent"
             android:configChanges="orientation|screenSize"
             android:label="Data Diri Siswa"
-            android:screenOrientation="portrait"
             android:theme="@style/AppTheme2.NoActionBar" />
-        <activity android:name=".Parent.Presensi_Siswa_parent" />
+        <activity
+            android:name=".Parent.Presensi_Siswa_parent"
+            android:configChanges="orientation|screenSize"
+            android:theme="@style/AppTheme2" />
+        <activity
+            android:name=".Parent.GantiPass_parent"
+            android:configChanges="orientation|screenSize"
+            android:theme="@style/AppTheme2"
+            android:windowSoftInputMode="stateAlwaysHidden" />
 
-        <service
-            android:name="Tools.FirebaseMassageService">
+        <service android:name="Tools.FirebaseMassageService">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>

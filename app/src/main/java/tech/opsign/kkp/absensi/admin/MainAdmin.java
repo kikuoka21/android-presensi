@@ -252,7 +252,7 @@ public class MainAdmin extends AppCompatActivity implements NavigationView.OnNav
     }
 
     private void logout() {
-        key.showProgress(activity, true);
+        key.showProgress(activity);
 
         StringRequest stringRequest = new StringRequest(Request.Method.POST, key.url(404),
                 new Response.Listener<String>() {

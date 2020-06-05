@@ -153,7 +153,6 @@
                 android:background="#e9ac96" />
 
 
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -168,7 +167,6 @@
                     android:layout_marginEnd="8dp"
                     android:layout_marginBottom="12dp"
                     android:layout_weight="1"
-                    android:background="@color/putih"
                     android:clickable="true"
                     android:foreground="?android:attr/selectableItemBackground"
                     app:cardCornerRadius="8dp"
@@ -177,6 +175,7 @@
                     <RelativeLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:background="@color/putih"
                         android:orientation="vertical"
                         android:padding="16dp">
 
@@ -212,7 +211,6 @@
                     android:layout_marginEnd="8dp"
                     android:layout_marginBottom="12dp"
                     android:layout_weight="1"
-                    android:background="@color/putih"
                     android:clickable="true"
                     android:foreground="?android:attr/selectableItemBackground"
                     app:cardCornerRadius="8dp"
@@ -221,6 +219,7 @@
                     <RelativeLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:background="@color/putih"
                         android:orientation="vertical"
                         android:padding="16dp">
 
@@ -230,9 +229,9 @@
                             android:layout_height="80dp"
                             android:layout_alignParentTop="true"
                             android:layout_centerHorizontal="true"
-                            android:src="@drawable/ic_profile"
                             android:layout_gravity="center"
-                            android:scaleType="centerCrop" />
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/ic_profile" />
 
                         <TextView
                             android:layout_width="match_parent"
@@ -262,7 +261,6 @@
                     android:layout_marginEnd="8dp"
                     android:layout_marginBottom="12dp"
                     android:layout_weight="1"
-                    android:background="@color/putih"
                     android:clickable="true"
                     android:foreground="?android:attr/selectableItemBackground"
                     app:cardCornerRadius="8dp"
@@ -271,6 +269,7 @@
                     <RelativeLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:background="@color/putih"
                         android:orientation="vertical"
                         android:padding="16dp">
 
@@ -298,6 +297,56 @@
                 </com.google.android.material.card.MaterialCardView>
 
                 <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/ubah_sandi"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginBottom="12dp"
+                    android:layout_weight="1"
+                    android:clickable="true"
+                    android:foreground="?android:attr/selectableItemBackground"
+                    app:cardCornerRadius="8dp"
+                    app:cardElevation="4dp">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@color/putih"
+                        android:orientation="vertical"
+                        android:padding="16dp">
+
+                        <ImageView
+                            android:id="@+id/image4"
+                            android:layout_width="80dp"
+                            android:layout_height="80dp"
+                            android:layout_alignParentTop="true"
+                            android:layout_centerHorizontal="true"
+                            android:layout_gravity="center"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/ic_protection" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/image4"
+                            android:layout_centerInParent="true"
+                            android:layout_marginTop="4dp"
+                            android:gravity="center"
+                            android:text="Ubah Sandi"
+                            android:textColor="@color/dark"
+                            android:textSize="@dimen/text_head_2_parent" />
+                    </RelativeLayout>
+                </com.google.android.material.card.MaterialCardView>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <com.google.android.material.card.MaterialCardView
                     android:id="@+id/logout_parent"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -306,9 +355,52 @@
                     android:layout_marginEnd="8dp"
                     android:layout_marginBottom="12dp"
                     android:layout_weight="1"
-                    android:background="@color/putih"
                     android:clickable="true"
                     android:foreground="?android:attr/selectableItemBackground"
+                    app:cardCornerRadius="8dp"
+                    app:cardElevation="4dp">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/putih"
+                        android:orientation="vertical"
+                        android:padding="16dp">
+
+                        <ImageView
+                            android:id="@+id/image5"
+                            android:layout_width="80dp"
+                            android:layout_height="80dp"
+                            android:layout_alignParentTop="true"
+                            android:layout_centerHorizontal="true"
+                            android:layout_gravity="center"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/ic_logout" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/image5"
+                            android:layout_centerInParent="true"
+                            android:layout_marginTop="4dp"
+                            android:gravity="center"
+                            android:text="Logout"
+                            android:textColor="@color/dark"
+                            android:textSize="@dimen/text_head_2_parent" />
+                    </RelativeLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginBottom="12dp"
+                    android:layout_weight="1"
+                    android:clickable="true"
+                    android:foreground="?android:attr/selectableItemBackground"
+                    android:visibility="invisible"
                     app:cardCornerRadius="8dp"
                     app:cardElevation="4dp">
 
@@ -318,28 +410,10 @@
                         android:orientation="vertical"
                         android:padding="16dp">
 
-                        <ImageView
-                            android:id="@+id/image4"
-                            android:layout_width="80dp"
-                            android:src="@drawable/ic_logout"
-                            android:layout_height="80dp"
-                            android:layout_alignParentTop="true"
-                            android:layout_centerHorizontal="true"
-                            android:layout_gravity="center"
-                            android:scaleType="centerCrop" />
 
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_below="@id/image4"
-                            android:layout_centerInParent="true"
-                            android:layout_marginTop="4dp"
-                            android:gravity="center"
-                            android:text="Logout"
-                            android:textColor="@color/dark"
-                            android:textSize="@dimen/text_head_2_parent" />
                     </RelativeLayout>
                 </com.google.android.material.card.MaterialCardView>
+
             </LinearLayout>
         </LinearLayout>
     </ScrollView>

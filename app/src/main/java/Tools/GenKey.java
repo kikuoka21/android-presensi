@@ -14,8 +14,8 @@ public class GenKey {
     public String url(int str) {
         String web, port, head;
         //web = "192.168.0.17";
-//        web = "192.168.1.6";
-        web = "192.168.0.19";
+        web = "192.168.1.6";
+//        web = "192.168.0.19";
         //web = "192.168.12.17";
         //web = "192.168.12.33";
         //web = "192.168.43.242";
@@ -138,6 +138,9 @@ public class GenKey {
             case 406:
                 return head + "/api/tanggal";
 
+            case 407:
+                return head + "/api/parent/ganti_pass";
+
 
 //
             case 404: //logout
@@ -186,26 +189,12 @@ public class GenKey {
                 return "Token Anda Salah, Silahkan Login Kembali";
 
             default:
-                return "Generate Pesan salah";
+                return key;
         }
     }
 
     private Dialog mDialog;
 
-
-    @Deprecated
-    public void showProgress(Context context, boolean bisa_dibatalin_gk) {
-        mDialog = new Dialog(context);
-        // no tile for the dialog
-        mDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        mDialog.setContentView(R.layout.custom_loading);
-
-
-        mDialog.getWindow().setBackgroundDrawableResource(R.color.transparent);
-        mDialog.setCancelable(false);
-        mDialog.setCanceledOnTouchOutside(false);
-        mDialog.show();
-    }
 
 
     public void showProgress(Context context) {

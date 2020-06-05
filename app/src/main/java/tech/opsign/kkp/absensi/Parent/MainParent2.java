@@ -87,6 +87,20 @@ public class MainParent2 extends AppCompatActivity {
                 );
             }
         });
+        findViewById(R.id.ubah_sandi).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new Handler().postDelayed(
+                        new Runnable() {
+                            @Override
+                            public void run() {
+
+                                startActivity(new Intent(activity, GantiPass_parent.class));
+                            }
+                        }, 300
+                );
+            }
+        });
         findViewById(R.id.profil_siswa).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -302,7 +316,7 @@ public class MainParent2 extends AppCompatActivity {
     }
 
     private void logout() {
-        key.showProgress(activity, true);
+        key.showProgress(activity);
 
         StringRequest stringRequest = new StringRequest(Request.Method.POST, key.url(404),
                 new Response.Listener<String>() {

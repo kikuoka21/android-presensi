@@ -62,7 +62,7 @@ public class Presensi_Siswa_parent extends AppCompatActivity implements AdapterV
 
 
         setTitle("Rekap Presensi");
-        setContentView(R.layout.s_siswa_lihat);
+        setContentView(R.layout.p_lihat_presensi);
 
         this.activity = this;
         key = new GenKey();
@@ -73,7 +73,6 @@ public class Presensi_Siswa_parent extends AppCompatActivity implements AdapterV
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
 
-        findViewById(R.id.bulan_tahun).setVisibility(View.VISIBLE);
 
         Spinner spiner = findViewById(R.id.tahn);
         spiner.setAdapter(null);
@@ -85,7 +84,7 @@ public class Presensi_Siswa_parent extends AppCompatActivity implements AdapterV
 
             jenis.add(String.valueOf(i));
         }
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(activity, R.layout.spiner_item, jenis);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(activity, R.layout.spiner_item_parent, jenis);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spiner.setAdapter(adapter);
         spiner.setOnItemSelectedListener(this);
@@ -105,7 +104,7 @@ public class Presensi_Siswa_parent extends AppCompatActivity implements AdapterV
         mont.add("Oktober");
         mont.add("November");
         mont.add("Desember");
-        ArrayAdapter<String> adapterbln = new ArrayAdapter<String>(this.activity, R.layout.spiner_item, mont);
+        ArrayAdapter<String> adapterbln = new ArrayAdapter<String>(this.activity, R.layout.spiner_item_parent, mont);
         adapterbln.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinerthn.setAdapter(adapterbln);
         spinerthn.setOnItemSelectedListener(this);
@@ -289,56 +288,6 @@ public class Presensi_Siswa_parent extends AppCompatActivity implements AdapterV
                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         Volley.newRequestQueue(activity).add(stringRequest);
     }
-//
-//
-//    private void proses() {
-//        try {
-//
-//            Model_presensi row;
-//            JSONObject data ;
-//            JSONArray aray = json.getJSONArray("kehadiran");
-////                data.getString("tahun_ajar").substring(0, 4) + "/" +
-////                        data.getString("tahun_ajar").substring(4)
-//            data = json.getJSONObject("datakelas");
-//            ((TextView)findViewById(R.id.presensi_header)).setText("Rekap Presensi "+sp.getString("nama", ""));
-//            ((TextView)findViewById(R.id.thn_ajar)).setText(data.getString("thn_ajar").substring(0, 4) + "/" +
-//                    data.getString("thn_ajar").substring(4));
-//            ((TextView)findViewById(R.id.nama_kelas)).setText(data.getString("nama"));
-//            ((TextView)findViewById(R.id.ketua_kelas)).setText(data.getString("ketua"));
-//            ((TextView)findViewById(R.id.walikelas)).setText(data.getString("wali"));
-//
-//            if (aray != null && aray.length() > 0) {
-//
-//                findViewById(R.id.list_kelas).setVisibility(View.VISIBLE);
-//                findViewById(R.id.nulldata).setVisibility(View.GONE);
-//                for (int i = 0; i < aray.length(); i++) {
-////               for(int i =0; i<1;i++){
-//                    data = aray.getJSONObject(i);
-//                    // type true akan menghilangkan row kelas
-//                    row = new Model_presensi(
-//                            Utilities.gettanggal(data.getString("tanggal")),
-//                            data.getString("stat")+" / "+Utilities.status_kehadiran(data.getString("stat")),
-//                            data.getString("ket")
-//
-//                    );
-//                    modelList.add(row);
-//                }
-//
-//                Adapter.notifyDataSetChanged();
-//            }else {
-//
-//                findViewById(R.id.list_kelas).setVisibility(View.GONE);
-//                findViewById(R.id.nulldata).setVisibility(View.VISIBLE);
-//            }
-//
-//            findViewById(R.id.isian).setVisibility(View.VISIBLE);
-//
-//        } catch (Exception e) {
-//            Log.e("ER___", String.valueOf(e));
-//        }
-//
-//    }
-
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

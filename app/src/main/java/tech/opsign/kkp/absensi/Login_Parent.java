@@ -178,7 +178,7 @@ public class Login_Parent extends AppCompatActivity {
 
 
     private void volley_call() {
-        key.showProgress(activity, true);
+        key.showProgress(activity);
 
         StringRequest stringRequest = new StringRequest(Request.Method.POST, key.url(401),
                 new Response.Listener<String>() {

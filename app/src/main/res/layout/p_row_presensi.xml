@@ -24,14 +24,14 @@
                 android:layout_marginEnd="10dp"
                 android:text="Tanggal"
                 android:textColor="@color/dark"
-                android:textSize="18sp" />
+                android:textSize="@dimen/text_head_2_parent" />
 
             <TextView
                 android:paddingStart="2dp"
                 android:paddingEnd="6dp"
                 android:text=":"
                 android:textColor="@color/dark"
-                android:textSize="18sp" />
+                android:textSize="@dimen/text_head_2_parent" />
 
             <TextView
                 android:id="@+id/tgl"
@@ -40,7 +40,7 @@
                 android:paddingEnd="5dp"
                 android:text="kasnfkasnkald askdmakd kasmdiwaldmasdaw"
                 android:textColor="@color/dark"
-                android:textSize="18sp" />
+                android:textSize="@dimen/text_head_2_parent" />
 
 
         </TableRow>
@@ -52,14 +52,14 @@
                 android:layout_marginEnd="10dp"
                 android:text="Status"
                 android:textColor="@color/dark"
-                android:textSize="18sp" />
+                android:textSize="@dimen/text_head_2_parent" />
 
             <TextView
                 android:paddingStart="2dp"
                 android:paddingEnd="6dp"
                 android:text=":"
                 android:textColor="@color/dark"
-                android:textSize="18sp" />
+                android:textSize="@dimen/text_head_2_parent" />
 
             <TextView
                 android:id="@+id/stat"
@@ -68,7 +68,7 @@
                 android:paddingEnd="5dp"
                 android:text="kasnfkasnkald askdmakd kasmdiwaldmasdaw"
                 android:textColor="@color/dark"
-                android:textSize="18sp" />
+                android:textSize="@dimen/text_head_2_parent" />
 
         </TableRow>
 
@@ -80,14 +80,14 @@
                 android:layout_marginEnd="10dp"
                 android:text="Ket"
                 android:textColor="@color/dark"
-                android:textSize="18sp" />
+                android:textSize="@dimen/text_head_2_parent" />
 
             <TextView
                 android:paddingStart="2dp"
                 android:paddingEnd="6dp"
                 android:text=":"
                 android:textColor="@color/dark"
-                android:textSize="18sp" />
+                android:textSize="@dimen/text_head_2_parent" />
 
             <TextView
                 android:id="@+id/ket"
@@ -96,7 +96,7 @@
                 android:paddingEnd="5dp"
                 android:text="kasnfkasnkald askdmakd kasmdiwaldmasdaw"
                 android:textColor="@color/dark"
-                android:textSize="18sp" />
+                android:textSize="@dimen/text_head_2_parent" />
 
         </TableRow>
 

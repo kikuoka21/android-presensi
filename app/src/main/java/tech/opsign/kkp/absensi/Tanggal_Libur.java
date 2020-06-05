@@ -7,6 +7,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -85,6 +86,9 @@ public class Tanggal_Libur extends AppCompatActivity {
 
             }
         });
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
 
 
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -104,6 +108,14 @@ public class Tanggal_Libur extends AppCompatActivity {
 
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (id == android.R.id.home)
+            finish();
+        return super.onOptionsItemSelected(item);
+    }
+
     private void clear() {
 
         modelList.clear();
@@ -112,7 +124,7 @@ public class Tanggal_Libur extends AppCompatActivity {
 
     private void volley_call() {
         clear();
-        key.showProgress(activity, true);
+        key.showProgress(activity);
 
         StringRequest stringRequest = new StringRequest(Request.Method.GET, key.url(406),
                 new Response.Listener<String>() {
