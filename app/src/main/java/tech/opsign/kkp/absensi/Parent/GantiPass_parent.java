@@ -12,6 +12,7 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -58,7 +59,8 @@ import tech.opsign.kkp.absensi.SplashScreen;
 
 public class GantiPass_parent extends AppCompatActivity {
 
-    private GenKey key;private GantiPass_parent activity;
+    private GenKey key;
+    private GantiPass_parent activity;
     private SharedPreferences sp;
     private Handler handler;
     private AsyncTask start;
@@ -87,6 +89,7 @@ public class GantiPass_parent extends AppCompatActivity {
         pas_baru_2.addTextChangedListener(logintextwarcher);
 
         tombol = findViewById(R.id.tombol_ubah);
+
         tombol.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -103,7 +106,19 @@ public class GantiPass_parent extends AppCompatActivity {
             }
         });
 
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
     }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (id == android.R.id.home)
+            finish();
+        return super.onOptionsItemSelected(item);
+    }
+
 
     private void volley_call() {
         key.showProgress(activity);
@@ -234,6 +249,7 @@ public class GantiPass_parent extends AppCompatActivity {
                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         Volley.newRequestQueue(activity).add(stringRequest);
     }
+
     private TextWatcher logintextwarcher = new TextWatcher() {
 
         @Override
@@ -263,149 +279,5 @@ public class GantiPass_parent extends AppCompatActivity {
         }
     };
 
-    private void mulai() {
-        start = new callAPI().execute();
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                if (dialog.isShowing()) {
-                    dialog.dismiss();
-                    start.cancel(true);
-                    new AlertDialog.Builder(activity)
-                            .setTitle("Informasi")
-                            .setMessage("Telah Terjadi Kesalahan Pada Koneksi Anda.")
-                            .setCancelable(false)
-                            .setPositiveButton("Coba Lagi", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    dialog.dismiss();
-                                    mulai();
-                                }
-                            }).show();
-                }
-            }
-        }, Utilities.rto());
-    }
-
-    private class Param {
-        String x1d, type, key, token, xp4s5, xp4s5_lama, parent;
-    }
-
-    private class callAPI extends AsyncTask<Void, Void, Void> {
-
-        private String code;
-        private JSONObject json;
-        private boolean background;
-
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            background = true;
-            dialog = new ProgressDialog(activity);
-            dialog.setMessage("Sedang memproses data. Harap tunggu sejenak.");
-            dialog.setCancelable(false);
-            dialog.show();
-
-        }
-
-        @Override
-        protected Void doInBackground(Void... voids) {
-            try {
-                StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-                StrictMode.setThreadPolicy(policy);
-
-
-                Param param = new Param();
-                param.x1d = sp.getString("username", "");
-                param.type = "mmm";
-                param.key = Utilities.imei(activity);
-                param.token = sp.getString("token", "");
-                param.xp4s5 = key.gen_pass(pas2_string);
-                param.xp4s5_lama = key.gen_pass(paslama_string);
-                param.parent = "=";
-                Gson gson = new Gson();
-                List<NameValuePair> p = new ArrayList<NameValuePair>();
-                p.add(new BasicNameValuePair("parsing", gson.toJson(param)));
-
-                JsonParser jParser = new JsonParser();
-                json = jParser.getJSONFromUrl(key.url(3), p);
-                Log.e("param login ", gson.toJson(param));
-                Log.e("isi json login", json.toString(2));
-                code = json.getString("code");
-
-            } catch (Exception e) {
-                background = false;
-            }
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Void result) {
-            super.onPostExecute(result);
-
-            if (dialog.isShowing()) {
-                dialog.dismiss();
-            }
-            handler.removeCallbacksAndMessages(null);
-
-            if (background) {
-                AlertDialog.Builder ab = new AlertDialog.Builder(activity);
-                ab.setCancelable(false).setTitle("Informasi");
-                if (code.equals("OK4")) {
-                    SharedPreferences.Editor editor = sp.edit();
-                    editor.putString("username", "");
-                    editor.putString("token", "");
-                    editor.apply();
-
-                    ab
-                            .setMessage("Password sudah Berhasil Ganti, Silahkan Login Kembali")
-                            .setPositiveButton("Tutup", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    Intent login = new Intent(activity, SplashScreen.class);
-                                    login.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                                    startActivity(login);
-                                    activity.finish();
-                                }
-                            })
-                            .show();
-                } else if (code.equals("TOKEN2") || code.equals("TOKEN1")) {
-                    SharedPreferences.Editor editorr = sp.edit();
-                    editorr.putString("username", "");
-                    editorr.putString("token", "");
-                    editorr.commit();
-
-                    ab.setMessage(GenKey.pesan(code)).setPositiveButton("Tutup", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-
-                            dialog.dismiss();
-
-                            Intent login = new Intent(activity, Login.class);
-                            login.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                            startActivity(login);
-                            activity.finish();
-                        }
-                    })
-                            .show();
-                } else {
-                    ab.setMessage(code)
-                            .setPositiveButton("Tutup", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    dialog.dismiss();
-                                }
-                            })
-                            .show();
-                }
-
-
-            } else {
-                Utilities.codeerror(activity, "ER0211");
-            }
-        }
-
-    }
 
 }

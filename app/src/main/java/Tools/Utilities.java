@@ -178,7 +178,7 @@ public class Utilities {
             return balikan;
 
         } catch (Exception e) {
-            return "tidak diketahui";
+            return tanggal;
         }
     }
 
