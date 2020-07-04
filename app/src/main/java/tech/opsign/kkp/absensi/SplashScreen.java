@@ -298,8 +298,9 @@ public class SplashScreen extends AppCompatActivity {
 
                         try {
                             /**
-                             true mewakili user siswa
-                             false mewakili user wali
+                             * true mewakili user siswa
+                             * false mewakili user wali
+
                              */
 //        Log.e("ER", sp.getBoolean("usertype", true) + " usernya");
                             if (sp.getBoolean("usertype", true)) {

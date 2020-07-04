@@ -21,6 +21,7 @@
         <menu>
             <item
                 android:id="@+id/buatqr"
+                    android:visible="false"
                 android:icon="@drawable/ic_qr_code"
                 android:title="Buat QR Code Kehadiran" />
             <item

@@ -37,7 +37,6 @@ import java.util.Map;
 
 import Tools.GenKey;
 import Tools.Utilities;
-import tech.opsign.kkp.absensi.Login;
 import tech.opsign.kkp.absensi.R;
 import tech.opsign.kkp.absensi.SplashScreen;
 import tech.opsign.kkp.absensi.siswa.Fragmen.ToolProfile.Adapter;
@@ -52,7 +51,6 @@ public class Profile_parent extends AppCompatActivity {
     private List<Model> modelList = new ArrayList<>();
     private Adapter adapter;
 
-    @Nullable
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -84,8 +82,7 @@ public class Profile_parent extends AppCompatActivity {
                     public void onResponse(String response) {
                         key.hideProgress();
                         try {
-                            androidx.appcompat.app.AlertDialog.Builder ab = new AlertDialog.Builder(activity);
-                            ab.setCancelable(false).setTitle("Informasi");
+
 
                             JSONObject json = new JSONObject(response);
                             Log.e("ER", json.toString(3));
@@ -129,9 +126,6 @@ public class Profile_parent extends AppCompatActivity {
 
                                             );
                                             modelList.add(row);
-                                            modelList.add(row);
-                                            modelList.add(row);
-                                            modelList.add(row);
                                         }
                                     } else {
 
@@ -141,6 +135,8 @@ public class Profile_parent extends AppCompatActivity {
                                     adapter.notifyDataSetChanged();
 
                                 } else {
+                                    androidx.appcompat.app.AlertDialog.Builder ab = new AlertDialog.Builder(activity);
+                                    ab.setCancelable(false).setTitle("Informasi");
                                     ab.setMessage(("message")).setPositiveButton("Tutup", new DialogInterface.OnClickListener() {
                                         @Override
                                         public void onClick(DialogInterface dialog, int which) {
@@ -153,6 +149,8 @@ public class Profile_parent extends AppCompatActivity {
                                 editorr.putString("username", "");
                                 editorr.putString("token", "");
                                 editorr.apply();
+                                androidx.appcompat.app.AlertDialog.Builder ab = new AlertDialog.Builder(activity);
+                                ab.setCancelable(false).setTitle("Informasi");
                                 ab.setMessage(GenKey.pesan(json.getString("message")))
                                         .setPositiveButton("Tutup", new DialogInterface.OnClickListener() {
                                             @Override

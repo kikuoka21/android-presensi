@@ -89,7 +89,7 @@ public class ubah_Presensi extends AppCompatActivity implements AdapterView.OnIt
         jenis.add("Izin");
         jenis.add("Libur");
         jenis.add("Sakit");
-        jenis.add("Telat");
+//        jenis.add("Telat");
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(activity, R.layout.spiner_item, jenis);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spiner.setAdapter(adapter);

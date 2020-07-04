@@ -11,11 +11,13 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.StrictMode;
+
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import android.text.InputType;
 import android.util.Log;
 import android.view.MenuItem;
@@ -26,6 +28,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 
@@ -82,11 +85,11 @@ public class Cari_staf extends AppCompatActivity {
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
-        nama = (EditText) findViewById(R.id.nama_nip);
+        nama = findViewById(R.id.nama_nip);
 
 
         adapter = new Adapter_list_staf(modelList);
-        recyclerView = (RecyclerView) findViewById(R.id.list_siswa);
+        recyclerView = findViewById(R.id.list_siswa);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(activity);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setNestedScrollingEnabled(false);
@@ -228,7 +231,7 @@ public class Cari_staf extends AppCompatActivity {
                     SharedPreferences.Editor editorr = sp.edit();
                     editorr.putString("username", "");
                     editorr.putString("token", "");
-                    editorr.commit();
+                    editorr.apply();
                     ab.setMessage(GenKey.pesan(code))
                             .setPositiveButton("Tutup", new DialogInterface.OnClickListener() {
                                 @Override
@@ -261,7 +264,7 @@ public class Cari_staf extends AppCompatActivity {
                 Model_list_staf row;
                 JSONArray aray = json.getJSONArray("data");
                 if (aray != null && aray.length() > 0) {
-                    ((LinearLayout) findViewById(R.id.nulldata)).setVisibility(View.GONE);
+                    findViewById(R.id.nulldata).setVisibility(View.GONE);
                     recyclerView.setVisibility(View.VISIBLE);
                     for (int i = 0; i < aray.length(); i++) {
                         json = aray.getJSONObject(i);
@@ -283,7 +286,7 @@ public class Cari_staf extends AppCompatActivity {
                     });
 
                 } else {
-                    ((LinearLayout) findViewById(R.id.nulldata)).setVisibility(View.VISIBLE);
+                    findViewById(R.id.nulldata).setVisibility(View.VISIBLE);
                     recyclerView.setVisibility(View.GONE);
                 }
 
@@ -300,31 +303,36 @@ public class Cari_staf extends AppCompatActivity {
             String next_action = intent.getStringExtra("next_action");
             if (next_action.equals("333")) {
 
-                AlertDialog.Builder builder = new AlertDialog.Builder(activity);
-                builder.setTitle("Informasi");
-                builder.setMessage("Masukan Password anda");
-                pass = new EditText(activity);
-                pass.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
-                builder.setView(pass);
-                builder.setPositiveButton("kirim", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        xpass = key.gen_pass(pass.getText().toString().trim());
+                if (sp.getString("username", "-").equals(target)) {
+                    Toast.makeText(activity, "Tidak bisa menghapus NIP anda sendiri", Toast.LENGTH_LONG).show();
+                } else {
+
+
+                    AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+                    builder.setTitle("Informasi");
+                    builder.setMessage("Masukan Password anda");
+                    pass = new EditText(activity);
+                    pass.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+                    builder.setView(pass);
+                    builder.setPositiveButton("kirim", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            xpass = key.gen_pass(pass.getText().toString().trim());
 
 //                    Toast.makeText(activity, str_pass+str_nis, Toast.LENGTH_SHORT).show();
-                        dialog.dismiss();
-                        hapus();
-                    }
-                });
-                builder.setNegativeButton("Batal", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                });
-                AlertDialog ad = builder.create();
-                ad.show();
-
+                            dialog.dismiss();
+                            hapus();
+                        }
+                    });
+                    builder.setNegativeButton("Batal", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    });
+                    AlertDialog ad = builder.create();
+                    ad.show();
+                }
 
             } else {
 

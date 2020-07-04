@@ -77,7 +77,7 @@ public class laporan_bulan extends AppCompatActivity {
 //        ((TableRow) findViewById(R.id.spin_smester)).setVisibility(View.VISIBLE);
 
         adapter = new Adapter_laporan_bulan(modelList);
-        recyclerView = (RecyclerView) findViewById(R.id.list_lap_siswa);
+        recyclerView = findViewById(R.id.list_lap_siswa);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(activity);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setNestedScrollingEnabled(false);
@@ -226,16 +226,16 @@ public class laporan_bulan extends AppCompatActivity {
         private void proses() {
             try {
                 JSONObject data, isidetil;
-                String str_detil ;
+                StringBuilder str_detil ;
                 Model_laporan_bulan row;
                 JSONArray detil, aray = json.getJSONArray("presensi");
 
                 if (aray != null && aray.length() > 0) {
-                    ((LinearLayout) findViewById(R.id.nulldata)).setVisibility(View.GONE);
+                    findViewById(R.id.nulldata).setVisibility(View.GONE);
                     recyclerView.setVisibility(View.VISIBLE);
                     for (int i = 0; i < aray.length(); i++) {
                         data = aray.getJSONObject(i);
-                        str_detil = "";
+                        str_detil = new StringBuilder();
                         detil = data.getJSONArray("kehadiran");
                         int alpha = 0;
                         int sakit = 0;
@@ -250,11 +250,9 @@ public class laporan_bulan extends AppCompatActivity {
                                 izin++;
                             } else if (ket.equals("S")) {
                                 sakit++;
-                            } else if (ket.equals("T"))
+                            } else if (ket.equals("H"))
                                 telat++;
-                            str_detil = str_detil + "Tanggal : " + Utilities.tgl_bulan(isidetil.getString("tanggal")) +
-                                    "\nStatus Kehadiran : "+Utilities.status_kehadiran(isidetil.getString("stat")) +
-                                    "\nKeterangan : "+isidetil.getString("ket")+ "\n\n";
+                            str_detil.append("Tanggal : ").append(Utilities.tgl_bulan(isidetil.getString("tanggal"))).append("\nStatus Kehadiran : ").append(Utilities.status_kehadiran(isidetil.getString("stat"))).append("\nKeterangan : ").append(isidetil.getString("ket")).append("\n\n");
                         }
                         row = new Model_laporan_bulan(
                                 data.getString("nis"),
@@ -263,7 +261,7 @@ public class laporan_bulan extends AppCompatActivity {
                                 String.valueOf(izin),
                                 String.valueOf(alpha),
                                 String.valueOf(telat),
-                                str_detil
+                                str_detil.toString()
                         );
                         modelList.add(row);
                     }
@@ -304,6 +302,6 @@ public class laporan_bulan extends AppCompatActivity {
     }
 
     public static String ubahan_thn_ajrn(String a) {
-        return a + "/" + String.valueOf(Integer.parseInt(a) + 1);
+        return a + "/" + (Integer.parseInt(a) + 1);
     }
 }

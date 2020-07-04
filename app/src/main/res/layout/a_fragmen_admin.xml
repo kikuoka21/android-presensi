@@ -176,12 +176,12 @@
                             android:textSize="18sp" />
 
                         <TextView
+                            android:visibility="gone"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             android:layout_weight="1"
                             android:gravity="center"
-                            android:text="Telat"
                             android:textColor="@color/dark"
                             android:textSize="18sp" />
                     </LinearLayout>
@@ -236,13 +236,13 @@
                             android:textSize="18sp" />
 
                         <TextView
+                            android:visibility="gone"
                             android:id="@+id/telat"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             android:layout_weight="1"
                             android:gravity="center"
-                            android:text="Telat"
                             android:textColor="@color/dark"
                             android:textSize="18sp" />
                     </LinearLayout>
