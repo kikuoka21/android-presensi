@@ -1,33 +1,34 @@
 package tech.opsign.kkp.absensi.admin.Presensi;
 
-import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.StrictMode;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.DefaultItemAnimator;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.LinearLayout;
-import android.widget.TextView;
+import android.widget.ImageView;
+
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.gson.Gson;
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.MultiFormatWriter;
+import com.google.zxing.common.BitMatrix;
+import com.journeyapps.barcodescanner.BarcodeEncoder;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -38,30 +39,32 @@ import Tools.JsonParser;
 import Tools.Utilities;
 import tech.opsign.kkp.absensi.Login;
 import tech.opsign.kkp.absensi.R;
-import tech.opsign.kkp.absensi.admin.Presensi.tool_semester.Adapter_laporan_smes;
-import tech.opsign.kkp.absensi.admin.Presensi.tool_semester.Model_laporan_smes;
 
-public class laporan_semester extends AppCompatActivity {
-    private static SharedPreferences sp;
-    private laporan_semester activity;
+public class Generate_qr_admin extends AppCompatActivity {
+    private SharedPreferences sp;
+    private Generate_qr_admin activity;
     private Handler handler;
     private AsyncTask start;
     private ProgressDialog dialog;
     private GenKey key;
-    private List<Model_laporan_smes> modelList = new ArrayList<>();
-    private Adapter_laporan_smes adapter;
-    private RecyclerView recyclerView;
+    private String kd_kelas, nama_kelas;
+
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.s_generate_qr);
 
-
+//        getWindow().setFlags(WindowManager.LayoutParams.FLAG_SECURE, WindowManager.LayoutParams.FLAG_SECURE);
         this.activity = this;
+        findViewById(R.id.qrnya).setVisibility(View.GONE);
         key = new GenKey();
         sp = activity.getSharedPreferences("shared", 0x0000);
         handler = new Handler();
-        setTitle("Laporan Presensi perSemester");
-        setContentView(R.layout.a_laporan_semester);
+        Intent tangkap = getIntent();
+        kd_kelas = tangkap.getStringExtra("kd_kelas");
+        nama_kelas = tangkap.getStringExtra("nama");
+        setTitle("QR Code Kelas " + nama_kelas);
         if (Build.VERSION.SDK_INT >= 21) {
             Window window = this.getWindow();
             window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
@@ -69,28 +72,23 @@ public class laporan_semester extends AppCompatActivity {
             window.setStatusBarColor(this.getResources().getColor(R.color.colorPrimary));
         }
 
+        mulai();
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
-//        ((TableRow) findViewById(R.id.spin_smester)).setVisibility(View.VISIBLE);
-
-        adapter = new Adapter_laporan_smes(modelList);
-        recyclerView = (RecyclerView) findViewById(R.id.list_lap_siswa);
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(activity);
-        recyclerView.setLayoutManager(layoutManager);
-        recyclerView.setNestedScrollingEnabled(false);
-
-        recyclerView.setItemAnimator(new DefaultItemAnimator());
-        recyclerView.setAdapter(adapter);
-        kirim();
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (id == android.R.id.home)
+            finish();
+        return super.onOptionsItemSelected(item);
+    }
 
-    private void kirim() {
-//        modelList.clear();
-//        adapter.notifyDataSetChanged();
+    private void mulai() {
         Log.e("ER", "start");
-        start = new kirim_kelas().execute();
+        start = new callAPI().execute();
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -105,7 +103,7 @@ public class laporan_semester extends AppCompatActivity {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     dialog.dismiss();
-                                    kirim();
+                                    mulai();
                                 }
                             }).setNegativeButton("kembali", new DialogInterface.OnClickListener() {
                         @Override
@@ -119,16 +117,20 @@ public class laporan_semester extends AppCompatActivity {
         }, Utilities.rto());
     }
 
+    private class generate {
+        String id_kelas, tanggal, token;
+    }
 
-    private class kirim_kelas extends AsyncTask<Void, Void, Void> {
+    private class Param {
+        String x1d, type, token, kd_kls;
+    }
+
+    private class callAPI extends AsyncTask<Void, Void, Void> {
 
         private String code;
         private JSONObject json;
         private boolean background;
 
-        class Param {
-            String x1d, type, key, token ,smes, id_kelas;
-        }
 
         @Override
         protected void onPreExecute() {
@@ -151,20 +153,17 @@ public class laporan_semester extends AppCompatActivity {
                 Param param = new Param();
                 param.x1d = sp.getString("username", "");
                 param.type = "mmm";
-                param.key = Utilities.imei(activity);
                 param.token = sp.getString("token", "");
-                Intent intent = getIntent();
-                param.id_kelas = intent.getStringExtra("id_kelas");
-                param.smes = intent.getStringExtra("smes");
-
+                param.kd_kls = kd_kelas;
 
                 Gson gson = new Gson();
                 List<NameValuePair> p = new ArrayList<NameValuePair>();
                 p.add(new BasicNameValuePair("parsing", gson.toJson(param)));
 
                 JsonParser jParser = new JsonParser();
-                json = jParser.getJSONFromUrl(key.url(340), p);
-                Log.e("ER___", json.toString(2));
+                json = jParser.getJSONFromUrl(key.url(302), p);
+                Log.e("param login ", gson.toJson(param));
+                Log.e("isi json login", json.toString(2));
                 code = json.getString("code");
 
             } catch (Exception e) {
@@ -183,11 +182,14 @@ public class laporan_semester extends AppCompatActivity {
             handler.removeCallbacksAndMessages(null);
 
             if (background) {
+
                 AlertDialog.Builder ab = new AlertDialog.Builder(activity);
-                ab
-                        .setCancelable(false).setTitle("Informasi");
+                ab.setCancelable(false).setTitle("Informasi");
                 if (code.equals("OK4")) {
                     proses();
+
+                    findViewById(R.id.qrnya).setVisibility(View.VISIBLE);
+
                 } else if (code.equals("TOKEN2") || code.equals("TOKEN1")) {
                     SharedPreferences.Editor editorr = sp.edit();
                     editorr.putString("username", "");
@@ -210,7 +212,6 @@ public class laporan_semester extends AppCompatActivity {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             dialog.dismiss();
-                            finish();
                         }
                     }).show();
                 }
@@ -223,52 +224,21 @@ public class laporan_semester extends AppCompatActivity {
 
         private void proses() {
             try {
-                JSONObject data;
-
-                Model_laporan_smes row;
-                JSONArray aray = json.getJSONArray("siswa");
-                if (aray != null && aray.length() > 0) {
-                    ((LinearLayout) findViewById(R.id.nulldata)).setVisibility(View.GONE);
-                    recyclerView.setVisibility(View.VISIBLE);
-                    for (int i = 0; i < aray.length(); i++) {
-                        data = aray.getJSONObject(i);
-                        row = new Model_laporan_smes(
-                                data.getString("nis"),
-                                data.getString("nama"),
-                                data.getString("sakit"),
-                                data.getString("izin"),
-                                data.getString("alpha"),
-                                data.getString("hadir")
-
-                        );
-                        modelList.add(row);
-                    }
-                    adapter.notifyDataSetChanged();
-
-
-                }
-                data = json.getJSONObject("data");
-                json = json.getJSONObject("periode");
-                ((TextView)findViewById(R.id.thn_ajar)).setText("Tahun Ajar "+ubahan_thn_ajrn(data.getString("thn_ajar").substring(0, 4))+json.getString("smes"));
-                ((TextView)findViewById(R.id.periode)).setText(Utilities.gettgl_lahir(json.getString("awal"))+" - "+Utilities.gettgl_lahir(json.getString("akhir")));
-                ((TextView)findViewById(R.id.nama_kelas)).setText(data.getString("nama_kelas"));
-                ((TextView)findViewById(R.id.walikelas)).setText(data.getString("wali"));
+                generate obj = new generate();
+                obj.id_kelas = sp.getString("kd_kelas", "");
+                obj.tanggal = json.getString("tanggal");
+                obj.token = json.getString("tokennya");
+                Gson gson = new Gson();
+                MultiFormatWriter multi = new MultiFormatWriter();
+                BitMatrix bitMatrix = multi.encode(gson.toJson(obj), BarcodeFormat.QR_CODE, 150, 150);
+                BarcodeEncoder barcodeEncoder = new BarcodeEncoder();
+                Bitmap bitmap = barcodeEncoder.createBitmap(bitMatrix);
+                ImageView image = findViewById(R.id.qrcodenya);
+                image.setImageBitmap(bitmap);
             } catch (Exception e) {
                 Log.e("ER___", String.valueOf(e));
             }
         }
-
     }
 
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-        if (id == android.R.id.home)
-            finish();
-        return super.onOptionsItemSelected(item);
-    }
-    public static String ubahan_thn_ajrn(String a) {
-        return a+"/"+String.valueOf(Integer.parseInt(a) + 1)+" - ";
-    }
 }

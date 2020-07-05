@@ -323,6 +323,7 @@ public class Cari_siswa extends AppCompatActivity {
             if (intent.getStringExtra("next_action").equals("333")){
                 Intent myIntent = new Intent(activity, GantiPass_User.class);
                 myIntent.putExtra("username", hadir.nis);
+                myIntent.putExtra("nama", hadir.nama);
                 startActivity(myIntent);
             }else{
                 Intent myIntent = new Intent(activity, edit_siswa.class);

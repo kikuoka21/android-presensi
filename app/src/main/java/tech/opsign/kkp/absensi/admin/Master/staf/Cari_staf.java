@@ -341,6 +341,7 @@ public class Cari_staf extends AppCompatActivity {
 
                     myIntent = new Intent(activity, GantiPass_User.class);
                     myIntent.putExtra("username", hadir.nip);
+                    myIntent.putExtra("nama", hadir.nama);
                     startActivity(myIntent);
                     finish();
                 } else {

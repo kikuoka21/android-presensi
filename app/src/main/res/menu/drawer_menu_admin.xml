@@ -40,6 +40,10 @@
         <item android:title="Presensi">
             <menu>
                 <item
+                    android:id="@+id/buatqr_admin"
+                    android:icon="@drawable/ic_qr_code"
+                    android:title="Buat QR Code Kehadiran" />
+                <item
                     android:id="@+id/ubahpresensi"
                     android:icon="@drawable/ic_analytics"
                     android:title="Ubah Presensi" />

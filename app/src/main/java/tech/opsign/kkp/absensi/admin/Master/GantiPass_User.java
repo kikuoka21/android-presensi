@@ -9,11 +9,13 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.StrictMode;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
@@ -52,7 +54,7 @@ public class GantiPass_User extends AppCompatActivity {
     private ProgressDialog dialog;
     private EditText pas_baru_1, pas_baru_2, pass;
     private Button tombol;
-    private String pas1_string, pas2_string, passadmin;
+    private String pas1_string, pas2_string, passadmin, username_target;
 
 
     @Override
@@ -75,7 +77,10 @@ public class GantiPass_User extends AppCompatActivity {
             window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
             window.setStatusBarColor(this.getResources().getColor(R.color.colorPrimary));
         }
-
+        Intent intent = getIntent();
+        username_target = intent.getStringExtra("username");
+        ((TextView) findViewById(R.id.usernametarget)).setText(username_target);
+        ((TextView) findViewById(R.id.namatarget)).setText(intent.getStringExtra("nama"));
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
@@ -98,7 +103,7 @@ public class GantiPass_User extends AppCompatActivity {
                     Intent intent = getIntent();
                     android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(activity);
                     builder.setTitle("Informasi");
-                    builder.setMessage("Apakah anda yakin ingin mengganti password untuk user "+intent.getStringExtra("username")+", \nMasukan Password anda");
+                    builder.setMessage("Apakah anda yakin ingin mengganti password untuk user " + intent.getStringExtra("username") + ", \nMasukan Password anda");
                     pass = new EditText(activity);
                     pass.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
                     builder.setView(pass);
@@ -129,6 +134,7 @@ public class GantiPass_User extends AppCompatActivity {
             }
         });
     }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
@@ -136,6 +142,7 @@ public class GantiPass_User extends AppCompatActivity {
             finish();
         return super.onOptionsItemSelected(item);
     }
+
     private TextWatcher logintextwarcher = new TextWatcher() {
 
         @Override
@@ -218,7 +225,6 @@ public class GantiPass_User extends AppCompatActivity {
                 StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
                 StrictMode.setThreadPolicy(policy);
 
-                Intent intent = getIntent();
 
                 Param param = new Param();
                 param.x1d = sp.getString("username", "");
@@ -227,7 +233,7 @@ public class GantiPass_User extends AppCompatActivity {
                 param.token = sp.getString("token", "");
                 param.xp4s5 = key.gen_pass(pas2_string);
                 param.xp4s5_lama = passadmin;
-                param.username_target = intent.getStringExtra("username");
+                param.username_target = username_target;
                 Gson gson = new Gson();
                 List<NameValuePair> p = new ArrayList<NameValuePair>();
                 p.add(new BasicNameValuePair("parsing", gson.toJson(param)));

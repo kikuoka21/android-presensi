@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.widget.ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
@@ -12,8 +10,73 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
+
+        <TableLayout
+            android:paddingBottom="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="14dp">
+
+            <TableRow
+                android:paddingTop="5dp">
+
+                <TextView
+                    android:layout_marginStart="0dp"
+                    android:layout_marginEnd="2dp"
+                    android:text="ID"
+                    android:textColor="#000"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:paddingStart="2dp"
+                    android:paddingEnd="2dp"
+                    android:text=":"
+                    android:textColor="#000"
+                    android:textSize="18sp" />
+
+                <TextView
+                    android:id="@+id/usernametarget"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:textColor="#000"
+                    android:textSize="18sp" />
+
+
+            </TableRow>
+
+            <TableRow android:paddingTop="5dp">
+
+                <TextView
+                    android:layout_marginStart="0dp"
+                    android:layout_marginEnd="2dp"
+                    android:text="Nama"
+                    android:textColor="#000"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:paddingStart="2dp"
+                    android:paddingEnd="2dp"
+                    android:text=":"
+                    android:textColor="#000"
+                    android:textSize="18sp" />
+
+                <TextView
+                    android:id="@+id/namatarget"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:textColor="#000"
+                    android:textSize="18sp" />
+
+            </TableRow>
+
+
+
+
+
+        </TableLayout>
         <LinearLayout
-            android:paddingTop="18dp"
             android:paddingStart="14dp"
             android:paddingEnd="14dp"
             android:paddingBottom="10dp"

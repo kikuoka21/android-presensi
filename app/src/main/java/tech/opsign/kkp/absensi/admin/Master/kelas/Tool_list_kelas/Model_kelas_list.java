@@ -9,4 +9,20 @@ public class Model_kelas_list {
         this.wali_nama = wali_nama;
         this.ketua_nama = ketua_nama;
     }
+
+    public String getKd_kelas() {
+        return kd_kelas;
+    }
+
+    public String getKelas() {
+        return kelas;
+    }
+
+    public String getWali_nama() {
+        return wali_nama;
+    }
+
+    public String getKetua_nama() {
+        return ketua_nama;
+    }
 }

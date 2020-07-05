@@ -52,6 +52,10 @@ public class GenKey {
 
             case 300:
                 return head + "/api/admin/dashboard";
+            case 301:
+                return head + "/api/admin/listkls";
+            case 302:
+                return head + "/api/admin/generate_qr";
 
 
             case 308:

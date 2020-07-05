@@ -305,7 +305,7 @@ public class cari_kelas extends AppCompatActivity {
 
                 Model_kelas_list row;
                 JSONArray aray = json.getJSONArray("data");
-                if (aray != null && aray.length() > 0) {
+                if (aray.length() > 0) {
                     ((LinearLayout) findViewById(R.id.nulldata)).setVisibility(View.GONE);
                     recyclerView.setVisibility(View.VISIBLE);
                     for (int i = 0; i < aray.length(); i++) {

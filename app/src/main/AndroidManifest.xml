@@ -60,6 +60,9 @@
             android:windowSoftInputMode="stateAlwaysHidden" />
         <!--admin-->
 
+        <activity android:name=".admin.Presensi.Generate_qr_admin"
+            android:configChanges="orientation|screenSize"  />
+
         <!--presensi-->
         <activity
             android:name=".admin.Presensi.kelas_ubah_absen"

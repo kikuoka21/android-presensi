@@ -5,7 +5,6 @@ import android.app.FragmentManager;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -46,10 +45,10 @@ import java.util.Map;
 import Tools.GenKey;
 import Tools.Utilities;
 import tech.opsign.kkp.absensi.GantiPass;
-import tech.opsign.kkp.absensi.Login;
 import tech.opsign.kkp.absensi.R;
 import tech.opsign.kkp.absensi.SplashScreen;
 import tech.opsign.kkp.absensi.admin.Fragment.DashboardFragmentAdmin;
+import tech.opsign.kkp.absensi.admin.Fragment.Listkelas;
 import tech.opsign.kkp.absensi.admin.Fragment.master_kelas;
 import tech.opsign.kkp.absensi.admin.Fragment.master_siswa;
 import tech.opsign.kkp.absensi.admin.Fragment.master_staf;
@@ -61,11 +60,11 @@ public class MainAdmin extends AppCompatActivity implements NavigationView.OnNav
     private SharedPreferences sp;
     private View navHeaderView;
     private MainAdmin activity;
-    private boolean doubleBackToExitPressedOnce = false;
-    private Handler halder;
+    private boolean doubleBackToExitPressedOnce = false, home = true;
 
     private GenKey key;
     Handler mHandler;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -74,7 +73,6 @@ public class MainAdmin extends AppCompatActivity implements NavigationView.OnNav
         this.activity = this;
         key = new GenKey();
         sp = activity.getSharedPreferences("shared", 0x0000);
-        halder = new Handler();
 
         if (Build.VERSION.SDK_INT >= 21) {
             Window window = this.getWindow();
@@ -158,10 +156,10 @@ public class MainAdmin extends AppCompatActivity implements NavigationView.OnNav
 
         item.setChecked(false);
         int id = item.getItemId();
-        FragmentManager fragmentManager = getFragmentManager();
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
-
+        home = false;
         if (id == R.id.ubahpresensi) {
+            home = true;
             Intent myIntent = new Intent(activity, Carikelas_tanggal.class);
             myIntent.putExtra("next_action", "111");
             myIntent.putExtra("ubah", "y");
@@ -200,6 +198,10 @@ public class MainAdmin extends AppCompatActivity implements NavigationView.OnNav
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_containter
                     , new GantiPass()).commit();
         }
+        if (id == R.id.buatqr_admin) {
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_containter
+                    , new Listkelas()).commit();
+        }
 
         if (id == R.id.nav_out) {
             new AlertDialog.Builder(activity)
@@ -209,7 +211,7 @@ public class MainAdmin extends AppCompatActivity implements NavigationView.OnNav
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
 
-                           logout();
+                            logout();
                         }
                     })
                     .setNegativeButton("Batal", new DialogInterface.OnClickListener() {
@@ -230,24 +232,31 @@ public class MainAdmin extends AppCompatActivity implements NavigationView.OnNav
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         FragmentManager fragmentManager = getFragmentManager();
 
-
-        if (doubleBackToExitPressedOnce) {
-            super.onBackPressed();
-            return;
-        }
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
-            this.doubleBackToExitPressedOnce = false;
-            drawer.closeDrawer(GravityCompat.START);
+        if (home) {
+            if (doubleBackToExitPressedOnce) {
+                super.onBackPressed();
+                return;
+            }
+            if (drawer.isDrawerOpen(GravityCompat.START)) {
+                this.doubleBackToExitPressedOnce = false;
+                drawer.closeDrawer(GravityCompat.START);
+            } else {
+                this.doubleBackToExitPressedOnce = true;
+                Toast.makeText(this, "Please click BACK again to exit", Toast.LENGTH_SHORT).show();
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        doubleBackToExitPressedOnce = false;
+                    }
+                }, 2000);
+            }
         } else {
-            this.doubleBackToExitPressedOnce = true;
-            Toast.makeText(this, "Please click BACK again to exit", Toast.LENGTH_SHORT).show();
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    doubleBackToExitPressedOnce = false;
-                }
-            }, 2000);
+
+            home = true;
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_containter
+                    , new DashboardFragmentAdmin()).commit();
         }
+
 
     }
 
@@ -352,7 +361,6 @@ public class MainAdmin extends AppCompatActivity implements NavigationView.OnNav
                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         Volley.newRequestQueue(activity).add(stringRequest);
     }
-
 
 
 }

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#bbb">
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycle_dry"
+        android:layout_marginTop="12dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginEnd="12dp"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+
+    <TextView
+        android:id="@+id/nulldata"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:padding="18dp"
+        android:background="@color/putih"
+        android:gravity="center"
+        android:textColor="@color/dark"
+        android:text="Tidak ada kelas"
+        android:textSize="@dimen/text_head_2" />
+
+
+</RelativeLayout>
