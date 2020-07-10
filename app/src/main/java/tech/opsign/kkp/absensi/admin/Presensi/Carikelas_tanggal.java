@@ -98,9 +98,9 @@ public class Carikelas_tanggal extends AppCompatActivity implements AdapterView.
                 setTitle("Cari Kelas - Ubah Presensi");
             else
                 setTitle("Cari Kelas - Laporan Hari");
-            ((TableRow) findViewById(R.id.bulan_tahun)).setVisibility(View.GONE);
-            ((TableRow) findViewById(R.id.tanggal)).setVisibility(View.VISIBLE);
-            LinearLayout date_pick = (LinearLayout) findViewById(R.id.pilih_tgl);
+            findViewById(R.id.bulan_tahun).setVisibility(View.GONE);
+            findViewById(R.id.tanggal).setVisibility(View.VISIBLE);
+            LinearLayout date_pick = findViewById(R.id.pilih_tgl);
             date_pick.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -108,14 +108,14 @@ public class Carikelas_tanggal extends AppCompatActivity implements AdapterView.
                     dialogfragment.show(getFragmentManager(), "Tanggal Mulai");
                 }
             });
-            tgl = (TextView) findViewById(R.id.inpt_tgl);
+            tgl = findViewById(R.id.inpt_tgl);
             strtanggal = sp.getString("tanggal", "");
             tgl.setText(Utilities.gettgl_lahir(sp.getString("tanggal", "")));
         } else {
             setTitle("Cari Kelas - Laporan Bulan");
 
-            ((TableRow) findViewById(R.id.bulan_tahun)).setVisibility(View.VISIBLE);
-            ((TableRow) findViewById(R.id.tanggal)).setVisibility(View.GONE);
+            findViewById(R.id.bulan_tahun).setVisibility(View.VISIBLE);
+            findViewById(R.id.tanggal).setVisibility(View.GONE);
 
             Spinner spiner = findViewById(R.id.tahn);
             spiner.setAdapter(null);
@@ -152,7 +152,7 @@ public class Carikelas_tanggal extends AppCompatActivity implements AdapterView.
         }
 
         adapter = new Adapter_kelas_list(modelList);
-        recyclerView = (RecyclerView) findViewById(R.id.list_kelas);
+        recyclerView = findViewById(R.id.list_kelas);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(activity);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setNestedScrollingEnabled(false);
@@ -311,7 +311,7 @@ public class Carikelas_tanggal extends AppCompatActivity implements AdapterView.
                 Model_kelas_list row;
                 JSONArray aray = json.getJSONArray("data");
                 if (aray != null && aray.length() > 0) {
-                    ((LinearLayout) findViewById(R.id.nulldata)).setVisibility(View.GONE);
+                    findViewById(R.id.nulldata).setVisibility(View.GONE);
                     recyclerView.setVisibility(View.VISIBLE);
                     for (int i = 0; i < aray.length(); i++) {
                         json = aray.getJSONObject(i);
@@ -335,7 +335,7 @@ public class Carikelas_tanggal extends AppCompatActivity implements AdapterView.
                         }
                     });
                 } else {
-                    ((LinearLayout) findViewById(R.id.nulldata)).setVisibility(View.VISIBLE);
+                    findViewById(R.id.nulldata).setVisibility(View.VISIBLE);
                     recyclerView.setVisibility(View.GONE);
                 }
             } catch (Exception e) {
@@ -382,7 +382,7 @@ public class Carikelas_tanggal extends AppCompatActivity implements AdapterView.
             @SuppressLint("SimpleDateFormat")
             SimpleDateFormat
                     date = new SimpleDateFormat("yyyy-MM-dd");
-            String strin = String.valueOf(year) + "-" + ubahan(month + 1) + "-" + ubahan(day);
+            String strin = year + "-" + ubahan(month + 1) + "-" + ubahan(day);
 
             try {
                 Date tanggalpilihan, tanggalskrng;
@@ -407,7 +407,7 @@ public class Carikelas_tanggal extends AppCompatActivity implements AdapterView.
 
     }
 
-    private static String ubahan(int a) {
+    public static String ubahan(int a) {
         String x = String.valueOf(a);
         if (x.length() == 1) {
             return "0" + x;

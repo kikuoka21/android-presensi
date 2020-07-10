@@ -52,6 +52,8 @@ public class GenKey {
 
             case 300:
                 return head + "/api/admin/dashboard";
+            case 303:
+                return head + "/api/admin/dashboard/tgl";
             case 301:
                 return head + "/api/admin/listkls";
             case 302:
