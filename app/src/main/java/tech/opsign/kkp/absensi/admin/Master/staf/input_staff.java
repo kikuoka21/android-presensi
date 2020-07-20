@@ -75,8 +75,8 @@ public class input_staff extends AppCompatActivity implements AdapterView.OnItem
         Spinner spiner = findViewById(R.id.level_staff);
         spiner.setAdapter(null);
         ArrayList<String> jenis = new ArrayList<String>();
-        jenis.add("Staf Guru");
-        jenis.add("Staf Admin");
+        jenis.add("Staff Guru");
+        jenis.add("Staff Admin");
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(activity, R.layout.spiner_item, jenis);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spiner.setAdapter(adapter);
@@ -155,7 +155,6 @@ public class input_staff extends AppCompatActivity implements AdapterView.OnItem
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        Log.e("agamanya", parent.getItemAtPosition(position).toString());
         str_level = String.valueOf(position);
     }
 

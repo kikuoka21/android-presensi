@@ -106,6 +106,7 @@ public class GantiPass_parent extends AppCompatActivity {
             }
         });
 
+        findViewById(R.id.usertarget).setVisibility(View.GONE);
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }

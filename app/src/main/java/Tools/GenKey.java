@@ -14,7 +14,7 @@ public class GenKey {
     public String url(int str) {
         String web, port, head;
         //web = "192.168.0.17";
-        web = "192.168.1.7";
+        web = "192.168.1.5";
 //        web = "192.168.0.19";
         //web = "192.168.12.17";
         //web = "192.168.12.33";
@@ -190,7 +190,7 @@ public class GenKey {
     public static String pesan(String key) {
         switch (key) {
             case "TOKEN1":
-                return "Token Sudah Tidak Valid, Silahkan Login Kembali";
+                return "Token Sudah Tidak aktif, Silahkan Login Kembali";
             case "TOKEN2":
                 return "Token Anda Salah, Silahkan Login Kembali";
 

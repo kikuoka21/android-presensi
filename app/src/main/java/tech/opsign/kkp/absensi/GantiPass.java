@@ -80,6 +80,7 @@ public class GantiPass extends Fragment {
 
             }
         });
+        v.findViewById(R.id.usertarget).setVisibility(View.GONE);
 
         return v;
     }

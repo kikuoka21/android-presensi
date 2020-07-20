@@ -85,8 +85,8 @@ public class ubah_staf extends AppCompatActivity implements AdapterView.OnItemSe
         Spinner spiner = findViewById(R.id.level_staff);
         spiner.setAdapter(null);
         ArrayList<String> jenis = new ArrayList<String>();
-        jenis.add("Guru Wali Kelas");
-        jenis.add("Guru Piket");
+        jenis.add("Staff Guru");
+        jenis.add("Staff Admin");
         ArrayAdapter<String> pilihan = new ArrayAdapter<String>(activity, R.layout.spiner_item, jenis);
         pilihan.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spiner.setAdapter(pilihan);
@@ -365,7 +365,6 @@ public class ubah_staf extends AppCompatActivity implements AdapterView.OnItemSe
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        Log.e("agamanya", parent.getItemAtPosition(position).toString());
         str_level = String.valueOf(position);
     }
 
