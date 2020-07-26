@@ -251,9 +251,9 @@ public class ubah_ketuakelas extends AppCompatActivity {
                 JsonParser jParser = new JsonParser();
                 String url;
                 if (action.equals("1"))
-                    url = key.url(325);
+                    url = key.url(325);///api/admin/master/kelas/ubah/ketua-kelas
                 else
-                    url = key.url(327);
+                    url = key.url(327);///api/admin/master/kelas/hapus/siswa
 
                 json = jParser.getJSONFromUrl(url, p);
                 Log.e("ER___", json.toString(2));

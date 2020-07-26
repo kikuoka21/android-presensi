@@ -14,7 +14,7 @@ public class GenKey {
     public String url(int str) {
         String web, port, head;
         //web = "192.168.0.17";
-        web = "192.168.1.5";
+        web = "192.168.1.4";
 //        web = "192.168.0.19";
         //web = "192.168.12.17";
         //web = "192.168.12.33";
@@ -94,10 +94,10 @@ public class GenKey {
                 return head + "/api/admin/master/kelas/ubah/ketua-kelas";
             case 326:
                 return head + "/api/admin/master/kelas/ubah/nama-kelas";
-            case 327:
-                return head + "/api/admin/master/kelas/hapus/siswa";
             case 328:
                 return head + "/api/admin/master/kelas/ubah/level-siswa";
+            case 327:
+                return head + "/api/admin/master/kelas/hapus/siswa";
             case 329:
                 return head + "/api/admin/master/kelas/hapus/kelas";
             case 330:
@@ -120,7 +120,6 @@ public class GenKey {
             //
             case 340:
                 return head + "/api/admin/laporan-smes";
-
             case 341:
                 return head + "/api/admin/lihat";
             case 342:

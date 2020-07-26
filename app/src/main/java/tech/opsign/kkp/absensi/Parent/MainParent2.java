@@ -292,8 +292,6 @@ public class MainParent2 extends AppCompatActivity {
                 Map<String, String> postMap2 = new HashMap<>();
                 try {
                     JsonObject xdata = new JsonObject();
-
-
                     xdata.addProperty("x1d", sp.getString("username", ""));
                     xdata.addProperty("type", "mmm");
                     xdata.addProperty("key", Utilities.imei(activity));
