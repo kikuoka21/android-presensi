@@ -16,12 +16,24 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.DefaultRetryPolicy;
+import com.android.volley.NetworkError;
+import com.android.volley.NetworkResponse;
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.TimeoutError;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.MultiFormatWriter;
 import com.google.zxing.common.BitMatrix;
@@ -29,16 +41,21 @@ import com.journeyapps.barcodescanner.BarcodeEncoder;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import Tools.GenKey;
 import Tools.JsonParser;
 import Tools.Utilities;
 import tech.opsign.kkp.absensi.Login;
 import tech.opsign.kkp.absensi.R;
+import tech.opsign.kkp.absensi.SplashScreen;
+import tech.opsign.kkp.absensi.siswa.Fragmen.ToolProfile.Model;
 
 public class Generate_qr_admin extends AppCompatActivity {
     private SharedPreferences sp;
@@ -225,7 +242,7 @@ public class Generate_qr_admin extends AppCompatActivity {
         private void proses() {
             try {
                 generate obj = new generate();
-                obj.id_kelas = sp.getString("kd_kelas", "");
+                obj.id_kelas = kd_kelas ;
                 obj.tanggal = json.getString("tanggal");
                 obj.token = json.getString("tokennya");
                 Gson gson = new Gson();

@@ -17,6 +17,16 @@ import android.view.MenuItem;
 import android.view.Window;
 import android.view.WindowManager;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.DefaultRetryPolicy;
+import com.android.volley.NetworkError;
+import com.android.volley.NetworkResponse;
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.TimeoutError;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
 import com.google.zxing.Result;
 
@@ -25,7 +35,9 @@ import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import Tools.GenKey;
 import Tools.JsonParser;
@@ -73,6 +85,9 @@ public class scan_qr_code extends AppCompatActivity implements ZXingScannerView.
         mScannerView = new ZXingScannerView(activity);
         setContentView(mScannerView);
 
+        dialog = new ProgressDialog(activity);
+        dialog.setMessage("Sedang memproses data. Harap tunggu sejenak.");
+        dialog.setCancelable(false);
     }
 
     @Override
@@ -114,7 +129,7 @@ public class scan_qr_code extends AppCompatActivity implements ZXingScannerView.
 
                     if (qrcode.getString("tanggal").equals(sp.getString("tanggal", ""))) {
                         onPause();
-                        mulai();
+                        volley_update();
                     } else {
 
                         generate_pesan("QR code Sudah Kedaluwarsa.");
@@ -148,38 +163,7 @@ public class scan_qr_code extends AppCompatActivity implements ZXingScannerView.
         return super.onOptionsItemSelected(item);
     }
 
-    private void mulai() {
 
-
-        start = new callAPI().execute();
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                if (dialog.isShowing()) {
-                    dialog.dismiss();
-                    start.cancel(true);
-                    new AlertDialog.Builder(activity)
-                            .setTitle("Informasi")
-                            .setMessage("Telah Terjadi Kesalahan Pada Koneksi Anda.")
-                            .setCancelable(false)
-                            .setPositiveButton("Coba Lagi", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    dialog.dismiss();
-                                    mulai();
-                                }
-                            }).setNegativeButton("kembali", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.dismiss();
-                            finish();
-                        }
-                    }).show();
-                }
-            }
-        }, Utilities.rto());
-
-    }
 
 
 
@@ -187,122 +171,6 @@ public class scan_qr_code extends AppCompatActivity implements ZXingScannerView.
         String x1d, type, key, token, kd_kls, token_absen, tanggal,nama;
     }
 
-    private class callAPI extends AsyncTask<Void, Void, Void> {
-
-        private String code;
-        private JSONObject json;
-        private boolean background;
-
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            background = true;
-            dialog = new ProgressDialog(activity);
-            dialog.setMessage("Sedang memproses data. Harap tunggu sejenak.");
-            dialog.setCancelable(false);
-            dialog.show();
-            onPause();
-
-        }
-
-        @Override
-        protected Void doInBackground(Void... voids) {
-            try {
-                StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-                StrictMode.setThreadPolicy(policy);
-
-
-                Param param = new Param();
-                param.x1d = sp.getString("username", "");
-                param.type = "mmm";
-                param.key = Utilities.imei(activity);
-                param.token = sp.getString("token", "");
-//                param.kd_kls = sp.getString("token", "");
-                param.kd_kls = sp.getString("kd_kelas", "");
-                param.token_absen = qrcode.getString("token");
-                param.tanggal = qrcode.getString("tanggal");
-                param.nama = sp.getString("nama", "");
-
-
-                Gson gson = new Gson();
-                List<NameValuePair> p = new ArrayList<NameValuePair>();
-                p.add(new BasicNameValuePair("parsing", gson.toJson(param)));
-
-                JsonParser jParser = new JsonParser();
-                json = jParser.getJSONFromUrl(key.url(102), p);
-                Log.e("param login ", gson.toJson(param));
-                Log.e("isi json login", json.toString(2));
-                code = json.getString("code");
-
-            } catch (Exception e) {
-                background = false;
-            }
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Void result) {
-            super.onPostExecute(result);
-
-            if (dialog.isShowing()) {
-                dialog.dismiss();
-            }
-            handler.removeCallbacksAndMessages(null);
-
-            if (background) {
-
-                AlertDialog.Builder ab = new AlertDialog.Builder(activity);
-                ab.setCancelable(false).setTitle("Informasi");
-                if (code.equals("OK4")) {
-                    ab.setMessage("Anda Berhasil Presensi").setPositiveButton("Tutup", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.dismiss();
-                            finish();
-                        }
-                    }).show();
-                } else if (code.equals("TOKEN2") || code.equals("TOKEN1")) {
-                    SharedPreferences.Editor editorr = sp.edit();
-                    editorr.putString("username", "");
-                    editorr.putString("token", "");
-                    editorr.commit();
-                    ab.setMessage(GenKey.pesan(code))
-                            .setPositiveButton("Tutup", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-
-                                    dialog.dismiss();
-                                    Intent login = new Intent(activity, Login.class);
-                                    login.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                                    startActivity(login);
-                                    finish();
-                                }
-                            }).show();
-                } else {
-                    ab.setMessage(code).setPositiveButton("Tutup", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.dismiss();
-                            onResume();
-                        }
-                    }).show();
-                }
-
-
-            } else {
-                Utilities.codeerror(activity, "ER0211");
-            }
-        }
-
-        private void proses() {
-            try {
-
-            } catch (Exception e) {
-                Log.e("ER___", String.valueOf(e));
-            }
-        }
-    }
 
     private void generate_pesan(String pesan) {
         onPause();
@@ -326,4 +194,132 @@ public class scan_qr_code extends AppCompatActivity implements ZXingScannerView.
         })
                 .show();
     }
+
+
+    private void volley_update() {
+        dialog.show();
+        StringRequest stringRequest = new StringRequest(Request.Method.PUT, key.url(102),
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        if (dialog.isShowing()) {
+                            dialog.dismiss();
+                        }
+
+                        try {
+                            androidx.appcompat.app.AlertDialog.Builder ab = new androidx.appcompat.app.AlertDialog.Builder(activity);
+                            ab.setCancelable(false).setTitle("Informasi");
+
+                            JSONObject json = new JSONObject(response);
+                            String code = json.getString("code");
+                            if (code.equals("OK4")) {
+                                ab.setMessage("Anda Berhasil Presensi").setPositiveButton("Tutup", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        dialog.dismiss();
+                                        finish();
+                                    }
+                                }).show();
+                            } else if (code.equals("TOKEN2") || code.equals("TOKEN1")) {
+                                SharedPreferences.Editor editorr = sp.edit();
+                                editorr.putString("username", "");
+                                editorr.putString("token", "");
+                                editorr.commit();
+                                ab.setMessage(GenKey.pesan(code))
+                                        .setPositiveButton("Tutup", new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialog, int which) {
+
+                                                dialog.dismiss();
+                                                Intent login = new Intent(activity, Login.class);
+                                                login.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                                startActivity(login);
+                                                finish();
+                                            }
+                                        }).show();
+                            } else {
+                                ab.setMessage(code).setPositiveButton("Tutup", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        dialog.dismiss();
+                                        onResume();
+                                    }
+                                }).show();
+                            }
+
+                        } catch (Exception e) {
+                            e.printStackTrace();
+
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                if (dialog.isShowing()) {
+                    dialog.dismiss();
+                }
+
+                try {
+                    String message;
+                    if (!(error instanceof NetworkError | error instanceof TimeoutError)) {
+
+                        NetworkResponse networkResponse = error.networkResponse;
+                        message = "Gagal terhubung dengan server, siahkan coba beberapa menit lagi\nError Code: " + networkResponse.statusCode;
+
+                    } else {
+                        Log.e("ER", (error instanceof NetworkError) + "" + error.getMessage());
+                        message = "Gagal terhubung dengan server, siahkan coba beberapa menit lagi";
+                    }
+
+
+                    new androidx.appcompat.app.AlertDialog.Builder(activity)
+                            .setTitle("Informasi")
+                            .setMessage(message)
+                            .setCancelable(false)
+                            .setPositiveButton("tutup", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                }
+                            }).show();
+                } catch (Exception se) {
+                    se.printStackTrace();
+                }
+
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+
+
+                Map<String, String> postMap2 = new HashMap<>();
+                try {
+
+                    Param param = new Param();
+                    param.x1d = sp.getString("username", "");
+                    param.type = "mmm";
+                    param.key = Utilities.imei(activity);
+                    param.token = sp.getString("token", "");
+//                param.kd_kls = sp.getString("token", "");
+                    param.kd_kls = sp.getString("kd_kelas", "");
+                    param.token_absen = qrcode.getString("token");
+                    param.tanggal = qrcode.getString("tanggal");
+                    param.nama = sp.getString("nama", "");
+
+                    Gson gson = new Gson();
+                    postMap2.put("parsing", gson.toJson(param));
+                } catch (Exception e) {
+                    postMap2 = null;
+                }
+                return postMap2;
+            }
+        };
+
+        //make the request to your server as indicated in your request URL
+        stringRequest.setRetryPolicy(new DefaultRetryPolicy(Utilities.rto(),
+                0,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        Volley.newRequestQueue(activity).add(stringRequest);
+    }
+
 }
